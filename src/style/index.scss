@@ -1,6 +1,7 @@
 @import './constants.scss';
 @import '../components/Header/header.scss';
 @import '../components/UI_components/Button/button.scss';
+@import '../pages/Auth/auth.scss';
 
 *{
   box-sizing: border-box;
@@ -30,5 +31,10 @@ body {
 .app-container {
   max-width: 1400px;
   margin: 0 auto;
+}
+
+.app-main {
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 

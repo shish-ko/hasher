@@ -4,7 +4,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 export const Button: React.FC<ButtonProps> = ({contained=false, children, ...props}) => {
   return (
-    <button {...props} className={`${contained ? 'app-button_filled' : 'app-button_outlined'} app-button`}>
+    <button {...props} className={`${contained ? 'app-button_filled' : 'app-button_outlined'} app-button ${props.className}`}>
       {children}
     </button>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { incrementRank } from "store/store";
-import { useAppDispatch, useAppSelector } from "utils/hooks";
+import { useAppDispatch } from "utils/hooks";
 import { Header } from "~comps/Header/Header";
 
 export const DefaultUI: React.FC = () => {
@@ -12,7 +12,7 @@ export const DefaultUI: React.FC = () => {
   return (
     <>
       <Header/>
-      <main>
+      <main className="app-container app-main">
         <Outlet/>
       </main>
       <footer>qweqweqwe</footer>

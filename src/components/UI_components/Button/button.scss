@@ -16,4 +16,7 @@
     border: 1px solid black;
     background-color: white;
   }
+  &:disabled {
+    background-color: gray;
+  }
 }

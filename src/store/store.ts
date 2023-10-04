@@ -5,9 +5,10 @@ interface IUserSlice {
   name: string;
   rank: number;
 }
+
 const initialState: IUserSlice = {
   isLogin: false,
-  name: 'anonymus',
+  name: 'anonymous',
   rank: 0,
 };
 
