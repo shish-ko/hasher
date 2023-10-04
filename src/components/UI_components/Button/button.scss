@@ -1,0 +1,19 @@
+.app-button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  &_filled {
+    background-color: $contained_btn;
+    color: white;
+    &:hover{
+      background-color: lighten($color: $contained_btn, $amount: 3);
+    }
+    &:active {
+      background-color: darken($color: $contained_btn, $amount: 3);
+    }
+  }
+  &_outlined {
+    border: 1px solid black;
+    background-color: white;
+  }
+}

@@ -1,15 +1,23 @@
+@import './constants.scss';
+@import '../components/Header/header.scss';
+@import '../components/UI_components/Button/button.scss';
+
 *{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-
+button {
+  border: none;
+  cursor: pointer;
+}
 html {
   font-size: 10px;
 }
 
 body {
   min-width: 320px;
+  font-size: 1.4rem;
 }
 
 #root {
@@ -17,6 +25,9 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.app-container {
   max-width: 1400px;
   margin: 0 auto;
 }

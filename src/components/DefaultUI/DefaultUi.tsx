@@ -1,13 +1,17 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
+import { incrementRank } from "store/store";
+import { useAppDispatch, useAppSelector } from "utils/hooks";
+import { Header } from "~comps/Header/Header";
 
 export const DefaultUI: React.FC = () => {
-  const name = useSelector((state)=> state.user.name);
-  console.log(name);
+  const dispatch = useAppDispatch();
+  dispatch(incrementRank()); 
+
+  // console.log(rank);
   return (
     <>
-      <header>{name}</header>
+      <Header/>
       <main>
         <Outlet/>
       </main>
