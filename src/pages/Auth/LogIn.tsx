@@ -1,5 +1,7 @@
 import {useForm, SubmitHandler} from 'react-hook-form';
 import { Button } from '~comps/UI_components/Button/Button';
+import loginSrc from '~assets/login.webp';
+import mail_icon from '~assets/envelope-solid.svg';
 
 interface ISignIn {
   login: string,
@@ -15,19 +17,25 @@ export const LogIn:React.FC = () => {
 
   return (
     <>
-      <form className='auth-form' onSubmit={handleSubmit(onSubmit)}>
-        <div className='auth-form__item'>
-          <label htmlFor='login' className='auth-form__label'>Login</label>
-          <input {...register('login', {validate: loginValidator})}/>  
-          {errors.login && <div className='auth-form__error'>{errors.login.message}</div>}        
-        </div>
-        <div className='auth-form__item'>
-          <label htmlFor='password' className='auth-form__label'>Password</label>
-          <input {...register('password', {validate: passwordValidator})}/>
-          {errors.password && <div className='auth-form__error'>{errors.password.message}</div>}
-        </div>
-        <Button className='auth-form__submit' contained disabled={isSubmitted && !isValid}>Submit</Button>
-      </form>
+      <section className='auth'>
+        <img src={loginSrc} />
+        <form className='auth-form' onSubmit={handleSubmit(onSubmit)}>
+          <h3 className='auth-form__item auth-form__title'>Member login</h3>
+          <div className='auth-form__item'>
+            <div className='auth-form__custom-input'>
+              <input className='auth-form__input' {...register('login', {validate: loginValidator})} placeholder='Login' />
+              <img className='auth-form__input-icon' src={mail_icon}/>  
+            </div>
+            {errors.login && <div className='auth-form__error'>{errors.login.message}</div>}        
+          </div>
+          <div className='auth-form__item'>
+            <label htmlFor='password' className='auth-form__label'>Password</label>
+            <input className='auth-form__input' {...register('password', {validate: passwordValidator})}/>
+            {errors.password && <div className='auth-form__error'>{errors.password.message}</div>}
+          </div>
+          <Button className='auth-form__submit' contained disabled={isSubmitted && !isValid}>Submit</Button>
+        </form>
+      </section>
     </>
   );
 };
