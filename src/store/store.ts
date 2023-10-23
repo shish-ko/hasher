@@ -1,4 +1,5 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { popUpSlice } from "./popUpSlice";
 
 interface IUserSlice {
   isLogin: boolean;
@@ -32,6 +33,7 @@ export const {setUserName, incrementRank, toggleIsLogin} = userSlice.actions;
 export const store = configureStore({
   reducer: {
     user: userSlice.reducer,
+    popUp: popUpSlice.reducer,
   }
 });
 

@@ -1,0 +1,6 @@
+.text-link {
+  &:hover {
+    color: darken($color: $text, $amount: 3);
+    text-decoration: underline;
+  }
+}

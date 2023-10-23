@@ -22,7 +22,8 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "~comps/*": ["components/*"],
-      "~assets/*": ["assets/*"] 
+      "~assets/*": ["assets/*"] ,
+      "~interfaces/*": ["interfaces/*"]
     }
   },
   "include": ["src"],

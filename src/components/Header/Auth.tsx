@@ -15,10 +15,10 @@ export const Auth = () => {
     isLogin ? 
     <>{name}</> :
     <>
-    <Link to={'/logIn'}>
+    <Link to={'/login'}>
       <Button>LogIn</Button>
     </Link>
-    <Link to={'/signUp'}>
+    <Link to={'/signup'}>
       <Button contained>SignUp</Button>
     </Link>
     </>

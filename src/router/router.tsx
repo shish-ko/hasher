@@ -2,13 +2,14 @@ import { Route, createBrowserRouter,createRoutesFromElements } from "react-route
 import { DefaultUI } from "pages/DefaultUI/DefaultUi";
 import { Description } from "pages/Description/Description";
 import { LogIn } from "pages/Auth/LogIn";
+import { SignUp } from "pages/Auth/SignUp";
 
 
 const routeObj = createRoutesFromElements(
   <Route element={<DefaultUI />} path="/">
     <Route element={<Description />} index={true} />
-    <Route element={<LogIn />} path="/logIn" />
-    {/* <Route element={<Description />}   index={true} /> */}
+    <Route element={<LogIn />} path="/login" />
+    <Route element={<SignUp />} path="/signup" />
   </Route>
 );
 

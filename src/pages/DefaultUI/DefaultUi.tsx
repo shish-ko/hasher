@@ -1,20 +1,16 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { incrementRank } from "store/store";
-import { useAppDispatch } from "utils/hooks";
 import { Header } from "~comps/Header/Header";
+import { PopUp } from "~comps/UI_components/PopUp/PopUp";
 
 export const DefaultUI: React.FC = () => {
-  const dispatch = useAppDispatch();
-  dispatch(incrementRank()); 
-
-  // console.log(rank);
   return (
     <>
       <Header/>
       <main className="app-container app-main">
         <Outlet/>
       </main>
+      <PopUp />
       <footer>qweqweqwe</footer>
     </>
   );
