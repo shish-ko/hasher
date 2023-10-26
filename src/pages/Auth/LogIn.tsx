@@ -21,6 +21,7 @@ export const LogIn: React.FC = () => {
       headers: {
         'Content-type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify(data),
     });
     if(res.ok) {
