@@ -2,7 +2,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import loginSrc from '~assets/login.webp';
 import mail_icon from '~assets/envelope-solid.svg';
 import lock_icon from '~assets/lock-solid.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IAuthForm } from 'interfaces';
 import { SERVER_URL } from 'constants';
 import { usePopUp } from 'utils/hooks';
@@ -10,8 +10,9 @@ import { useState } from 'react';
 
 export const LogIn: React.FC = () => {
   const { register, handleSubmit, formState: { errors, isValid, isSubmitted} } = useForm<IAuthForm>();
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const navigate = useNavigate();
   const showPopUp = usePopUp();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<IAuthForm> = async (data) => {
     setIsSubmitting(true);
@@ -23,9 +24,11 @@ export const LogIn: React.FC = () => {
       body: JSON.stringify(data),
     });
     if(res.ok) {
-      const { token }: {token: string} = await res.json();
+      const { token, userId }: {token: string, userId: number} = await res.json();
       window.localStorage.setItem('Bearer', `Bearer ${token}`);
       showPopUp('Login successfully');
+      // navigate(`/user/${userId}`);
+      navigate(`/user`);
     } else {
       const {message} = await res.json();
       showPopUp(message, 'error');
