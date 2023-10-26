@@ -3,4 +3,9 @@ interface IAuthForm {
   password: string
 }
 
-export type { IAuthForm };
+interface ITokenPayload {
+  exp: number
+  email: string
+}
+
+export type { IAuthForm, ITokenPayload };
