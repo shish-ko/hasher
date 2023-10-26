@@ -23,13 +23,13 @@ const userSlice = createSlice({
     setUserName: (state, {payload}) => {
       state.name = payload;
     },
-    toggleIsLogin: (state) => {
-      state.isLogin = !state.isLogin;
+    setIsLogin: (state, {payload}: {payload: boolean}) => {
+      state.isLogin = payload;
     }
   }
 });
 
-export const {setUserName, incrementRank, toggleIsLogin} = userSlice.actions;
+export const {setUserName, incrementRank, setIsLogin} = userSlice.actions;
 export const store = configureStore({
   reducer: {
     user: userSlice.reducer,
