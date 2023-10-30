@@ -4,6 +4,7 @@ import jwtDecode from "jwt-decode";
 import { ITokenPayload } from "~interfaces/index";
 import { SECOND, SERVER_URL } from "constants";
 import { useEffect } from "react";
+import { serverAPI } from "~utils/axios";
 
 export const ProtectedRoutes: React.FC = () => {
   const showPopUp = usePopUp();
@@ -25,15 +26,17 @@ export async function loader() {
   if(!oldToken) return false;
   const {exp} = jwtDecode<ITokenPayload>(oldToken.split(' ')[1]);
   if((exp * 1000 - SECOND) < Date.now()) {
-    const res = await fetch(SERVER_URL+'auth/refresh-tokens', {credentials: 'include'});
-    if(res.ok) {
-      const {token: newToken}: {token: string} = await res.json();
+    try {
+      const res = await serverAPI.get(SERVER_URL+'auth/refresh-tokens');
+      const {token: newToken}: {token: string} = res.data;
+      console.log(newToken);
       window.localStorage.setItem("Bearer", `Bearer ${newToken}`);
       return newToken;
-    } 
+    } catch {
+      return;
+    }
   } else {
     return oldToken;
   }
-  return false;
 }
 

@@ -8,6 +8,8 @@ import { SERVER_URL } from 'constants';
 import { useAuth, usePopUp } from 'utils/hooks';
 import { useState } from 'react';
 import jwtDecode from 'jwt-decode';
+import { serverAPI } from '~utils/axios';
+import axios from 'axios';
 
 export const LogIn: React.FC = () => {
   const { register, handleSubmit, formState: { errors, isValid, isSubmitted} } = useForm<IAuthForm>();
@@ -18,24 +20,18 @@ export const LogIn: React.FC = () => {
 
   const onSubmit: SubmitHandler<IAuthForm> = async (data) => {
     setIsSubmitting(true);
-    const res = await fetch(SERVER_URL + 'auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify(data),
-    });
-    if(res.ok) {
-      const { token }: {token: string} = await res.json();
+    try {
+      const res = await serverAPI.post(SERVER_URL + 'auth/login', data);
+      const { token }: {token: string} = res.data;
       window.localStorage.setItem('Bearer', `Bearer ${token}`);
       const {id, name} = jwtDecode<ITokenPayload>(token);
-      showPopUp('Login successfully');
       setUser(id, name);
+      showPopUp('Login successfully');
       navigate(`/user/${id}`);
-    } else {
-      const {message} = await res.json();
-      showPopUp(message, 'error');
+    } catch (error) {
+      if(axios.isAxiosError(error)){
+        showPopUp(error.response?.data.message, 'error');
+      }
     }
     setIsSubmitting(false);
   };

@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { SERVER_URL } from 'constants';
 import { usePopUp } from 'utils/hooks';
 import { IAuthForm } from 'interfaces';
+import { serverAPI } from '~utils/axios';
+import axios from 'axios';
 
 export const SignUp: React.FC = () => {
   const { register, handleSubmit, reset, formState: { errors, isValid, isSubmitted, isSubmitting } } = useForm<IAuthForm>();
@@ -13,20 +15,15 @@ export const SignUp: React.FC = () => {
   const showPopUp = usePopUp();
 
   const onSubmit: SubmitHandler<IAuthForm> = async (data) => {
-    const res = await fetch(SERVER_URL+'auth/reg', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-    if (res.ok) {
+    try {
+      await serverAPI.post(SERVER_URL+'auth/reg', data);
       showPopUp('Profile is successfully created');
       navigate('/login');
-    } else {
-      const { message } = await res.json();
-      showPopUp(message, 'error');
-      reset();
+    } catch (error) {
+      if(axios.isAxiosError(error)) {
+        showPopUp(error.response?.data.message, 'error');
+        reset();
+      }
     }
   };
 
