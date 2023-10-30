@@ -3,16 +3,18 @@ import loginSrc from '~assets/login.webp';
 import mail_icon from '~assets/envelope-solid.svg';
 import lock_icon from '~assets/lock-solid.svg';
 import { Link, useNavigate } from 'react-router-dom';
-import { IAuthForm } from 'interfaces';
+import { IAuthForm, ITokenPayload } from 'interfaces';
 import { SERVER_URL } from 'constants';
-import { usePopUp } from 'utils/hooks';
+import { useAuth, usePopUp } from 'utils/hooks';
 import { useState } from 'react';
+import jwtDecode from 'jwt-decode';
 
 export const LogIn: React.FC = () => {
   const { register, handleSubmit, formState: { errors, isValid, isSubmitted} } = useForm<IAuthForm>();
   const navigate = useNavigate();
   const showPopUp = usePopUp();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const { setUser } = useAuth();
 
   const onSubmit: SubmitHandler<IAuthForm> = async (data) => {
     setIsSubmitting(true);
@@ -25,11 +27,12 @@ export const LogIn: React.FC = () => {
       body: JSON.stringify(data),
     });
     if(res.ok) {
-      const { token, userId }: {token: string, userId: number} = await res.json();
+      const { token }: {token: string} = await res.json();
       window.localStorage.setItem('Bearer', `Bearer ${token}`);
+      const {id, name} = jwtDecode<ITokenPayload>(token);
       showPopUp('Login successfully');
-      // navigate(`/user/${userId}`);
-      navigate(`/user`);
+      setUser(id, name);
+      navigate(`/user/${id}`);
     } else {
       const {message} = await res.json();
       showPopUp(message, 'error');

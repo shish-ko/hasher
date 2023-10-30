@@ -2,9 +2,10 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 import { popUpSlice } from "./popUpSlice";
 
 interface IUserSlice {
-  isLogin: boolean;
-  name: string;
-  rank: number;
+  id?: number,
+  name: string,
+  rank: number,
+  isLogin: boolean,
 }
 
 const initialState: IUserSlice = {
@@ -23,13 +24,16 @@ const userSlice = createSlice({
     setUserName: (state, {payload}) => {
       state.name = payload;
     },
+    setUserId: (state, {payload}) => {
+      state.id = payload;
+    },
     setIsLogin: (state, {payload}: {payload: boolean}) => {
       state.isLogin = payload;
     }
   }
 });
 
-export const {setUserName, incrementRank, setIsLogin} = userSlice.actions;
+export const {setUserName, incrementRank, setIsLogin, setUserId} = userSlice.actions;
 export const store = configureStore({
   reducer: {
     user: userSlice.reducer,

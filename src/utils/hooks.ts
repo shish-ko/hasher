@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { hidePopUp, setPopupMessage } from "store/popUpSlice";
-import { IAppDispatch, IRootState, setIsLogin } from "store/store";
-import { loader } from "~comps/ProtectedRoutes/ProtectedRoutes";
+import { IAppDispatch, IRootState, setIsLogin, setUserId, setUserName } from "store/store";
 
 type DispatchFunc = () => IAppDispatch;
 export const useAppSelector: TypedUseSelectorHook<IRootState> = useSelector;
@@ -18,16 +16,15 @@ export const usePopUp = () => {
   return active;
 };
 
-export const  useIsCheckingAuth = async() => {
-  const {isLogin, name} = useAppSelector((state) => state.user);
+export const useAuth = () => {
   const dispatch = useAppDispatch();
-  const [isChecking, setIsChecking] = useState(false);
-
-
-    setIsChecking(true);
-    const checkResult = await loader();
-    dispatch(setIsLogin(checkResult));
-    setIsChecking(false);
-    return isChecking;
-
+  function setUser (id: number, name: string) {
+    dispatch(setUserName(name));
+    dispatch(setUserId(id));
+    userIsLoggedIn();
+  } 
+  function userIsLoggedIn() {
+    dispatch(setIsLogin(true));
+  }
+  return {setUser, userIsLoggedIn};
 };

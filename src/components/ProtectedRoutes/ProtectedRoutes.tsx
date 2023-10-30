@@ -9,7 +9,6 @@ export const ProtectedRoutes: React.FC = () => {
   const showPopUp = usePopUp();
   const isTokenValid = useLoaderData() as boolean;
   useEffect(()=> {
-    console.log(isTokenValid);
     if(!isTokenValid){
       showPopUp('Session has expired. Please log in again', 'alert');
     }
@@ -22,19 +21,18 @@ export const ProtectedRoutes: React.FC = () => {
 };
 
 export async function loader() {
-  const token = window.localStorage.getItem('Bearer');
-  if(!token) return false;
-  const {exp} = jwtDecode<ITokenPayload>(token.split(' ')[1]);
-  console.log(new Date(exp*1000-1000).getTime()-Date.now());
+  const oldToken = window.localStorage.getItem('Bearer');
+  if(!oldToken) return false;
+  const {exp} = jwtDecode<ITokenPayload>(oldToken.split(' ')[1]);
   if((exp * 1000 - SECOND) < Date.now()) {
     const res = await fetch(SERVER_URL+'auth/refresh-tokens', {credentials: 'include'});
     if(res.ok) {
-      const {token}: {token: string} = await res.json();
-      window.localStorage.setItem("Bearer", `Bearer ${token}`);
-      return true;
+      const {token: newToken}: {token: string} = await res.json();
+      window.localStorage.setItem("Bearer", `Bearer ${newToken}`);
+      return newToken;
     } 
   } else {
-    return true;
+    return oldToken;
   }
   return false;
 }

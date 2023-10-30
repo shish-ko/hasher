@@ -5,7 +5,8 @@ interface IAuthForm {
 
 interface ITokenPayload {
   exp: number
-  email: string
+  name: string
+  id: number,
 }
 
 export type { IAuthForm, ITokenPayload };

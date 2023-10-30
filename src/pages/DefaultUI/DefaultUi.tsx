@@ -1,21 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Header } from "~comps/Header/Header";
 import { PopUp } from "~comps/UI_components/PopUp/PopUp";
-import { useAppDispatch } from "~utils/hooks";
+import { useAuth } from "~utils/hooks";
 import { PropagateLoader } from 'react-spinners';
-import { setIsLogin } from "store/store";
 import { loader } from "~comps/ProtectedRoutes/ProtectedRoutes";
+import { LOADER_COLOR } from "constants";
+import jwtDecode from "jwt-decode";
+import { ITokenPayload } from "~interfaces/index";
+
+const loaderStyles: CSSProperties ={
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)'
+};
 
 export const DefaultUI: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const [isChecking, setIsChecking] = useState(false);
+  const {setUser} = useAuth();
+  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
     async function authChecker() {
-      setIsChecking(true);
-      const checkResult = await loader();
-      dispatch(setIsLogin(checkResult));
+      const token = await loader();
+      if(token) {
+        const {id, name} = jwtDecode<ITokenPayload>(token);
+        setUser(id, name);
+
+      }
       setIsChecking(false);
     }
     authChecker();
@@ -25,7 +37,7 @@ export const DefaultUI: React.FC = () => {
 
   return (
     isChecking ?
-      <PropagateLoader /> :
+      <PropagateLoader cssOverride={loaderStyles} color={LOADER_COLOR} size={23}/> :
       <>
         <Header />
         <main className="app-container app-main">
