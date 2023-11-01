@@ -1,11 +1,12 @@
-import React from "react";
 import { LoaderFunctionArgs } from "react-router-dom";
+import { SecretForm } from "~comps/SecretForm/SecretForm";
+import { useAppSelector } from "~utils/hooks";
 
 export const User: React.FC = () => {
+  const {id} = useAppSelector((store) => store.user);
+
   return (
-    <div>
-      USERERERERER
-    </div>
+    <SecretForm />
   );
 };
 
