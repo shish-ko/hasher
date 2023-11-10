@@ -13,6 +13,5 @@ serverAPI.interceptors.request.use((config)=>{
     }     
     
   }
-  console.log(config.headers.Authorization);
   return config;
 });

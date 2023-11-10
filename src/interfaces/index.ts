@@ -5,8 +5,10 @@ interface IAuthForm {
 
 interface ISecretForm {
   date: string,
-  time: string,
-  file: File,
+  // hours: string,
+  // minutes: string,
+  // seconds: string,
+  file: File[],
 }
 
 interface ITokenPayload {
@@ -14,5 +16,16 @@ interface ITokenPayload {
   name: string,
   id: number,
 }
+type IRouterParams = 'userId';
 
-export type { IAuthForm, ITokenPayload, ISecretForm };
+interface ISecret {
+  availableAt: string,
+  type: TSecretType,
+  title: string,
+  createdAt: string,
+  url?: string,
+}
+
+type TSecretType = 'AUDIO' | 'VIDEO' | 'DOC' | 'PHOTO'
+
+export type { IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret };

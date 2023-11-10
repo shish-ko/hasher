@@ -34,7 +34,8 @@ export async function loader() {
       window.localStorage.setItem("Bearer", `Bearer ${newToken}`);
       return newToken;
     } catch {
-      return;
+      window.localStorage.removeItem("Bearer");
+      return null;
     }
   } else {
     return oldToken;
