@@ -1,10 +1,12 @@
 @import './constants.scss';
+@import './mixins.scss';
 @import '../components/Header/header.scss';
 @import '../components/UI_components/Button/button.scss';
 @import '../pages/Auth/auth.scss';
 @import './links.scss';
 @import '../components/UI_components/PopUp/popUp.scss';
 @import '../components/SecretForm/secretForm.scss';
+@import '../components/Secrets/secrets.scss';
 
 *{
   box-sizing: border-box;

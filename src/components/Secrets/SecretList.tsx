@@ -1,6 +1,9 @@
 import React from "react";
 import { ISecret } from "~interfaces/index";
 import { AudioSecret } from "./AudioSecret";
+import { VideoSecret } from "./VideoSecret";
+import { DocSecret } from "./DocSecret";
+import { PhotoSecret } from "./PhotoSecret";
 
 interface ISecretsList {
   secrets: ISecret[],
@@ -15,13 +18,13 @@ export const SecretsList: React.FC<ISecretsList> = ({secrets}) => {
             typedSecret = <AudioSecret {...secret} />;
             break;
           case 'VIDEO':
-            typedSecret = <AudioSecret {...secret} />;
+            typedSecret = <VideoSecret {...secret} />;
             break;
           case 'DOC':
-            typedSecret = <AudioSecret {...secret} />;
+            typedSecret = <DocSecret {...secret} />;
             break;
           case 'PHOTO':
-            typedSecret = <AudioSecret {...secret} />;
+            typedSecret = <PhotoSecret {...secret} />;
             break;
         
           default:

@@ -7,7 +7,7 @@ interface ISecretForm {
   date: string,
   // hours: string,
   // minutes: string,
-  // seconds: string,
+  title: string,
   file: File[],
 }
 
