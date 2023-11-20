@@ -4,6 +4,7 @@ import { AudioSecret } from "./AudioSecret";
 import { VideoSecret } from "./VideoSecret";
 import { DocSecret } from "./DocSecret";
 import { PhotoSecret } from "./PhotoSecret";
+import { Link } from "react-router-dom";
 
 interface ISecretsList {
   secrets: ISecret[],
@@ -31,7 +32,8 @@ export const SecretsList: React.FC<ISecretsList> = ({secrets}) => {
             break;
         }
         return typedSecret;
-      })}    
+      })} 
+      <Link to={'/user/3'}>qweqwe</Link>   
     </>
   );
 };

@@ -3,8 +3,8 @@ import { DefaultUI } from "pages/DefaultUI/DefaultUi";
 import { Description } from "pages/Description/Description";
 import { LogIn } from "pages/Auth/LogIn";
 import { SignUp } from "pages/Auth/SignUp";
-import { ProtectedRoutes, loader as tokenChecker } from "~comps/ProtectedRoutes/ProtectedRoutes";
-import { User, loader as userLoader } from "pages/User/User";
+import { ProtectedRoutes } from "~comps/ProtectedRoutes/ProtectedRoutes";
+import { User } from "pages/User/User";
 
 
 const routeObj = createRoutesFromElements(

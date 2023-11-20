@@ -4,7 +4,7 @@ import { Header } from "~comps/Header/Header";
 import { PopUp } from "~comps/UI_components/PopUp/PopUp";
 import { useAuth } from "~utils/hooks";
 import { PropagateLoader } from 'react-spinners';
-import { loader } from "~comps/ProtectedRoutes/ProtectedRoutes";
+import { loader } from '~utils/helpers';
 import { LOADER_COLOR } from "constants";
 import jwtDecode from "jwt-decode";
 import { ITokenPayload } from "~interfaces/index";
