@@ -12,8 +12,8 @@ const routeObj = createRoutesFromElements(
     <Route element={<Description />} index={true} />
     <Route element={<LogIn />} path="/login" />
     <Route element={<SignUp />} path="/signup"/>
-    <Route element={<ProtectedRoutes /> } loader={tokenChecker}>
-      <Route element={<User />} path="/user/:userId" loader={userLoader} action={async(res)=> {console.log(res); return null}}/>
+    <Route element={<ProtectedRoutes /> } >
+      <Route element={<User />} path="/user/:userId"  action={async(res)=> {console.log(res); return null}}/>
     </Route>
   </Route>
 );

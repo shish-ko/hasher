@@ -26,7 +26,6 @@ export const DefaultUI: React.FC = () => {
       if(token) {
         const {id, name} = jwtDecode<ITokenPayload>(token);
         setUser(id, name);
-
       }
       setIsChecking(false);
     }
