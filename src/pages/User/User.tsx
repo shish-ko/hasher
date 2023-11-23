@@ -8,38 +8,40 @@ import { serverAPI } from "~utils/axios";
 import { useAppSelector, usePopUp } from "~utils/hooks";
 
 export const User: React.FC = () => {
-  const { id } = useAppSelector((store) => store.user);
   const { userId } = useParams<Record<IRouterParams, string>>();
   const [secrets, setSecrets] = useState<ISecret[]>();
   const [isFetching, setIsFetching] = useState<boolean>(true);
+  const [expiredSecrets, setExpiredSecrets] = useState(0);
   const navigate = useNavigate();
   const showPopUp = usePopUp();
-  useEffect( () => {
+  const expiredSecretHandler = () => {
+    setExpiredSecrets(expiredSecrets+1);
+  };
+  useEffect(() => {
     async function secretFetcher() {
       try {
         setIsFetching(true);
         const userSecrets = await serverAPI.get<ISecret[]>(`user/${userId}`);
         setSecrets(userSecrets.data);
         setIsFetching(false);
-      } catch {
+      } catch (e){
+        console.log(e);
         showPopUp('User not found', 'alert');
         navigate('/');
       }
     }
     secretFetcher();
-  }, [userId]);
+  }, [userId, expiredSecrets]);
   return (
     !isFetching ?
-      <section className="secret-container">
-        {id === +userId! && <SecretForm />}
-        < SecretsList secrets={secrets!} />
-      </section >  :
+      < SecretsList secrets={secrets!} expiredSecretHandler={expiredSecretHandler}/>
+      :
       <div>loading...</div>
   );
 };
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-  console.log('user '+ Date.now());
+  console.log('user ' + Date.now());
   try {
     const res = await serverAPI.get(SERVER_URL + `user/${params.userId}`);
     return res.data;

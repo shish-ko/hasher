@@ -24,6 +24,7 @@ interface ISecret {
   title: string,
   createdAt: string,
   url?: string,
+  countdownHandler: ()=> void,
 }
 
 type TSecretType = 'AUDIO' | 'VIDEO' | 'DOC' | 'PHOTO'

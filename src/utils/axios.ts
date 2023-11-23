@@ -17,3 +17,9 @@ serverAPI.interceptors.request.use(async (config)=>{
   }
   return {...config, signal: controller.signal};
 });
+// serverAPI.interceptors.response.use((response)=> response, (error) => {
+//   if(error.code === "ERR_CANCELED") {
+//     return Promise.resolve({status: 499});
+//   }
+//   return Promise.reject((error));
+// });

@@ -13,7 +13,7 @@ const routeObj = createRoutesFromElements(
     <Route element={<LogIn />} path="/login" />
     <Route element={<SignUp />} path="/signup"/>
     <Route element={<ProtectedRoutes /> } >
-      <Route element={<User />} path="/user/:userId"  action={async(res)=> {console.log(res); return null}}/>
+      <Route element={<User />} path="/user/:userId"  action={async(res)=> {console.log(res); return null;}}/>
     </Route>
   </Route>
 );
