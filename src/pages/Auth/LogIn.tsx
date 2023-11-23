@@ -23,9 +23,8 @@ export const LogIn: React.FC = () => {
     try {
       const res = await serverAPI.post(SERVER_URL + 'auth/login', data);
       const { token }: {token: string} = res.data;
-      window.localStorage.setItem('Bearer', `Bearer ${token}`);
-      const {id, name} = jwtDecode<ITokenPayload>(token);
-      setUser(id, name);
+      const {id} = jwtDecode<ITokenPayload>(token);
+      setUser(token);
       showPopUp('Login successfully');
       navigate(`/user/${id}`);
     } catch (error) {

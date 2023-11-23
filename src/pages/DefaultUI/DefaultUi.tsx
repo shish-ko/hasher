@@ -6,8 +6,6 @@ import { useAuth } from "~utils/hooks";
 import { PropagateLoader } from 'react-spinners';
 import { loader } from '~utils/helpers';
 import { LOADER_COLOR } from "constants";
-import jwtDecode from "jwt-decode";
-import { ITokenPayload } from "~interfaces/index";
 
 const loaderStyles: CSSProperties ={
   position: 'fixed',
@@ -24,8 +22,7 @@ export const DefaultUI: React.FC = () => {
     async function authChecker() {
       const token = await loader();
       if(token) {
-        const {id, name} = jwtDecode<ITokenPayload>(token);
-        setUser(id, name);
+        setUser(token);
       }
       setIsChecking(false);
     }

@@ -1,6 +1,6 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { hidePopUp, setPopupMessage } from "store/popUpSlice";
-import { IAppDispatch, IRootState, setIsLogin, setUserId, setUserName } from "store/store";
+import { IAppDispatch, IRootState, setAuthToken, setIsLogin, setUserData } from "store/store";
 import { serverAPI } from "./axios";
 import { useNavigate } from "react-router-dom";
 
@@ -21,17 +21,15 @@ export const usePopUp = () => {
 export const useAuth = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  function setUser (id: number, name: string) {
-    dispatch(setUserName(name));
-    dispatch(setUserId(id));
-    userIsLoggedIn();
+  function setUser (token: string) {
+    dispatch(setUserData (token));
   } 
   function userIsLoggedIn() {
     dispatch(setIsLogin(true));
   }
   async function logOutUser() {
     dispatch(setIsLogin(false));
-    window.localStorage.removeItem('Bearer');
+    dispatch(setAuthToken(''));
     await serverAPI.get('auth/logout');
     navigate('/');
   }

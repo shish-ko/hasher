@@ -1,5 +1,7 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import { popUpSlice } from "./popUpSlice";
+import jwtDecode from "jwt-decode";
+import { ITokenPayload } from "~interfaces/index";
 
 interface IUserSlice {
   id?: number,
@@ -33,11 +35,18 @@ const userSlice = createSlice({
     },
     setAuthToken: (state, {payload}: {payload: string}) => {
       state.authToken = payload;
+    },
+    setUserData: (state, {payload}: {payload: string}) => {
+      const {id, name} = jwtDecode<ITokenPayload>(payload);
+      state.authToken=payload;
+      state.id=id;
+      state.name=name;
+      state.isLogin=true;
     }
   }
 });
 
-export const {setUserName, incrementRank, setIsLogin, setUserId, setAuthToken} = userSlice.actions;
+export const {setUserName, incrementRank, setIsLogin, setUserId, setAuthToken, setUserData } = userSlice.actions;
 export const store = configureStore({
   reducer: {
     user: userSlice.reducer,
