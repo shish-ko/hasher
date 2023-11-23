@@ -8,8 +8,8 @@ serverAPI.interceptors.request.use(async (config)=>{
   if(config.url?.includes('auth/')){
     config.withCredentials = true;
   } else {
-    await loader(controller);
-    const token = window.localStorage.getItem('Bearer')?.split(' ')[1];
+    const token = await loader(controller);
+    // const token = window.localStorage.getItem('Bearer')?.split(' ')[1];
     if(token) {
       config.headers.setAuthorization(token);
     }     
@@ -17,9 +17,9 @@ serverAPI.interceptors.request.use(async (config)=>{
   }
   return {...config, signal: controller.signal};
 });
-// serverAPI.interceptors.response.use((response)=> response, (error) => {
-//   if(error.code === "ERR_CANCELED") {
-//     return Promise.resolve({status: 499});
-//   }
-//   return Promise.reject((error));
-// });
+serverAPI.interceptors.response.use((response)=> response, (error) => {
+  if(error.code === "ERR_CANCELED") {
+    return Promise.resolve({status: 499});
+  }
+  return Promise.reject((error));
+});

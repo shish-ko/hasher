@@ -6,6 +6,7 @@ interface IUserSlice {
   name: string,
   rank: number,
   isLogin: boolean,
+  authToken?: string
 }
 
 const initialState: IUserSlice = {
@@ -29,11 +30,14 @@ const userSlice = createSlice({
     },
     setIsLogin: (state, {payload}: {payload: boolean}) => {
       state.isLogin = payload;
+    },
+    setAuthToken: (state, {payload}: {payload: string}) => {
+      state.authToken = payload;
     }
   }
 });
 
-export const {setUserName, incrementRank, setIsLogin, setUserId} = userSlice.actions;
+export const {setUserName, incrementRank, setIsLogin, setUserId, setAuthToken} = userSlice.actions;
 export const store = configureStore({
   reducer: {
     user: userSlice.reducer,
