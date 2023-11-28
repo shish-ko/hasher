@@ -5,7 +5,7 @@ import { PopUp } from "~comps/UI_components/PopUp/PopUp";
 import { useAuth } from "~utils/hooks";
 import { PropagateLoader } from 'react-spinners';
 import { loader } from '~utils/helpers';
-import { LOADER_COLOR } from "constants";
+import { LOADER_COLOR } from "../../constants";
 
 const loaderStyles: CSSProperties ={
   position: 'fixed',

@@ -1,4 +1,4 @@
-import { SECOND, TEST_TOKEN } from "constants";
+import { SECOND, TEST_TOKEN } from "../constants";
 import jwtDecode from "jwt-decode";
 import { ITokenPayload } from "~interfaces/index";
 import { serverAPI } from "./axios";

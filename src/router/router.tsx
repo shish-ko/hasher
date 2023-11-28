@@ -1,4 +1,4 @@
-import { Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
+import { Route, createRoutesFromElements } from "react-router-dom";
 import { DefaultUI } from "pages/DefaultUI/DefaultUi";
 import { Description } from "pages/Description/Description";
 import { LogIn } from "pages/Auth/LogIn";
@@ -7,7 +7,7 @@ import { ProtectedRoutes } from "~comps/ProtectedRoutes/ProtectedRoutes";
 import { User } from "pages/User/User";
 
 
-const routeObj = createRoutesFromElements(
+export const routeObj = createRoutesFromElements(
   <Route element={<DefaultUI />} path="/">
     <Route element={<Description />} index={true} />
     <Route element={<LogIn />} path="/login" />
@@ -18,4 +18,3 @@ const routeObj = createRoutesFromElements(
   </Route>
 );
 
-export const router = createBrowserRouter(routeObj);
