@@ -16,7 +16,7 @@ export const DocSecret: React.FC<ISecret> = ({ title, availableAt, url, countdow
       <h3>{title}</h3>
       <span>Available at</span>
       <div>{availableAtUserTZ}</div>
-      {!url && <><span>Will be available at: </span><Countdown date={availableAt} onComplete={countdownHandler}/></>}
+      {!url && <><span>Will be available at: </span><Countdown className="secret__countdown" date={availableAt} onComplete={countdownHandler}/></>}
     </div>
   );
 };

@@ -8,13 +8,15 @@ interface IUserSlice {
   name: string,
   rank: number,
   isLogin: boolean,
-  authToken?: string
+  authToken?: string,
+  newSecrets: number,
 }
 
 const initialState: IUserSlice = {
   isLogin: false,
   name: 'anonymous',
   rank: 0,
+  newSecrets: 0,
 };
 
 const userSlice = createSlice({
@@ -23,6 +25,9 @@ const userSlice = createSlice({
   reducers: {
     incrementRank: (state) => {
       state.rank++;
+    },
+    addNewSecret: (state) => {
+      state.newSecrets++;
     },
     setUserName: (state, {payload}) => {
       state.name = payload;
@@ -46,7 +51,7 @@ const userSlice = createSlice({
   }
 });
 
-export const {setUserName, incrementRank, setIsLogin, setUserId, setAuthToken, setUserData } = userSlice.actions;
+export const {setUserName, incrementRank, setIsLogin, setUserId, setAuthToken, setUserData, addNewSecret } = userSlice.actions;
 export const store = configureStore({
   reducer: {
     user: userSlice.reducer,

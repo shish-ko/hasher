@@ -14,7 +14,7 @@ export const AudioSecret: React.FC<ISecret> = ({ title, availableAt, url, countd
       <span>Available at</span>
       <div>{availableAtUserTZ}</div>
       {url && <audio controls src={SERVER_URL + url}/>}
-      {!url && <><span>Will be available at: </span><Countdown date={availableAt} onComplete={countdownHandler}/></>}
+      {!url && <><span>Will be available at: </span> <Countdown className="secret__countdown" date={availableAt} onComplete={countdownHandler}/></>}
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import { SERVER_URL } from "constants";
 import { useEffect, useState } from "react";
-import { LoaderFunctionArgs, useLoaderData, Navigate, useParams, useNavigate } from "react-router-dom";
-import { SecretForm } from "~comps/SecretForm/SecretForm";
+import { LoaderFunctionArgs, useParams, useNavigate } from "react-router-dom";
 import { SecretsList } from "~comps/Secrets/SecretList";
 import { IRouterParams, ISecret } from "~interfaces/index";
 import { serverAPI } from "~utils/axios";
@@ -12,11 +11,13 @@ export const User: React.FC = () => {
   const [secrets, setSecrets] = useState<ISecret[]>();
   const [isFetching, setIsFetching] = useState<boolean>(true);
   const [expiredSecrets, setExpiredSecrets] = useState(0);
+  const { newSecrets } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const showPopUp = usePopUp();
   const expiredSecretHandler = () => {
-    setExpiredSecrets(expiredSecrets+1);
+    setExpiredSecrets(expiredSecrets + 1);
   };
+
   useEffect(() => {
     async function secretFetcher() {
       try {
@@ -24,19 +25,26 @@ export const User: React.FC = () => {
         const userSecrets = await serverAPI.get<ISecret[]>(`user/${userId}`);
         setSecrets(userSecrets.data);
         setIsFetching(false);
-      } catch (e){
+      } catch (e) {
         console.log(e);
         showPopUp('User not found', 'alert');
         navigate('/');
       }
     }
     secretFetcher();
-  }, [userId, expiredSecrets]);
+  }, [userId, expiredSecrets, newSecrets]);
   return (
-    !isFetching ?
-      < SecretsList secrets={secrets!} expiredSecretHandler={expiredSecretHandler}/>
+    <>
+      
+      <button onClick={()=>{FB.ui({
+  method: 'share',
+  href: 'https://youtube.com/',
+}, function(response){console.log(response.error_code)});}}>Share</button>
+      {!isFetching ?
+      < SecretsList secrets={secrets!} expiredSecretHandler={expiredSecretHandler} />
       :
-      <div>loading...</div>
+      <div>loading...</div>}
+    </>
   );
 };
 

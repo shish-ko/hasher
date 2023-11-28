@@ -13,6 +13,23 @@ export const ProtectedRoutes: React.FC = () => {
     if(!isLogin){
       showPopUp('Session has expired. Please log in again', 'alert');
     }
+    const script = document.createElement('script');
+    script.src = 'https://connect.facebook.net/en_US/sdk.js';
+    script.defer= true;
+    script.async=true;
+    script.crossOrigin='anonymous';
+    document.body.appendChild(script);
+    script.addEventListener('load', ()=> {
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId            : import.meta.env.VITE_FB_APP_ID,
+          xfbml            : true,
+          version          : 'v18.0'
+        });
+      };
+      console.log(window.fbAsyncInit);
+    });
+    return ()=> {document.body.removeChild(script);};
   }, []);
   return (
     isLogin ? 

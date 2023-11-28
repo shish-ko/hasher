@@ -16,7 +16,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets, expiredSecretHand
   return (
     <section className="secret-container">
       <div className="secrets secret-container__item">
-        <h2 className="secrets__title">Available secrets</h2>
+        <h2 className="secrets__title">{availableSecrets.length ? 'Available secrets' : 'There is no available secrets'}</h2>
         <div className="secrets__body">
           {availableSecrets.map((secret) => {
             let typedSecret;
@@ -44,7 +44,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets, expiredSecretHand
 
       </div>
       <div className="secrets secret-container__item">
-        <h2 className="secrets__title">Future secrets</h2>
+        <h2 className="secrets__title">{futureSecrets.length ? 'Future secrets' : 'There is no future secrets'}</h2>
         <div className="secrets__body">
           {futureSecrets.map((secret) => {
             let typedSecret;
