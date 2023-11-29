@@ -29,4 +29,4 @@ interface ISecret {
 
 type TSecretType = 'AUDIO' | 'VIDEO' | 'DOC' | 'PHOTO'
 
-export type { IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret };
+export type { IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, TSecretType };
