@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'node:fs/promises';
 import {fileURLToPath} from 'url';
 import proxy from 'express-http-proxy';
+import {Helmet} from 'react-helmet';
 
 async function startServer () {
   const app = express();
@@ -17,7 +18,7 @@ async function startServer () {
   app.use('/secret/*', (req, res, next) => {
     if(req.headers['user-agent']?.includes('facebookexternalhit/1.1')) {
       console.log(res);
-      return proxy('localhost:5173/fb_crawler/'+req.path)(req, res, next);
+      return proxy('localhost:5173/fb_scraper/'+req.path)(req, res, next);
     }
     next();
   });
@@ -29,7 +30,10 @@ async function startServer () {
       const transformedTemplate = await vite.transformIndexHtml(url, template);
       const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
       const appHtml = await render(req);
-      const html = transformedTemplate.replace(`<!--ssr-outlet-->`, appHtml);
+      const helmet = Helmet.renderStatic();
+      console.log(helmet.meta.toString());
+      let html = transformedTemplate.replace(`<!--ssr-outlet-->`, appHtml);
+      html = html.replace(`<!--ssr_head-outlet-->`, helmet.meta.toString());
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
     }catch (e) {
       vite.ssrFixStacktrace(e as Error);
