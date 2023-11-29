@@ -27,7 +27,6 @@ export const ProtectedRoutes: React.FC = () => {
           version          : 'v18.0'
         });
       };
-      console.log(window.fbAsyncInit);
     });
     return ()=> {document.body.removeChild(script);};
   }, []);
