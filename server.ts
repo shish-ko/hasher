@@ -3,6 +3,7 @@ import {createServer as createViteServer} from 'vite';
 import path from 'path';
 import fs from 'node:fs/promises';
 import {fileURLToPath} from 'url';
+import proxy from 'express-http-proxy';
 
 async function startServer () {
   const app = express();
@@ -12,6 +13,13 @@ async function startServer () {
   });
   app.use((req, res, next) => {
     vite.middlewares.handle(req, res, next);
+  });
+  app.use('/secret/*', (req, res, next) => {
+    if(req.headers['user-agent']?.includes('facebookexternalhit/1.1')) {
+      console.log(res);
+      return proxy('localhost:5173/fb_crawler/'+req.path)(req, res, next);
+    }
+    next();
   });
   app.use('*', async (req, res, next) => {
     const url = req.originalUrl;
