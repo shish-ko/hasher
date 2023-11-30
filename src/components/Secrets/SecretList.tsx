@@ -10,6 +10,8 @@ interface ISecretsList {
   secrets: ISecret[],
   expiredSecretHandler: () => void,
 }
+
+// TODO: change switch with getSecretComponent from helpers
 export const SecretsList: React.FC<ISecretsList> = ({ secrets, expiredSecretHandler }) => {
   const availableSecrets = secrets.filter((secret) => secret.url);
   const futureSecrets = secrets.filter((secret) => !secret.url);
@@ -22,16 +24,16 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets, expiredSecretHand
             let typedSecret;
             switch (secret.type) {
               case 'AUDIO':
-                typedSecret = <AudioSecret {...secret} key={secret.createdAt}/>;
+                typedSecret = <AudioSecret {...secret} countdownHandler={expiredSecretHandler} key={secret.createdAt}/>;
                 break;
               case 'VIDEO':
-                typedSecret = <VideoSecret {...secret} key={secret.createdAt}/>;
+                typedSecret = <VideoSecret {...secret} countdownHandler={expiredSecretHandler} key={secret.createdAt}/>;
                 break;
               case 'DOC':
-                typedSecret = <DocSecret {...secret}  key={secret.createdAt}/>;
+                typedSecret = <DocSecret {...secret} countdownHandler={expiredSecretHandler} key={secret.createdAt}/>;
                 break;
               case 'PHOTO':
-                typedSecret = <PhotoSecret {...secret} key={secret.createdAt}/>;
+                typedSecret = <PhotoSecret {...secret} countdownHandler={expiredSecretHandler} key={secret.createdAt}/>;
                 break;
 
               default:

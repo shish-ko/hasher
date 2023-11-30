@@ -3,6 +3,8 @@ import { hidePopUp, setPopupMessage } from "store/popUpSlice";
 import { IAppDispatch, IRootState, setAuthToken, setIsLogin, setUserData } from "store/store";
 import { serverAPI } from "./axios";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { AxiosError } from "axios";
 
 type DispatchFunc = () => IAppDispatch;
 export const useAppSelector: TypedUseSelectorHook<IRootState> = useSelector;
@@ -34,4 +36,23 @@ export const useAuth = () => {
     navigate('/');
   }
   return {setUser, userIsLoggedIn, logOutUser};
+};
+
+export const useServerFetch = <T>(url: string) => {
+  const [res, setRes] = useState<T>();
+  const showPopUp = usePopUp();
+  useEffect(()=> {
+    async function fetcher() {
+      try{
+        const {data}= await serverAPI.get<T>(url);
+        setRes(data);
+      } catch (e) {
+        if(e instanceof AxiosError) {
+          showPopUp(e.message, 'error');
+        }
+      }
+    }
+    fetcher();
+  }, []);
+  return res;
 };

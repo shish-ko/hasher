@@ -48,6 +48,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({formCloseHandler}) => {
         control={control}
         // rules={{validate: (date) => (+date - Date.now()) > FIVE_MINUTES || 'Date must be at least 5 minutes later from now'}}
         render={({field})=> {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const {ref, ...rest} = field;
           return <DateTimePicker maxDetail="second" className='dateTimePicker' minDate={new Date()} {...rest}/>;}
         } 

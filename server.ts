@@ -15,10 +15,11 @@ async function startServer () {
   app.use((req, res, next) => {
     vite.middlewares.handle(req, res, next);
   });
-  app.use('/secret/*', (req, res, next) => {
+  app.use('/secret', (req, res, next) => {
     if(req.headers['user-agent']?.includes('facebookexternalhit/1.1')) {
-      console.log(res);
-      return proxy('localhost:5173/fb_scraper/'+req.path)(req, res, next);
+      return proxy('localhost:5173/', {proxyReqPathResolver(req) {
+        return req.originalUrl.replace('/secret/', '/fb_scraper/secret/');
+      },})(req, res, next);
     }
     next();
   });
@@ -31,7 +32,6 @@ async function startServer () {
       const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
       const appHtml = await render(req);
       const helmet = Helmet.renderStatic();
-      console.log(helmet.meta.toString());
       let html = transformedTemplate.replace(`<!--ssr-outlet-->`, appHtml);
       html = html.replace(`<!--ssr_head-outlet-->`, helmet.meta.toString());
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);

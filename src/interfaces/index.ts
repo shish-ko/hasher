@@ -24,9 +24,13 @@ interface ISecret {
   title: string,
   createdAt: string,
   url?: string,
-  countdownHandler: ()=> void,
 }
 
+type ISecretComponentProps = ISecret & {countdownHandler: ()=> void;}
+export enum SERVER {
+  SECRET = 'secret/',
+  
+}
 type TSecretType = 'AUDIO' | 'VIDEO' | 'DOC' | 'PHOTO'
 
-export type { IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, TSecretType };
+export type { IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, TSecretType, ISecretComponentProps };

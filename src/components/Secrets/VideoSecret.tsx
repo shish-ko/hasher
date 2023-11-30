@@ -1,10 +1,10 @@
 import { SERVER_URL } from "constants";
 import React from "react";
 import Countdown from "react-countdown";
-import { ISecret } from "~interfaces/index";
+import { ISecretComponentProps } from "~interfaces/index";
 
 
-export const VideoSecret: React.FC<ISecret> = ({ title, availableAt, url, countdownHandler }) => {
+export const VideoSecret: React.FC<ISecretComponentProps> = ({ title, availableAt, url, countdownHandler }) => {
   const availableAtUserTZ = new Date(availableAt).toLocaleString();
   return (
     <div className="secret"> 
