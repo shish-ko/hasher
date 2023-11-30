@@ -16,8 +16,8 @@ export const FB_Secret =() => {
   );
 };
 
-export const loader: LoaderFunction = async ({params}) => {
+export const loader: LoaderFunction = async ({params}): Promise<Omit<ISecret, "url">> => {
   // const { data } = await serverAPI.get(`fbscraper/secret/${params.secretId}`);
-  return {title: 'qweqweqwewqe', type: 'VIDEO'};
+  return {title: 'qweqweqwewqe', type: 'VIDEO'} ;
 };
 
