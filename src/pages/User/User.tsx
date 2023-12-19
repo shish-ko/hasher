@@ -35,15 +35,16 @@ export const User: React.FC = () => {
   }, [userId, expiredSecrets, newSecrets]);
   return (
     <>
-      
-      <button onClick={()=>{FB.ui({
-  method: 'share',
-  href: 'https://youtube.com/',
-}, function(response){console.log(response.error_code)});}}>Share</button>
+      <button onClick={() => {
+        FB.ui({
+          method: 'share',
+          href: 'https://youtube.com/',
+        }, function (response) { console.log(response.error_code) });
+      }}>Share</button>
       {!isFetching ?
-      < SecretsList secrets={secrets!} expiredSecretHandler={expiredSecretHandler} />
-      :
-      <div>loading...</div>}
+        < SecretsList secrets={secrets!} expiredSecretHandler={expiredSecretHandler} />
+        :
+        <div>loading...</div>}
     </>
   );
 };

@@ -9,7 +9,6 @@ serverAPI.interceptors.request.use(async (config)=>{
     config.withCredentials = true;
   } else {
     const token = await loader(controller);
-    // const token = window.localStorage.getItem('Bearer')?.split(' ')[1];
     if(token) {
       config.headers.setAuthorization(token);
     }     

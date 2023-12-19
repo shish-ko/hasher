@@ -19,6 +19,7 @@ interface ITokenPayload {
 type IRouterParams = 'userId';
 
 interface ISecret {
+  id: string,
   availableAt: string,
   type: TSecretType,
   title: string,

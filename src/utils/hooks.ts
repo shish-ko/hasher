@@ -38,21 +38,32 @@ export const useAuth = () => {
   return {setUser, userIsLoggedIn, logOutUser};
 };
 
-export const useServerFetch = <T>(url: string) => {
+export const useServerFetch = <T>(url: string, errorRedirect?: string) => {
   const [res, setRes] = useState<T>();
+  const [reloadNumber, setReloadNumber] = useState(0);
   const showPopUp = usePopUp();
+  const navigate = useNavigate();
+  
+  const refetch =()=> {setReloadNumber(reloadNumber+1);};
+
   useEffect(()=> {
     async function fetcher() {
       try{
+        setRes(undefined);
         const {data}= await serverAPI.get<T>(url);
         setRes(data);
       } catch (e) {
         if(e instanceof AxiosError) {
-          showPopUp(e.message, 'error');
+          showPopUp(e.response?.data.message || e.message, 'error');   
+          if(errorRedirect) {
+            setTimeout(() => {
+              navigate(errorRedirect);
+            }, 0);
+          }       
         }
       }
     }
     fetcher();
-  }, []);
-  return res;
+  }, [reloadNumber]);
+  return {res, refetch};
 };
