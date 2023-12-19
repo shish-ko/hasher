@@ -6,14 +6,18 @@ import './style/index.scss';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { injectStore } from '~utils/helpers';
+import { ThemeProvider } from "@mui/material";
+import { appTheme } from 'style/MUI_theme';
 
 injectStore(store);
 const router = createBrowserRouter(routeObj);
 
 ReactDOM.hydrateRoot(document.getElementById('root')!,
   // <React.StrictMode>
-    <Provider store={store}>
+  <Provider store={store}>
+    <ThemeProvider theme={appTheme}>
       <RouterProvider router={router} />
-    </Provider>
+    </ThemeProvider>
+  </Provider>
   // </React.StrictMode>,
 );
