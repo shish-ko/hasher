@@ -1,19 +1,8 @@
 .header {
-  display: flex;
-  align-items: center;
-  &__item {
-    flex-basis: calc(100% / 3);
-    &_center {
-      text-align: center;
-    }
-    &_right {
-      display: flex;
-      width: 100%;
-      justify-content: flex-end;
-      gap: 1rem;
-    }
+  &__logo {
+    width: 19px;
+    height: 29px;
   }
-
 }
 .header-container {
   padding: 20px 0;
