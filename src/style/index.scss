@@ -13,6 +13,9 @@
   margin: 0;
   padding: 0;
 }
+html {
+  font-size: 62.5%;
+}
 a {
   color: inherit;
   text-decoration: none;
@@ -21,14 +24,9 @@ button {
   border: none;
   cursor: pointer;
 }
-html {
-  font-size: 10px;
-}
-
 body {
   min-width: 320px;
-  font-size: 1.4rem;
-  font-family: 'Poppins', sans-serif;
+  // font-size: 1.4rem;
 }
 
 input {
@@ -49,13 +47,13 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-#root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: linear-gradient(45deg, #5168D6, #CE5EC6);
-}
+// #root {
+//   min-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   background: linear-gradient(45deg, #5168D6, #CE5EC6);
+// }
 
 .app-container {
   max-width: 1400px;

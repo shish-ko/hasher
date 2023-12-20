@@ -19,7 +19,7 @@ export const injectStore = (_store: ToolkitStore<IRootState>) => {
 };
 
 export async function loader(controller?: AbortController) {
-  if (import.meta.env.VITE_AUTH_FREE) return TEST_TOKEN;
+  // if (import.meta.env.VITE_AUTH_FREE) return TEST_TOKEN;
   const oldToken = store?.getState().user.authToken;
   if (!oldToken) {
     try {
