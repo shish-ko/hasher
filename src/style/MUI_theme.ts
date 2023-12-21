@@ -3,15 +3,23 @@ import { COLORS } from './colors';
 
 export const appTheme = createTheme({
   spacing: 4,
-
+  palette: {
+    text: {
+      primary: '#E4E6C3',
+    },
+    background: {
+      default: '#222725'
+    }
+  },
   typography: {
-    htmlFontSize: 10,
+    htmlFontSize: 10,    
     fontFamily: 'Archivo, sans-serif',
     h1: {
       fontSize: '2.5rem',      
       fontFamily: 'Inter',
       fontWeight: 800,
-      letterSpacing: "-0.15px"
+      letterSpacing: "-0.15px",
+      color: 'black',
     },
     appNav: {
       fontFamily: 'Inter, sans-serif',

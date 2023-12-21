@@ -8,7 +8,7 @@ export const Header: React.FC = () => {
   const theme = useTheme();
 
   return (
-    <Stack component={'header'} direction={'row'} padding={theme.spacing(4, 5)} height={'64px'} borderBottom={'1px solid rgba(0,0,0, 0.07)'}>
+    <Stack component={'header'} direction={'row'} padding={theme.spacing(4, 5)} height={'64px'} borderBottom={'1px solid rgba(0,0,0, 0.07)'} bgcolor='white'>
       <Stack direction='row' alignItems='center' spacing={5}>
         <img src={logo} alt="app logo" className="header__logo" />
         <Typography variant="h1">SecretService {theme.spacing()}</Typography>
