@@ -28,7 +28,7 @@ export const appTheme = createTheme({
       letterSpacing: "-0.15px",
       lineHeight: '2rem',
       color: COLORS.appNav,
-    }
+    },
   },
   breakpoints: {
     values: {
@@ -60,6 +60,5 @@ declare module '@mui/material/styles' {
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     appNav: true;
-    h3: false;
   }
 }

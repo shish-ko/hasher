@@ -8,7 +8,7 @@ export const DefaultUI: React.FC = () => {
   return (
     <>
       <Header />
-      <main className="app-container app-main">
+      <main>
         <Outlet />
       </main>
       <PopUp />

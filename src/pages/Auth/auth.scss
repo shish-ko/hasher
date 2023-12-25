@@ -18,6 +18,7 @@
   text-align: center;
   align-items: flex-start;
 }
+
 .auth-form {
   width: 290px;
 
@@ -102,6 +103,19 @@
   &__toggle {
     line-height: 1.4rem;
     margin-top: 180px;
+  }
+}
+
+.authSpinner {
+  animation: loaderSpin 3s infinite;
+}
+
+@keyframes loaderSpin {
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
   }
 }
 
