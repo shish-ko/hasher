@@ -1,6 +1,6 @@
 import { Route, createRoutesFromElements } from "react-router-dom";
 import { DefaultUI } from "pages/DefaultUI/DefaultUi";
-import { Description } from "pages/Description/Description";
+import { Index } from "pages/Index/Index";
 import { LogIn } from "pages/Auth/LogIn";
 import { SignUp } from "pages/Auth/SignUp";
 import { ProtectedRoutes } from "~comps/ProtectedRoutes/ProtectedRoutes";
@@ -13,7 +13,7 @@ import { Secret } from "pages/Secret/Secret";
 export const routeObj = createRoutesFromElements(
   <Route element={<DefaultUI />} path="/">
     <Route element={ <AuthCheckingRoutes />} >
-      <Route element={<Description />} index={true} />
+      <Route element={<Index />} index={true} />
       <Route element={<LogIn />} path="/login" />
       <Route element={<SignUp />} path="/signup" />
       <Route element={<ProtectedRoutes />} >

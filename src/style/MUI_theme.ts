@@ -21,6 +21,11 @@ export const appTheme = createTheme({
       letterSpacing: "-0.15px",
       color: 'black',
     },
+    h3: {
+      fontFamily: 'Bowlby One',
+      fontSize: '48px',
+      marginBottom: '40px'
+    },
     appNav: {
       fontFamily: 'Inter, sans-serif',
       fontWeight: 500,
