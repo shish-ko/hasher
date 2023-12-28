@@ -12,7 +12,7 @@ export const appTheme = createTheme({
     }
   },
   typography: {
-    htmlFontSize: 10,    
+    htmlFontSize: 10,  
     fontFamily: 'Archivo, sans-serif',
     h1: {
       fontSize: '2.5rem',      
