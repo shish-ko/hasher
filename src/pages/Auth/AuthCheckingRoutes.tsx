@@ -37,7 +37,7 @@ export const AuthCheckingRoutes: React.FC = () => {
 
   return (
     isChecking ?
-      <Backdrop open sx={{ backgroundColor: 'white' }}>
+      <Backdrop open sx={{ backgroundColor: 'white' }} appear={false} >
         <Container >
           <Stack direction='row' alignItems='center' justifyContent='space-around' >
             <Stack gap={5} >

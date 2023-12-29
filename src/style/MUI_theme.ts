@@ -12,10 +12,10 @@ export const appTheme = createTheme({
     }
   },
   typography: {
-    htmlFontSize: 10,  
+    htmlFontSize: 10,
     fontFamily: 'Archivo, sans-serif',
     h1: {
-      fontSize: '2.5rem',      
+      fontSize: '2.5rem',
       fontFamily: 'Inter',
       fontWeight: 800,
       letterSpacing: "-0.15px",
@@ -25,6 +25,12 @@ export const appTheme = createTheme({
       fontFamily: 'Bowlby One',
       fontSize: '48px',
       marginBottom: '40px'
+    },
+    h4: {
+      fontFamily: 'Bowlby One',
+      fontSize: '32px',
+      lineHeight: '38.4px', 
+      marginBottom: '20px',
     },
     appNav: {
       fontFamily: 'Inter, sans-serif',
