@@ -17,20 +17,16 @@ export const Subscription: React.FC = () => {
       </Typography>
       <Stack alignItems='center'>
         <form onSubmit={handleSubmit((val) => console.log(val))} className="subscriptionForm">
-          <AppInput  {...register('email', {
+          <AppInput   {...register('email', {
             pattern: {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
               message: 'Invalid e-mail'
             }, required: true
-          })} fullWidth label='e-mail' InputLabelProps={{
-            sx: {
-              '&:focused': {
-                color: 'red'
-
-              }
-            },
-          }} />
-          {errors.email && <Typography>{errors.email.message}</Typography>}
+            })}
+            fullWidth label='e-mail'
+            error={!!errors.email}
+            dark='true'
+          />
           <AppButton fullWidth variant='contained' type="submit">Subscribe </AppButton>
         </form>
       </Stack>
