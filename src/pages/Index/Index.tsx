@@ -3,6 +3,7 @@ import { AppStats } from "~comps/AppStats.tsx/AppStats";
 import { Description } from "~comps/Description/Description";
 import bgImage from '../../assets/indexBG.png';
 import { Description2 } from "~comps/Description2/Description2";
+import { Subscription } from "~comps/Subscription/Subscription";
 
 export const Index = () => {
   return (
@@ -15,6 +16,7 @@ export const Index = () => {
         </Container>
       </Box>
       <Description2 />
+      <Subscription />
     </>
   );
 };
