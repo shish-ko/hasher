@@ -1,5 +1,5 @@
-import { Button, Stack, Typography } from "@mui/material";
-import { Form, useForm } from "react-hook-form";
+import { Stack, Typography } from "@mui/material";
+import { useForm } from "react-hook-form";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
 import { AppButton } from "~comps/UI_components/Button";
 import { AppInput } from "~comps/UI_components/Inputs";
@@ -15,14 +15,21 @@ export const Subscription: React.FC = () => {
       <Typography variant="h3" textAlign='center' color='white'>
         Join the Secret Service’s  Club for insider tips and top-secret promotions. Trust us, you don’t want to miss this!
       </Typography>
-      <Stack alignItems='center' gap={3}>
+      <Stack alignItems='center'>
         <form onSubmit={handleSubmit((val) => console.log(val))} className="subscriptionForm">
           <AppInput  {...register('email', {
             pattern: {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
               message: 'Invalid e-mail'
             }, required: true
-          })} fullWidth/>
+          })} fullWidth label='e-mail' InputLabelProps={{
+            sx: {
+              '&:focused': {
+                color: 'red'
+
+              }
+            },
+          }} />
           {errors.email && <Typography>{errors.email.message}</Typography>}
           <AppButton fullWidth variant='contained' type="submit">Subscribe </AppButton>
         </form>
