@@ -1,4 +1,4 @@
-import { TextField, styled } from "@mui/material";
+import { TextField, lighten, styled } from "@mui/material";
 import { COLORS } from "style/colors";
 
 interface IAppInput {
@@ -6,7 +6,7 @@ interface IAppInput {
 }
 
 export const AppInput = styled(TextField, {})<IAppInput>(({ theme, dark, error }) => {
-  let bgColor = COLORS.lightBG;
+  let bgColor = COLORS.inputBG_light;
   let textColor = COLORS.appNav;
   let labelColor = COLORS.appNav;
   let activeBorderColor = COLORS.appNav;
@@ -31,8 +31,12 @@ export const AppInput = styled(TextField, {})<IAppInput>(({ theme, dark, error }
       '&.Mui-focused': {
         '.MuiOutlinedInput-notchedOutline': {
           borderColor: activeBorderColor,
+        },
+        '.MuiInputAdornment-root': {
+          transition: 'transform .2s ease-in-out',
+          color: activeBorderColor,
+          transform: 'translateX(-4px)'
         }
-
       }
     },
     '& .MuiOutlinedInput-input': {

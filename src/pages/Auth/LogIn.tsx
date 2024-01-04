@@ -10,9 +10,15 @@ import { useState } from 'react';
 import jwtDecode from 'jwt-decode';
 import { serverAPI } from '~utils/axios';
 import axios from 'axios';
+import { AppBlock } from '~comps/UI_components/AppBlock/AppBlock';
+import { Grid, InputAdornment, Paper, Typography } from '@mui/material';
+import { COLORS } from 'style/colors';
+import MailIcon from '@mui/icons-material/Mail';
+import LockIcon from '@mui/icons-material/Lock';
+import { AppInput } from '~comps/UI_components/Inputs';
 
 export const LogIn: React.FC = () => {
-  const { register, handleSubmit, formState: { errors, isValid, isSubmitted} } = useForm<IAuthForm>();
+  const { register, handleSubmit, formState: { errors, isValid, isSubmitted } } = useForm<IAuthForm>();
   const navigate = useNavigate();
   const showPopUp = usePopUp();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -22,13 +28,13 @@ export const LogIn: React.FC = () => {
     setIsSubmitting(true);
     try {
       const res = await serverAPI.post(SERVER_URL + 'auth/login', data);
-      const { token }: {token: string} = res.data;
-      const {id} = jwtDecode<ITokenPayload>(token);
+      const { token }: { token: string } = res.data;
+      const { id } = jwtDecode<ITokenPayload>(token);
       setUser(token);
       showPopUp('Login successfully');
       navigate(`/user/${id}`);
     } catch (error) {
-      if(axios.isAxiosError(error)){
+      if (axios.isAxiosError(error)) {
         showPopUp(error.response?.data.message, 'error');
       }
     }
@@ -36,31 +42,38 @@ export const LogIn: React.FC = () => {
   };
 
   return (
-    <>
-      <section className='auth'>
-        <img src={loginSrc} />
-        <form className='auth-form' onSubmit={handleSubmit(onSubmit)}>
-          <h3 className='auth-form__item auth-form__title'>Member login</h3>
-          <div className='auth-form__item'>
-            <div className='auth-form__custom-input'>
-              <input className='auth-form__input' {...register('email', { validate: loginValidator })} placeholder='Login' />
-              <img className='auth-form__input-icon' src={mail_icon} />
+    <AppBlock bgColor='white'>
+      <Paper elevation={8} sx={{padding: '130px 20px 20px'}}>
+        <Grid container justifyContent='space-around' gap={10}>
+          <Grid item>
+            <img src={loginSrc} />
+          </Grid>
+          <Grid item xs={4} component={'form'}  onSubmit={handleSubmit(onSubmit)}>
+            <Typography variant='h4' color='black'>Member login</Typography>
+            <AppInput placeholder="e-mail" fullWidth InputProps={{startAdornment: (<InputAdornment position='start'><MailIcon fontSize='small'/></InputAdornment>)}}/>
+            <AppInput placeholder="password" fullWidth InputProps={{startAdornment: (<InputAdornment position='start'><LockIcon fontSize='small'/></InputAdornment>)}}/>
+            <div className='auth-form__item'>
+              <div className='auth-form__custom-input'>
+                <input className='auth-form__input' {...register('email', { validate: loginValidator })} placeholder='Login' />
+                <img className='auth-form__input-icon' src={mail_icon} />
+              </div>
+              {errors.email && <p className='auth-form__error'>{errors.email.message}</p>}
             </div>
-            {errors.email && <p className='auth-form__error'>{errors.email.message}</p>}
-          </div>
-          <div className='auth-form__item'>
-            <div className='auth-form__custom-input'>
-              <input className='auth-form__input' type='password' {...register('password', { validate: passwordValidator })} placeholder='Password'/>
-              <img className='auth-form__input-icon' src={lock_icon} />
+            <div className='auth-form__item'>
+              <div className='auth-form__custom-input'>
+                <input className='auth-form__input' type='password' {...register('password', { validate: passwordValidator })} placeholder='Password' />
+                <img className='auth-form__input-icon' src={lock_icon} />
+              </div>
+              {errors.password && <p className='auth-form__error'>{errors.password.message}</p>}
             </div>
-            {errors.password && <p className='auth-form__error'>{errors.password.message}</p>}
-          </div>
-          <button className='auth-form__submit' disabled={isSubmitting || isSubmitted && !isValid}>Submit</button>
-          <p className='auth-form__recover'>Forgot <span className='auth-form__recover_dark'>Username / Password?</span></p>
-          <p className='auth-form__toggle'><Link to={'/signup'} className='text-link'>Create your account &raquo;</Link></p>
-        </form>
-      </section>
-    </>
+            <button className='auth-form__submit' disabled={isSubmitting || isSubmitted && !isValid}>Submit</button>
+            <p className='auth-form__recover'>Forgot <span className='auth-form__recover_dark'>Username / Password?</span></p>
+            <p className='auth-form__toggle'><Link to={'/signup'} className='text-link'>Create your account &raquo;</Link></p>
+          </Grid>
+        </Grid>
+      </Paper>
+
+    </AppBlock>
   );
 };
 

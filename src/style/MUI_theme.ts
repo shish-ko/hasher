@@ -9,7 +9,7 @@ export const appTheme = createTheme({
       secondary: '#ffffff',
     },
     background: {
-      default: '#222725'
+      default: '#222725',
     }
   },
   typography: {
