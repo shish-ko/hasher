@@ -5,8 +5,6 @@ interface IAuthForm {
 
 interface ISecretForm {
   date: string,
-  // hours: string,
-  // minutes: string,
   title: string,
   file: File[],
 }

@@ -1,6 +1,5 @@
 @import './constants.scss';
 @import './mixins.scss';
-@import '../components/Header/header.scss';
 @import '../components/UI_components/Button/button.scss';
 @import '../pages/Auth/auth.scss';
 @import './links.scss';
@@ -43,18 +42,9 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-/* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
 }
-
-// #root {
-//   min-height: 100vh;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-between;
-//   background: linear-gradient(45deg, #5168D6, #CE5EC6);
-// }
 
 .app-container {
   max-width: 1400px;
