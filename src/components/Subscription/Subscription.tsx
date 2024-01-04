@@ -12,7 +12,7 @@ export const Subscription: React.FC = () => {
   const { register, formState: { errors }, handleSubmit } = useForm<ISubscriptionForm>();
   return (
     <AppBlock>
-      <Typography variant="h3" textAlign='center' color='white'>
+      <Typography variant="h3" textAlign='center' color='text.secondary'>
         Join the Secret Service’s  Club for insider tips and top-secret promotions. Trust us, you don’t want to miss this!
       </Typography>
       <Stack alignItems='center'>

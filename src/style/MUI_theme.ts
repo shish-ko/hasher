@@ -6,6 +6,7 @@ export const appTheme = createTheme({
   palette: {
     text: {
       primary: '#E4E6C3',
+      secondary: '#ffffff',
     },
     background: {
       default: '#222725'
