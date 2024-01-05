@@ -79,6 +79,15 @@ export function getTypeImgUrl (type: TSecretType): string {
   return imgSrc;
 }
 
+export function loginValidator(login: string) {
+  if (!login) return 'Provide e-mail';
+  return new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i).test(login) || 'Invalid e-mail';
+}
+export function passwordValidator(password: string) {
+  if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)) return 'Minimum eight characters, at least one letter and one number';
+  return true;
+}
+
 export function getSecretComponent(secret: ISecret, expiredSecretHandler: ()=>void, key?: string) {
   switch (secret.type) {
     case 'AUDIO':

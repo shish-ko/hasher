@@ -1,13 +1,19 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import loginSrc from '~assets/login.webp';
-import mail_icon from '~assets/envelope-solid.svg';
-import lock_icon from '~assets/lock-solid.svg';
-import { Link, useNavigate } from 'react-router-dom';
+import MailIcon from '~assets/envelope-solid.svg?react';
+import LockIcon from '~assets/lock-solid.svg?react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { SERVER_URL } from 'constants';
 import { usePopUp } from 'utils/hooks';
 import { IAuthForm } from 'interfaces';
 import { serverAPI } from '~utils/axios';
 import axios from 'axios';
+import { AppBlock } from '~comps/UI_components/AppBlock/AppBlock';
+import { Box, Grid, InputAdornment, Link, Paper, SvgIcon, Typography } from '@mui/material';
+import { AppInput } from '~comps/UI_components/Inputs';
+import { AppButton } from '~comps/UI_components/Button';
+import { loginValidator, passwordValidator } from '~utils/helpers';
+import { grey } from '@mui/material/colors';
 
 export const SignUp: React.FC = () => {
   const { register, handleSubmit, reset, formState: { errors, isValid, isSubmitted, isSubmitting } } = useForm<IAuthForm>();
@@ -28,39 +34,57 @@ export const SignUp: React.FC = () => {
   };
 
   return (
-    <>
-      <section className='auth'>
-        <img src={loginSrc} />
-        <form className='auth-form' onSubmit={handleSubmit(onSubmit)}>
-          <h3 className='auth-form__item auth-form__title'>Member signUp</h3>
-          <div className='auth-form__item'>
-            <div className='auth-form__custom-input'>
-              <input className='auth-form__input' {...register('email', { validate: loginValidator })} placeholder='Login' />
-              <img className='auth-form__input-icon' src={mail_icon} />
-            </div>
-            {errors.email && <p className='auth-form__error'>{errors.email.message}</p>}
-          </div>
-          <div className='auth-form__item'>
-            <div className='auth-form__custom-input'>
-              <input className='auth-form__input' type='password' {...register('password', { validate: passwordValidator })} placeholder='Password'/>
-              <img className='auth-form__input-icon' src={lock_icon} />
-            </div>
-            {errors.password && <p className='auth-form__error'>{errors.password.message}</p>}
-          </div>
-          <button className='auth-form__submit' disabled={isSubmitted && isSubmitting && !isValid}>Submit</button>
-          <p className='auth-form__recover'>Forgot <span className='auth-form__recover_dark'>Username / Password?</span></p>
-          <p className='auth-form__toggle'><Link to={'/login'} className='text-link'>Log into your account &raquo;</Link> </p>
-        </form>
-      </section>
-    </>
+    <AppBlock bgColor='white'>
+    <Paper elevation={8} sx={{ padding: '130px 20px 20px' }}>
+      <Grid container justifyContent='space-around' gap={10}>
+        <Grid item>
+          <img src={loginSrc} />
+        </Grid>
+        <Grid item xs={4} component={'form'} onSubmit={handleSubmit(onSubmit)}>
+          <Typography variant='h4' color='black' textAlign='center'>Member signUp</Typography>
+          <Box mb={3}>
+            <AppInput
+              sx={{ marginBottom: 0 }}
+              error={!!errors.email}
+              placeholder="E-mail"
+              fullWidth
+              {...register('email', { validate: loginValidator })}
+              InputProps={{ startAdornment: (<InputAdornment position='start'><SvgIcon component={MailIcon} fontSize='small'  inheritViewBox /></InputAdornment>) }}
+            />
+            {errors.email && <Typography color='error' fontSize={12} >{errors.email.message}</Typography>}
+          </Box>
+          <Box mb={3}>
+            <AppInput
+              sx={{ marginBottom: 0 }}
+              error={!!errors.password}
+              placeholder="Password"
+              type='password'
+              fullWidth
+              {...register('password', { validate: passwordValidator })}
+              InputProps={{ startAdornment: (<InputAdornment position='start'><SvgIcon component={LockIcon} fontSize='small' inheritViewBox /></InputAdornment>) }}
+            />
+            {errors.password && <Typography color='error' fontSize={12}>{errors.password.message}</Typography>}
+          </Box>
+          <AppButton fullWidth
+            sx={{ marginTop: ({ spacing }) => spacing(10) }}
+            disabled={isSubmitting || isSubmitted && !isValid}
+            type='submit'
+          >
+            Submit
+          </AppButton>
+          <Typography color={grey[500]} mt={3} textAlign='center'>
+            Forgot &nbsp;
+            <Typography component='span' color='black'>
+              Username / Password?
+            </Typography>
+          </Typography>
+          <Typography mt={40} textAlign='center'>
+            <Link component={RouterLink} to={'/signup'} color='black' underline='hover'>Log into your account &raquo;</Link>
+          </Typography>
+        </Grid>
+      </Grid>
+    </Paper>
+
+  </AppBlock>
   );
 };
-
-function loginValidator(login: string) {
-  if (!login) return 'provide login';
-  return true;
-}
-function passwordValidator(password: string) {
-  if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)) return 'minimum eight characters, at least one letter and one number';
-  return true;
-}
