@@ -27,7 +27,7 @@ export const Subscription: React.FC = () => {
             error={!!errors.email}
             dark='true'
           />
-          <AppButton fullWidth variant='contained' type="submit">Subscribe </AppButton>
+          <AppButton fullWidth dark='true' variant='contained' type="submit">Subscribe </AppButton>
         </form>
       </Stack>
     </AppBlock>
