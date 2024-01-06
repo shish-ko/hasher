@@ -1,4 +1,4 @@
-import { TextField, lighten, styled } from "@mui/material";
+import { TextField, keyframes, styled } from "@mui/material";
 import { COLORS } from "style/colors";
 
 interface IAppInput {
@@ -11,6 +11,7 @@ export const AppInput = styled(TextField, {})<IAppInput>(({ theme, dark, error }
   let labelColor = COLORS.appNav;
   let activeBorderColor = COLORS.appNav;
 
+  
   if (dark) {
     bgColor = COLORS.inputBG_dark;
     textColor = theme.palette.text.primary;
@@ -20,6 +21,14 @@ export const AppInput = styled(TextField, {})<IAppInput>(({ theme, dark, error }
   if (error) {
     activeBorderColor = theme.palette.error.main;
   }
+
+  const inputAnimation = keyframes`
+    100%{
+      box-shadow: 0 0 70px 25px ${activeBorderColor};
+      opacity: 0;
+    }
+  `;
+  
   return {
     backgroundColor: bgColor,
     color: textColor,
@@ -31,6 +40,7 @@ export const AppInput = styled(TextField, {})<IAppInput>(({ theme, dark, error }
       '&.Mui-focused': {
         '.MuiOutlinedInput-notchedOutline': {
           borderColor: activeBorderColor,
+          animation: `${inputAnimation} .2s linear`
         },
         '.MuiInputAdornment-root': {
           transition: 'transform .2s ease-in-out',
