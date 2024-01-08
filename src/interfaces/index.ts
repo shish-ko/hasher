@@ -30,6 +30,16 @@ export enum SERVER {
   SECRET = 'secret/',
   
 }
-type TSecretType = 'AUDIO' | 'VIDEO' | 'DOC' | 'PHOTO'
+
+type TSecretType = ESecretType;
+
+enum ESecretType {
+  AUDIO = 'AUDIO',
+  VIDEO = 'VIDEO',
+  DOC = 'DOC',
+  PHOTO = 'PHOTO',
+}
 
 export type { IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, TSecretType, ISecretComponentProps };
+export { ESecretType};
+

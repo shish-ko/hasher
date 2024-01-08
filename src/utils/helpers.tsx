@@ -1,6 +1,6 @@
 import { SECOND, TEST_TOKEN } from "../constants";
 import jwtDecode from "jwt-decode";
-import { ISecret, ITokenPayload, TSecretType } from "~interfaces/index";
+import { ESecretType, ISecret, ITokenPayload, TSecretType } from "~interfaces/index";
 import { serverAPI } from "./axios";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import { IRootState, setAuthToken, setIsLogin } from "store/store";
@@ -19,7 +19,7 @@ export const injectStore = (_store: ToolkitStore<IRootState>) => {
 };
 
 export async function loader(controller?: AbortController) {
-  // if (import.meta.env.VITE_AUTH_FREE) return TEST_TOKEN;
+  if (import.meta.env.VITE_AUTH_FREE) return TEST_TOKEN;
   const oldToken = store?.getState().user.authToken;
   if (!oldToken) {
     try {
@@ -102,3 +102,18 @@ export function getSecretComponent(secret: ISecret, expiredSecretHandler: ()=>vo
       break;
   }
 }
+
+export const get_MOCK_USER_SECRETS = (): ISecret[]=> {
+  const res = [];
+  for (const type of Object.keys(ESecretType)) {
+    res.push({
+      id: Math.random().toString(),
+      availableAt: new Date().toISOString(),
+      type: type as TSecretType,
+      title: Math.random().toString(),
+      createdAt: new Date(Date.now() - 1000000).toISOString(),
+      url: Math.random().toString(),
+    });
+  }
+  return res;
+};

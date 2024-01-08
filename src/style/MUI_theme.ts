@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material';
+import { createTheme, lighten } from '@mui/material';
 import { COLORS } from './colors';
 
 export const appTheme = createTheme({
@@ -9,7 +9,7 @@ export const appTheme = createTheme({
       secondary: '#ffffff',
     },
     background: {
-      default: '#222725',
+      default: COLORS.darkBG,
     }
   },
   typography: {
@@ -55,6 +55,15 @@ export const appTheme = createTheme({
       xl: 1200,
     }
   },
+  components: {
+    MuiCard: {
+      styleOverrides:{
+        root: {
+          backgroundColor: lighten(COLORS.darkBG, .3)
+        }
+      }
+    }
+  }
 });
 
 declare module '@mui/material/styles' {
