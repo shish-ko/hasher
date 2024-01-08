@@ -79,7 +79,7 @@ export const SignUp: React.FC = () => {
             </Typography>
           </Typography>
           <Typography mt={40} textAlign='center'>
-            <Link component={RouterLink} to={'/signup'} color='black' underline='hover'>Log into your account &raquo;</Link>
+            <Link component={RouterLink} to={'/login'} color='black' underline='hover'>Log into your account &raquo;</Link>
           </Typography>
         </Grid>
       </Grid>
