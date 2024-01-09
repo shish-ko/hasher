@@ -59,7 +59,7 @@ export const appTheme = createTheme({
     MuiCard: {
       styleOverrides:{
         root: {
-          backgroundColor: lighten(COLORS.darkBG, .3)
+          backgroundColor: lighten(COLORS.darkBG, .1)
         }
       }
     }
