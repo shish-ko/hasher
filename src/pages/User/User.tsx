@@ -10,8 +10,6 @@ import { useAppSelector, usePopUp, useServerFetch } from "~utils/hooks";
 
 export const User: React.FC = () => {
   const { userId } = useParams<Record<IRouterParams, string>>();
-  // const [secrets, setSecrets] = useState<ISecret[]>();
-  // const [isFetching, setIsFetching] = useState<boolean>(true);
   // eslint-disable-next-line prefer-const
   let {res: secrets, refetch} = useServerFetch<ISecret[]>(`user/${userId}`);
   const { newSecrets } = useAppSelector((state) => state.user);
@@ -19,27 +17,7 @@ export const User: React.FC = () => {
     secrets = get_MOCK_USER_SECRETS();
   }
   useEffect(()=> {refetch();}, [newSecrets]);
-  // const navigate = useNavigate();
-  // const showPopUp = usePopUp();
-  // const expiredSecretHandler = () => {
-  //   setExpiredSecrets(expiredSecrets + 1);
-  // };
 
-  // useEffect(() => {
-  //   async function secretFetcher() {
-  //     try {
-  //       setIsFetching(true);
-  //       const userSecrets = await serverAPI.get<ISecret[]>(`user/${userId}`);
-  //       setSecrets(userSecrets.data);
-  //       setIsFetching(false);
-  //     } catch (e) {
-  //       console.log(e);
-  //       showPopUp('User not found', 'alert');
-  //       navigate('/');
-  //     }
-  //   }
-  //   secretFetcher();
-  // }, [userId, expiredSecrets, newSecrets]);
   return (
     <AppBlock>
       {secrets ?
@@ -47,19 +25,6 @@ export const User: React.FC = () => {
         :
         <div>loading...</div>}
     </AppBlock>
-
-    // <>
-    //   <button onClick={() => {
-    //     FB.ui({
-    //       method: 'share',
-    //       href: 'https://youtube.com/',
-    //     }, function (response) { console.log(response.error_code) });
-    //   }}>Share</button>
-    //   {!isFetching ?
-    //     < SecretsList secrets={secrets!} expiredSecretHandler={expiredSecretHandler} />
-    //     :
-    //     <div>loading...</div>}
-    // </>
   );
 };
 
