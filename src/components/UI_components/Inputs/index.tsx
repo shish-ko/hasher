@@ -11,13 +11,13 @@ export const AppInput = styled(TextField, {})<IAppInput>(({ theme, dark, error }
   let labelColor = COLORS.appNav;
   let activeBorderColor = COLORS.appNav;
 
-  
   if (dark) {
     bgColor = COLORS.inputBG_dark;
     textColor = theme.palette.text.primary;
     labelColor = COLORS.lightBG;
     activeBorderColor = COLORS.lightBG;
   }
+
   if (error) {
     activeBorderColor = theme.palette.error.main;
   }
@@ -28,7 +28,7 @@ export const AppInput = styled(TextField, {})<IAppInput>(({ theme, dark, error }
       opacity: 0;
     }
   `;
-  
+
   return {
     backgroundColor: bgColor,
     color: textColor,
