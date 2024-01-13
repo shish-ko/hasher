@@ -62,10 +62,8 @@ export const AppAudioPlayer: React.FC<IAppAudioPlayerProps> = ({ renderTo, url }
         }
         <Stack direction='row' alignItems='baseline' gap={2} onMouseOver={() => setIsVolumeShown(true)} onMouseLeave={() => setIsVolumeShown(false)}>
           <Collapse orientation="horizontal" in={isVolumeShown}>
-            <Slider size="small" sx={{width: '100px', transform: 'translateY(2px)'}} 
-            onChange={(_, val)=> {if(audioRef.current && typeof val === 'number') {
-              console.log(val/100);
-              audioRef.current.volume = val/100;}}}
+            <Slider defaultValue={100} size="small" sx={{width: '100px', transform: 'translateY(2px)'}} 
+              onChange={(_, val)=> {if(audioRef.current && typeof val === 'number') { audioRef.current.volume = val/100;}}}
             ></Slider>
           </Collapse>
           <IconButton><VolumeUp htmlColor="white" /></IconButton>

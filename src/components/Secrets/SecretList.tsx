@@ -1,33 +1,41 @@
 import React from "react";
-import { ISecret } from "~interfaces/index";
-import { AudioSecret } from "./AvailableSecret";
+import { IUserFetchRes } from "~interfaces/index";
+import { AvailableSecret } from "./AvailableSecret";
+import { Box, Stack, Typography } from "@mui/material";
+import { FutureSecret } from "./FutureSecret";
 
 interface ISecretsList {
-  secrets: ISecret[],
+  secrets: IUserFetchRes,
   expiredSecretHandler: () => void,
 }
 
-export const SecretsList: React.FC<ISecretsList> = ({ secrets, expiredSecretHandler }) => {
-  const availableSecrets = secrets.filter((secret) => secret.url) as Required<ISecret>[];
-  const futureSecrets = secrets.filter((secret) => !secret.url);
+export const SecretsList: React.FC<ISecretsList> = ({ secrets: {availableSecrets, futureSecrets}, expiredSecretHandler }) => {
   return (
-    <section className="secret-container">
-      <div className="secrets secret-container__item">
-        <h2 className="secrets__title">{availableSecrets.length ? 'Available secrets' : 'There is no available secrets'}</h2>
-        <div className="secrets__body">
-          {availableSecrets.map((secret) => {
-            return <AudioSecret {...secret}/>;
-          })}
-        </div>
-      </div>
-      <div className="secrets secret-container__item">
-        <h2 className="secrets__title">{futureSecrets.length ? 'Future secrets' : 'There is no future secrets'}</h2>
-        <div className="secrets__body">
-          {/* {futureSecrets.map((secret) => {
-            return getSecretComponent(secret, expiredSecretHandler);
-          })} */}
-        </div>
-      </div>
-    </section >
+    <>
+      <Box mb={25}>
+        {
+          availableSecrets.length ?
+            <>
+              <Typography variant="h3" color="white" textAlign='center'>Available secrets:</Typography>
+              <Stack direction='row' gap='5%' flexWrap='wrap' rowGap={10}>
+                {availableSecrets.map((secret) => <AvailableSecret {...secret} />)}
+              </Stack>
+            </> :
+            <Typography variant="h3" color="white" textAlign='center'>There is no available secrets</Typography>
+        }
+      </Box>
+      <Box>
+        {
+          futureSecrets.length ?
+            <>
+              <Typography variant="h3" color="white" textAlign='center'>Future secrets:</Typography>
+              <Stack direction='row' gap='5%' flexWrap='wrap' rowGap={10}>
+                {futureSecrets.map((secret) => <FutureSecret {...secret} countdownHandler={expiredSecretHandler} />)}
+              </Stack>
+            </> :
+            <Typography variant="h3" color="white" textAlign='center'>There is no future secrets</Typography>
+        }
+      </Box>
+    </>
   );
 };

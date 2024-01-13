@@ -3,23 +3,23 @@ import React, { useRef, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ISecret } from "~interfaces/index";
 import { Facebook, Instagram, Share, Twitter } from "@mui/icons-material";
-import { AppAudioPlayer } from "~comps/Secrets/AudioPlayer";
+import { AppAudioPlayer } from "~comps/Secrets/AudioSecret";
 import { VideoSecret } from "./VideoSecret";
 import { PhotoSecret } from "./PhotoSecret";
 import { DocSecret } from "./DocSecret";
 
 
-export const AudioSecret: React.FC<Required<ISecret>> = ({ id, title, type, availableAt, url, createdAt }) => {
+export const AvailableSecret: React.FC<ISecret> = ({ id, title, type, availableAt, url, createdAt, userId, description }) => {
   const [isShown, setIsShown] = useState(false);
   const mediaRef = useRef<HTMLDivElement>(null);
   const availableAtUserTZ = new Date(availableAt).toLocaleString();
 
   return (
-    <Card sx={{ maxWidth: '30%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} elevation={4}>
+    <Card sx={{ flexBasis: '30%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} elevation={4}>
       <CardHeader
         title={title}
         subheader={`Created at: ${new Date(createdAt).toLocaleDateString()}`}
-        avatar={<Avatar component={RouterLink} to={`../user/${id}`}>QS</Avatar>} // TODO add usrName instead of QS
+        avatar={<Avatar component={RouterLink} to={`../user/${userId}`}>QS</Avatar>} // TODO add usrName instead of QS
       // TODO: add action for user's secrets (change title and so on...)
       />
       <CardMedia ref={mediaRef} component='div' sx={{ position: 'relative' }}>
@@ -40,7 +40,7 @@ export const AudioSecret: React.FC<Required<ISecret>> = ({ id, title, type, avai
       </CardMedia>
       <CardActionArea component={RouterLink} to={`../secret/${id}`}>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <Typography sx={{ textAlign: 'justify', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: 'hidden' }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis et mollis sem. Etiam laoreet gravida ante. Pellentesque finibus nisl id nibh posuere, consequat feugiat mauris viverra. Pellentesque euismod sem a felis vehicula auctor. Donec at dui est. Fusce sit amet nibh aliquam, dictum magna vitae, varius lorem. Nulla facilisi.</Typography>
+          <Typography sx={{ textAlign: 'justify', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: 'hidden' }}>{description}</Typography>
           <Typography color='black'>Available at: {availableAtUserTZ}</Typography>
         </CardContent>
       </CardActionArea>

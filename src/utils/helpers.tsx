@@ -1,15 +1,11 @@
 import { SECOND, TEST_TOKEN } from "../constants";
 import jwtDecode from "jwt-decode";
-import { ESecretType, ISecret, ITokenPayload, TSecretType } from "~interfaces/index";
+import { ESecretType,  ITokenPayload, IUserFetchRes, TSecretType } from "~interfaces/index";
 import { serverAPI } from "./axios";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import { IRootState, setAuthToken, setIsLogin } from "store/store";
 import { AxiosError, HttpStatusCode } from "axios";
 import { hidePopUp, setPopupMessage } from "store/popUpSlice";
-import { AudioSecret } from "~comps/Secrets/AvailableSecret";
-import { VideoSecret } from "~comps/Secrets/VideoSecret";
-import { DocSecret } from "~comps/Secrets/DocSecret";
-import { PhotoSecret } from "~comps/Secrets/PhotoSecret";
 
 
 let store: undefined | ToolkitStore<IRootState>;
@@ -88,16 +84,28 @@ export function passwordValidator(password: string) {
   return true;
 }
 
-export const get_MOCK_USER_SECRETS = (): ISecret[]=> {
-  const res = [];
+export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
+  const res: IUserFetchRes = {availableSecrets: [], futureSecrets: [] };
   for (const type of Object.keys(ESecretType)) {
-    res.push({
+    res.availableSecrets.push({
       id: Math.random().toString(),
       availableAt: new Date().toISOString(),
       type: type as TSecretType,
       title: Math.random().toString(),
       createdAt: new Date(Date.now() - 1000000).toISOString(),
       url: Math.random().toString(),
+      userId: 1,
+      description: Math.random().toString(),
+    });
+  }
+  for (const type of Object.keys(ESecretType)) {
+    res.futureSecrets.push({
+      id: Math.random().toString(),
+      availableAt: new Date(Date.now()+1000000).toISOString(),
+      type: type as TSecretType,
+      title: Math.random().toString(),
+      createdAt: new Date(Date.now() - 1000000).toISOString(),
+      userId: 1,
     });
   }
   return res;
