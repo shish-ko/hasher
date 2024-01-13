@@ -22,7 +22,17 @@ interface ISecret {
   type: TSecretType,
   title: string,
   createdAt: string,
-  url?: string,
+  url: string,
+  userId: number;
+  description: string;
+}
+
+
+type IFutureSecret = Omit<ISecret, 'url' | 'description'> 
+
+interface IUserFetchRes {
+  availableSecrets: ISecret[],
+  futureSecrets: IFutureSecret[]
 }
 
 interface ISecretProps {
@@ -44,6 +54,6 @@ enum ESecretType {
   PHOTO = 'PHOTO',
 }
 
-export type { IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, TSecretType, ISecretComponentProps, ISecretProps };
+export type { IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, TSecretType, ISecretComponentProps, ISecretProps, IFutureSecret, IUserFetchRes };
 export { ESecretType};
 

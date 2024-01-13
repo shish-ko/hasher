@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { LoaderFunctionArgs, useParams } from "react-router-dom";
 import { SecretsList } from "~comps/Secrets/SecretList";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
-import { IRouterParams, ISecret } from "~interfaces/index";
+import { IRouterParams, IUserFetchRes } from "~interfaces/index";
 import { serverAPI } from "~utils/axios";
 import { get_MOCK_USER_SECRETS } from "~utils/helpers";
 import { useAppSelector, usePopUp, useServerFetch } from "~utils/hooks";
@@ -11,7 +11,7 @@ import { useAppSelector, usePopUp, useServerFetch } from "~utils/hooks";
 export const User: React.FC = () => {
   const { userId } = useParams<Record<IRouterParams, string>>();
   // eslint-disable-next-line prefer-const
-  let {res: secrets, refetch} = useServerFetch<ISecret[]>(`user/${userId}`);
+  let {res: secrets, refetch} = useServerFetch<IUserFetchRes>(`user/${userId}`);
   const { newSecrets } = useAppSelector((state) => state.user);
   if (import.meta.env.VITE_AUTH_FREE) {
     secrets = get_MOCK_USER_SECRETS();
@@ -19,7 +19,7 @@ export const User: React.FC = () => {
   useEffect(()=> {refetch();}, [newSecrets]);
 
   return (
-    <AppBlock>
+    <AppBlock component='section'>
       {secrets ?
         < SecretsList secrets={secrets!} expiredSecretHandler={refetch} />
         :

@@ -1,13 +1,13 @@
-import { Box, Container } from "@mui/material";
+import { Box, BoxProps, Container } from "@mui/material";
 import React from "react";
 
-interface IAppBlockProps {
-  children: React.JSX.Element | React.JSX.Element[]
+interface IAppBlockProps extends BoxProps {
   bgColor?: string,
 }
-export const AppBlock: React.FC<IAppBlockProps> = ({children, bgColor}) => {
+
+export const AppBlock: React.FC<IAppBlockProps> = ({children, bgColor, ...rest}) => {
   return (
-    <Box bgcolor={bgColor} pt={25} pb={25}>
+    <Box bgcolor={bgColor} pt={25} pb={25} {...rest}>
       <Container>
         {children}
       </Container>
