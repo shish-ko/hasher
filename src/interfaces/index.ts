@@ -25,6 +25,10 @@ interface ISecret {
   url?: string,
 }
 
+interface ISecretProps {
+  url: string;
+}
+
 type ISecretComponentProps = ISecret & {countdownHandler: ()=> void;}
 export enum SERVER {
   SECRET = 'secret/',
@@ -40,6 +44,6 @@ enum ESecretType {
   PHOTO = 'PHOTO',
 }
 
-export type { IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, TSecretType, ISecretComponentProps };
+export type { IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, TSecretType, ISecretComponentProps, ISecretProps };
 export { ESecretType};
 

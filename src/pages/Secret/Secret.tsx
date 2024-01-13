@@ -2,7 +2,6 @@ import { LOADER_COLOR } from "constants";
 import { useParams } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
 import { ISecret, SERVER } from "~interfaces/index";
-import { getSecretComponent } from "~utils/helpers";
 import { useServerFetch } from "~utils/hooks";
 
 export const  Secret = () => {
@@ -11,7 +10,7 @@ export const  Secret = () => {
   return(
     res ? 
     <>
-      {getSecretComponent(res, refetch)}
+      {/* {getSecretComponent(res, refetch)} */}
     </>
     :
     <PropagateLoader color={LOADER_COLOR} size={23} />
