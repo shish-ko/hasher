@@ -1,57 +1,76 @@
-import { Avatar, Box, Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia, Collapse, IconButton, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
-import Countdown from "react-countdown";
-import { Link as RouterLink } from "react-router-dom";
-import { ISecretComponentProps } from "~interfaces/index";
-import { Facebook, Instagram, Share, Twitter } from "@mui/icons-material";
-import { AppAudioPlayer } from "~comps/UI_components/Players/AudioPlayer";
+import { Pause, PlayArrow,  VolumeUp } from "@mui/icons-material";
+import { Collapse, IconButton, Slider, Stack } from "@mui/material";
+import AudioMotionAnalyzer from "audiomotion-analyzer";
+import { SERVER_URL } from "constants";
+import React, { useEffect, useRef, useState } from "react";
 
+interface IAppAudioPlayerProps {
+  renderTo: React.RefObject<HTMLDivElement>;
+  url: string;
+}
 
-export const AudioSecret: React.FC<Required<ISecretComponentProps>> = ({ id, title, availableAt, url, createdAt, countdownHandler }) => {
-  const [isShown, setIsShown] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const availableAtUserTZ = new Date(availableAt).toLocaleString();
+export const AppAudioPlayer: React.FC<IAppAudioPlayerProps> = ({ renderTo, url }) => {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [audioNode, setAudioNode] = useState<MediaElementAudioSourceNode>();
+  const [isPLaying, setIsPlaying] = useState(false);
+  const [isVolumeShown, setIsVolumeShown] = useState(false);
 
+  const playHandler = () => {
+    setIsPlaying(true);
+    audioRef.current?.play();
+  };
+  const pauseHandler = () => {
+    setIsPlaying(false);
+    audioRef.current?.pause();
+  };
+  audioRef.current?.addEventListener('ended', () => { // TODO check either eventListener is a good idea in React 
+    setIsPlaying(false);
+  });
+
+  useEffect(() => {
+    let audioMotion: AudioMotionAnalyzer;
+    if (renderTo.current && audioRef.current) {
+      if (!audioNode) {
+        const context = new AudioContext();
+        const audioNode = context.createMediaElementSource(audioRef.current);
+        setAudioNode(audioNode);
+      }
+      audioMotion = new AudioMotionAnalyzer(
+        renderTo.current,
+        {
+          source: audioNode,
+          height: 200,
+          mode: 3,
+          barSpace: .6,
+          lumiBars: true,
+          showScaleX: false,
+        }
+      );
+    }
+    return () => {
+      audioMotion?.destroy();
+    };
+  }, [audioRef, renderTo, audioNode]);
   return (
-    <Card sx={{ maxWidth: '30%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} elevation={4}>
-        <CardHeader
-          title={title}
-          subheader={`Created at: ${new Date(createdAt).toLocaleDateString()}`}
-          avatar={<Avatar component={RouterLink} to={`../user/${id}`}>QS</Avatar>} // TODO add usrName instead of QS
-        // TODO: add action for user's secrets (change title and so on...)
-        />
-        <CardMedia ref={ref} component='div' sx={{position: 'relative'}}>
-          <AppAudioPlayer renderTo={ref} url={url}/>
-        </CardMedia>
-      <CardActionArea component={RouterLink} to={`../secret/${id}`}>
-        <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <Typography sx={{ textAlign: 'justify', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: 'hidden' }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis et mollis sem. Etiam laoreet gravida ante. Pellentesque finibus nisl id nibh posuere, consequat feugiat mauris viverra. Pellentesque euismod sem a felis vehicula auctor. Donec at dui est. Fusce sit amet nibh aliquam, dictum magna vitae, varius lorem. Nulla facilisi.</Typography>
-          <Typography color='black'>Available at: {availableAtUserTZ}</Typography>                 
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Collapse orientation="horizontal" in={isShown} timeout={100} collapsedSize={40} onMouseOver={() => setIsShown(true)} onMouseOut={() => setIsShown(false)}>
-          <Box height={40}>
-            <IconButton>
-              <Share />
-            </IconButton>
-            <IconButton onClick={() => {
-              FB.ui({
-                method: 'share',
-                href: 'https://youtube.com/',
-              }, function (response) { console.log(response.error_code); });
-            }}>
-              <Facebook />
-            </IconButton>
-            <IconButton>
-              <Twitter />
-            </IconButton>
-            <IconButton>
-              <Instagram />
-            </IconButton>
-          </Box>
-        </Collapse>
-      </CardActions>
-    </Card>
+    <>
+      <audio ref={audioRef} src={SERVER_URL + url} crossOrigin="anonymous" />
+      <Stack direction='row' justifyContent='space-between' sx={{ position: 'absolute', bottom: '7px', left: 0, width: '100%' }}>
+        {
+          isPLaying ?
+            <IconButton sx={{ '&:hover': { backgroundColor: 'rgba(225,225,225, .2)' } }} onClick={pauseHandler}><Pause htmlColor="white" /></IconButton> :
+            <IconButton sx={{ '&:hover': { backgroundColor: 'rgba(225,225,225, .2)' } }} onClick={playHandler}><PlayArrow htmlColor="white" /></IconButton>
+        }
+        <Stack direction='row' alignItems='baseline' gap={2} onMouseOver={() => setIsVolumeShown(true)} onMouseLeave={() => setIsVolumeShown(false)}>
+          <Collapse orientation="horizontal" in={isVolumeShown}>
+            <Slider size="small" sx={{width: '100px', transform: 'translateY(2px)'}} 
+            onChange={(_, val)=> {if(audioRef.current && typeof val === 'number') {
+              console.log(val/100);
+              audioRef.current.volume = val/100;}}}
+            ></Slider>
+          </Collapse>
+          <IconButton><VolumeUp htmlColor="white" /></IconButton>
+        </Stack>
+      </Stack>
+    </>
   );
 };

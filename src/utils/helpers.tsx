@@ -6,7 +6,7 @@ import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import { IRootState, setAuthToken, setIsLogin } from "store/store";
 import { AxiosError, HttpStatusCode } from "axios";
 import { hidePopUp, setPopupMessage } from "store/popUpSlice";
-import { AudioSecret } from "~comps/Secrets/AudioSecret";
+import { AudioSecret } from "~comps/Secrets/AvailableSecret";
 import { VideoSecret } from "~comps/Secrets/VideoSecret";
 import { DocSecret } from "~comps/Secrets/DocSecret";
 import { PhotoSecret } from "~comps/Secrets/PhotoSecret";
@@ -86,21 +86,6 @@ export function loginValidator(login: string) {
 export function passwordValidator(password: string) {
   if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)) return 'Minimum eight characters, at least one letter and one number';
   return true;
-}
-
-export function getSecretComponent(secret: ISecret, expiredSecretHandler: ()=>void, key?: string) {
-  switch (secret.type) {
-    case 'AUDIO':
-      return <AudioSecret {...secret} countdownHandler={expiredSecretHandler} key={key}/>;        
-    case 'VIDEO':
-      return <VideoSecret {...secret} countdownHandler={expiredSecretHandler} key={key}/>;
-    case 'DOC':
-      return <DocSecret {...secret} countdownHandler={expiredSecretHandler} key={key}/>;
-    case 'PHOTO':
-      return <PhotoSecret {...secret} countdownHandler={expiredSecretHandler} key={key}/>;
-    default:
-      break;
-  }
 }
 
 export const get_MOCK_USER_SECRETS = (): ISecret[]=> {

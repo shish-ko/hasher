@@ -1,24 +1,15 @@
+import { Box, Button, Typography } from "@mui/material";
 import { SERVER_URL } from "constants";
 import React from "react";
-import Countdown from "react-countdown";
-import { Link } from "react-router-dom";
-import { ISecretComponentProps } from "~interfaces/index";
+import { ISecretProps } from "~interfaces/index";
 
-
-export const DocSecret: React.FC<ISecretComponentProps> = ({ id, title, availableAt, url, countdownHandler }) => {
-  const availableAtUserTZ = new Date(availableAt).toLocaleString();
+export const DocSecret: React.FC<ISecretProps> = ({url}) => {
   return (
-    <div className="secret"> 
-      {url ?
-        <a href={SERVER_URL+url} download={true}>Download file</a> :
-        <img src="/icons/doc.png" className="secret__icon"/> 
-      }
-      <span>Title</span>
-      <h3>{title}</h3>
-      <span>Available at</span>
-      <div>{availableAtUserTZ}</div>
-      {!url && <><span>Will be available at: </span><Countdown className="secret__countdown" date={availableAt} onComplete={countdownHandler}/></>}
-      <Link to={`../secret/${id}`} ><button>Go to the secret</button></Link>
-    </div>
+    <>
+      <Typography sx={{ textAlign: 'justify', color: 'black', backgroundColor: 'white', maxHeight: '200px', overflow: 'hidden' }}>{'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis et mollis sem. Etiam laoreet gravida ante. Pellentesque finibus nisl id nibh posuere, consequat feugiat mauris viverra. Pellentesque euismod sem a felis vehicula auctor. Donec at dui est. Fusce sit amet nibh aliquam, dictum magna vitae, varius lorem. Nulla facilisi.'.repeat(2)}</Typography>
+      <Box sx={{position: 'absolute', top:0, left: 0, bottom: 0, right: 0, backdropFilter: 'blur(2px)'}}>
+        <Button LinkComponent='a' download={true} href={SERVER_URL+url} variant="contained" sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>Download</Button>
+      </Box>
+    </>
   );
 };
