@@ -5,7 +5,7 @@ interface IAppInput {
   dark?: unknown,
 }
 
-export const AppInput = styled(TextField, {})<IAppInput>(({ theme, dark, error }) => {
+export const AppInput = styled(TextField)<IAppInput>(({ theme, dark, error }) => {
   let bgColor = COLORS.inputBG_light;
   let textColor = COLORS.appNav;
   let labelColor = COLORS.appNav;
