@@ -4,9 +4,10 @@ interface IAuthForm {
 }
 
 interface ISecretForm {
-  date: string,
+  date: {$d: string},
   title: string,
   file: File[],
+  description: string
 }
 
 interface ITokenPayload {
