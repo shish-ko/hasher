@@ -30,7 +30,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets: {availableSecrets
             <>
               <Typography variant="h3" color="white" textAlign='center'>Future secrets:</Typography>
               <Stack direction='row' gap='5%' flexWrap='wrap' rowGap={10}>
-                {futureSecrets.map((secret) => <FutureSecret {...secret} countdownHandler={expiredSecretHandler} />)}
+                {futureSecrets.map((secret) => <FutureSecret {...secret} countdownHandler={expiredSecretHandler} sx={{flexBasis: '30%'}}/>)}
               </Stack>
             </> :
             <Typography variant="h3" color="white" textAlign='center'>There is no future secrets</Typography>

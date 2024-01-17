@@ -1,12 +1,13 @@
 import { createTheme, lighten } from '@mui/material';
 import { COLORS } from './colors';
+import '@mui/x-date-pickers/themeAugmentation';
 
 export const appTheme = createTheme({
   spacing: 4,
   palette: {
     text: {
       primary: '#E4E6C3',
-      secondary: '#ffffff',
+      secondary: '#000000',
     },
     background: {
       default: COLORS.darkBG,
@@ -62,6 +63,20 @@ export const appTheme = createTheme({
           backgroundColor: lighten(COLORS.darkBG, .1)
         }
       }
+    },
+    MuiPickersDay: {
+      styleOverrides: {
+        root: {
+          color: 'black',
+        }
+      }
+    },
+    MuiMultiSectionDigitalClockSection:{
+      styleOverrides: {
+        root: {
+          color: 'black',
+        }
+      }
     }
   }
 });
@@ -83,3 +98,4 @@ declare module '@mui/material/Typography' {
     appNav: true;
   }
 }
+

@@ -20,7 +20,7 @@ const formStyles: CSSProperties = {
   borderRadius: '5px',
   padding: '10px',
   gap: '10px',
-  minWidth: '380px'
+  width: '380px'
 };
 
 interface ISecretFormProps {
@@ -29,7 +29,7 @@ interface ISecretFormProps {
 }
 export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSecretFormActive }) => {
   const { register, handleSubmit, control, watch, formState: { errors, isValid }, trigger, reset, getValues } = useForm<ISecretForm>();
-  const [fileName, setFileName] = useState('');
+  const [fileName, setFileName] = useState(' ');
   const [preview, setPreview] = useState<ISecretForm>();
   const titleText = watch('title', '');
   const { id } = useAppSelector((state) => state.user);
@@ -85,7 +85,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
                   render={({ field }) => {
                     return <DateTimePicker
                       views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
-                      sx={{ '& .MuiInputLabel-root': { color: 'black' }, '& .MuiPickersDay-root': { color: 'black' } }}
+                      sx={{ '& .MuiOutlinedInput-input': {color: 'black'} }}
                       minDate={minDate}
                       maxDate={maxDate}
                       ampm={false}
@@ -109,7 +109,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
                 error={!!errors.title}
                 multiline
               />
-              <FormHelperText sx={{ color: 'black' }}>{errors.title ? errors.title.message : `${maxTitleLength - titleText.length} chars left`}</FormHelperText>
+              <FormHelperText error={!!errors.title}>{errors.title ? errors.title.message : `${maxTitleLength - titleText.length} chars left`}</FormHelperText>
             </FormControl>
             <FormControl >
               <InputLabel htmlFor='title' sx={{ color: 'black' }}>Secret's description</InputLabel>
@@ -119,12 +119,12 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
               <Button component='label' startIcon={<UploadFile />} variant="contained">Attach file
                 <input type="file" hidden {...register('file', {onChange: (e)=>setFileName(e.target?.value), required: {value: true, message: 'attach the file'}})} />
               </Button>
-              <FormHelperText sx={{color: 'black'}}>{errors.file ? errors.file.message : fileName}</FormHelperText>
+              <FormHelperText error={!!errors.file}>{errors.file ? errors.file.message : fileName}</FormHelperText>
             </FormControl>
-            <AppButton onClick={previewHandler}>Get preview</AppButton>
+            <Button color="warning" variant="outlined" onClick={previewHandler}>Get preview</Button>
             <AppButton type='submit'>Submit</AppButton>
           </Stack>
-          {preview && <FutureSecret userId={id!} id="1" title={preview.title} availableAt={preview.date.$d} createdAt={new Date().toDateString()} type={ESecretType.DOC} countdownHandler={()=>{}} />}
+          {preview && <FutureSecret sx={{maxWidth: formStyles.width}} userId={id!} id="1" title={preview.title} availableAt={preview.date.$d} createdAt={new Date().toDateString()} type={ESecretType.DOC} countdownHandler={()=>{}} />}
 
       </Stack>
 
