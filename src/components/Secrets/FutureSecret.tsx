@@ -1,23 +1,23 @@
 import { Facebook, Instagram, Share, Twitter } from "@mui/icons-material";
-import { Avatar, Box, Card, CardActionArea, CardActions, CardHeader, CardMedia, Collapse, IconButton, Typography, TypographyProps, styled } from "@mui/material";
+import { Avatar, Box, Card, CardActionArea, CardActions, CardHeader, CardMedia, CardProps, Collapse, IconButton, Typography, TypographyProps, styled } from "@mui/material";
 import { CSSProperties, useState } from "react";
 import Countdown, { CountdownTimeDelta } from "react-countdown";
 import { Link as RouterLink } from 'react-router-dom';
 import { IFutureSecret } from "~interfaces/index";
 
-type IFutureSecretProps = IFutureSecret & { countdownHandler: () => void }
+type IFutureSecretProps = IFutureSecret & { countdownHandler: () => void } & CardProps
 
 interface ITypographyCountdownProps extends TypographyProps {
-  isLittleLeft? :boolean
+  milliseconds? :boolean
 }
-const TypographyCountdown = styled(Typography)<ITypographyCountdownProps>(({theme, isLittleLeft})=>{
+const TypographyCountdown = styled(Typography)<ITypographyCountdownProps>(({theme, milliseconds})=>{
   const res: CSSProperties = {
     fontFamily: "AlarmClock",
     fontSize: '4rem',
     textAlign: 'center',
     display: 'block'
   };
-  if(isLittleLeft){
+  if(milliseconds){
     return {
       color: theme.palette.error.main,
       ...res,
@@ -30,19 +30,25 @@ const TypographyCountdown = styled(Typography)<ITypographyCountdownProps>(({them
   }
 });
 
+const Secret_future = styled(Card)(()=>({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+}));
+
 const renderer = ({ hours, minutes, seconds, milliseconds }: CountdownTimeDelta) => {
   if (hours) {
-    return <TypographyCountdown>{hours}:{minutes}:{seconds}</TypographyCountdown>;
+    return <TypographyCountdown>{hours}:{minutes}:{seconds.toString().padStart(2, '0')}</TypographyCountdown>;
   } else {
-    return <TypographyCountdown  isLittleLeft={true}>{minutes}:{seconds}:{milliseconds.toString().padStart(3, '0')}</TypographyCountdown >;
+    return <TypographyCountdown  milliseconds={true}>{minutes}:{seconds}:{milliseconds.toString().padStart(3, '0')}</TypographyCountdown >;
   }
 };
 
-export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, availableAt, createdAt, title, countdownHandler }) => {
+export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, availableAt, createdAt, title, countdownHandler, ...rest }) => {
   const [isShown, setIsShown] = useState(false);
 
   return (
-    <Card sx={{ flexBasis: '30%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} elevation={4}>
+    <Secret_future elevation={4} {...rest}  {...rest}>
       <CardHeader
         title={title}
         subheader={`Created at: ${new Date(createdAt).toLocaleDateString()}`}
@@ -81,6 +87,6 @@ export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, available
           </Box>
         </Collapse>
       </CardActions>
-    </Card>
+    </Secret_future>
   );
 };
