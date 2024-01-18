@@ -1,4 +1,4 @@
-import { SECOND, TEST_TOKEN } from "../constants";
+import { SECOND, TEST_TOKEN } from "../app_constants";
 import jwtDecode from "jwt-decode";
 import { ESecretType,  ITokenPayload, IUserFetchRes, TSecretType } from "~interfaces/index";
 import { serverAPI } from "./axios";
@@ -32,7 +32,7 @@ export async function loader(controller?: AbortController) {
       } catch (e) {
         if (e instanceof AxiosError && e.response?.status === HttpStatusCode.Unauthorized) {
           controller?.abort();
-          store?.dispatch(setPopupMessage({ type: 'alert', message: 'Session expired. Log in again' }));
+          store?.dispatch(setPopupMessage({ type: 'error', message: 'Session expired. Log in again' }));
           store?.dispatch(setAuthToken(''));
           store?.dispatch(setIsLogin(false));
           setTimeout(() => store?.dispatch(hidePopUp()), 1500);

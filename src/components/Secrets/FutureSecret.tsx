@@ -36,12 +36,12 @@ const Secret_future = styled(Card)(()=>({
   justifyContent: 'space-between',
 }));
 
-const renderer = ({ hours, minutes, seconds, milliseconds }: CountdownTimeDelta) => {
+const renderer = ({ hours, minutes, seconds, milliseconds, completed }: CountdownTimeDelta) => {
+  if(completed) return <TypographyCountdown milliseconds={true}>--:--:---</TypographyCountdown>;
   if (hours) {
     return <TypographyCountdown>{hours}:{minutes}:{seconds.toString().padStart(2, '0')}</TypographyCountdown>;
-  } else {
-    return <TypographyCountdown  milliseconds={true}>{minutes}:{seconds}:{milliseconds.toString().padStart(3, '0')}</TypographyCountdown >;
-  }
+  } 
+  return <TypographyCountdown  milliseconds={true}>{minutes}:{seconds}:{milliseconds.toString().padStart(3, '0')}</TypographyCountdown >;
 };
 
 export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, availableAt, createdAt, title, countdownHandler, ...rest }) => {

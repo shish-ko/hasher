@@ -1,7 +1,7 @@
 import { Pause, PlayArrow,  VolumeUp } from "@mui/icons-material";
 import { Collapse, IconButton, Slider, Stack } from "@mui/material";
 import AudioMotionAnalyzer from "audiomotion-analyzer";
-import { SERVER_URL } from "constants";
+import { SERVER_URL } from "app_constants";
 import React, { useEffect, useRef, useState } from "react";
 
 interface IAppAudioPlayerProps {
