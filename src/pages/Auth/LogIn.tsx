@@ -4,7 +4,7 @@ import MailIcon from '~assets/envelope-solid.svg?react';
 import LockIcon from '~assets/lock-solid.svg?react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { IAuthForm, ITokenPayload } from 'interfaces';
-import { SERVER_URL } from 'constants';
+import { SERVER_URL } from 'app_constants';
 import { useAuth, usePopUp } from 'utils/hooks';
 import { useState } from 'react';
 import jwtDecode from 'jwt-decode';

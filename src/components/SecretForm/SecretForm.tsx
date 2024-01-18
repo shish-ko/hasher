@@ -3,7 +3,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ESecretType, ISecretForm } from "~interfaces/index";
 import { serverAPI } from "~utils/axios";
 import { Form, useLocation } from "react-router-dom";
-import { FIVE_MINUTES } from "constants";
+import { FIVE_MINUTES } from "app_constants";
 import { useAppDispatch, useAppSelector, usePopUp } from "~utils/hooks";
 import { addNewSecret } from "store/store";
 import { Button, Dialog, DialogTitle, FormControl, FormHelperText,  Input, InputLabel, Stack, Typography } from "@mui/material";
@@ -103,7 +103,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
               <Input sx={{ color: 'black' }}
                 {...register('title', {
                   maxLength: { value: maxTitleLength, message: 'max size exceeded' },
-                  required: 'please, fill the title',
+                  required: 'fill the title',
                   onChange: () => { trigger('title'); }
                 })}
                 error={!!errors.title}
@@ -117,7 +117,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
             </FormControl>
             <FormControl>
               <Button component='label' startIcon={<UploadFile />} variant="contained">Attach file
-                <input type="file" hidden {...register('file', {onChange: (e)=>setFileName(e.target?.value), required: {value: true, message: 'attach the file'}})} />
+                <input type="file" hidden {...register('file', {onChange: (e)=>{trigger();setFileName(e.target?.value);}, required: {value: true, message: 'attach the file'}})} />
               </Button>
               <FormHelperText error={!!errors.file}>{errors.file ? errors.file.message : fileName}</FormHelperText>
             </FormControl>

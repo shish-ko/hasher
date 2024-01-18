@@ -1,4 +1,4 @@
-import { SERVER_URL } from "constants";
+import { SERVER_URL } from "app_constants";
 import React from "react";
 import { ISecret } from "~interfaces/index";
 

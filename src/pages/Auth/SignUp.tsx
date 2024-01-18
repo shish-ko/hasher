@@ -3,7 +3,7 @@ import loginSrc from '~assets/login.webp';
 import MailIcon from '~assets/envelope-solid.svg?react';
 import LockIcon from '~assets/lock-solid.svg?react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { SERVER_URL } from 'constants';
+import { SERVER_URL } from 'app_constants';
 import { usePopUp } from 'utils/hooks';
 import { IAuthForm } from 'interfaces';
 import { serverAPI } from '~utils/axios';
