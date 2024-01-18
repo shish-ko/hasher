@@ -1,6 +1,6 @@
 import { createTheme, lighten } from '@mui/material';
 import { COLORS } from './colors';
-import '@mui/x-date-pickers/themeAugmentation';
+import type {} from '@mui/x-date-pickers/themeAugmentation';
 
 export const appTheme = createTheme({
   spacing: 4,

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface IPopUp {
   message: string,
-  type: 'alert' | 'error' | 'info',
+  type: 'success' | 'error' | 'info',
   isActive: boolean
 }
 const initialState: IPopUp = {
