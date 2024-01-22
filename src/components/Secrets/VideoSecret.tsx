@@ -1,7 +1,7 @@
 import { SERVER_URL } from "app_constants";
 import React from "react";
-import { ISecret } from "~interfaces/index";
+import { ISecretProps } from "~interfaces/index";
 
-export const VideoSecret: React.FC<Pick<Required<ISecret>, 'url'>> =({url}) => {
+export const VideoSecret: React.FC<ISecretProps> =({url}) => {
   return <video src={SERVER_URL+url} controls={true} style={{height: '200px'}}/>;
 };
