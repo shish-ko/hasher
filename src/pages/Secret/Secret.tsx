@@ -1,4 +1,5 @@
-import { CommentOutlined, EventAvailable, Share, Title, Today } from "@mui/icons-material";
+import { Add, CommentOutlined, EventAvailable, FavoriteBorder, Remove, Share, Title, Today } from "@mui/icons-material";
+import Download from "@mui/icons-material/Download";
 import { Avatar, Box, Button, ButtonGroup, Divider, Grid, List, ListItem, Paper, Stack, Typography, styled } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { CSSProperties } from "react";
@@ -7,6 +8,7 @@ import { PropagateLoader } from "react-spinners";
 import { AvailableSecret } from "~comps/Secrets/AvailableSecret";
 import { PhotoSecret_L } from "~comps/Secrets/PhotoSecret_L";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
+import { AppToggleBtn } from "~comps/UI_components/Button";
 import { IFutureSecret, ISecret, SERVER } from "~interfaces/index";
 import { useServerFetch } from "~utils/hooks";
 
@@ -17,9 +19,14 @@ const StatTypography = styled(Typography)(() => ({
 }));
 
 const secretInfoStyles: CSSProperties = { 
-  // justifyContent: 'space-between',
   alignItems: 'center',
   width: '100%'
+};
+const secretDataStyles: CSSProperties = { 
+  marginLeft: 50,
+  wordWrap: 'break-word',
+  textAlign: 'right',
+  flexGrow: 1
 };
 
 export const Secret = () => {
@@ -33,16 +40,16 @@ export const Secret = () => {
   return (
     <AppBlock>
       <Paper elevation={14} component={Stack} gap={4} p={5}>
-        <Stack direction='row' justifyContent='space-between'>
+        <Stack direction='row' justifyContent='space-between' alignItems='center'>
           <Stack direction='row' alignItems='center' gap={2} component={Link} to={'#'}>
             <Avatar>Avatr</Avatar>
             <Typography>Name</Typography>
           </Stack>
-          <ButtonGroup>
-            <Button>qwe</Button>
-            <Button>qwe</Button>
-            <Button>qwe</Button>
-          </ButtonGroup>
+          <Stack direction='row' gap={2} sx={{height: 'fit-content'}}>
+            <AppToggleBtn isActive={false} inactiveIcon={<Add />} activeIcon={<Remove />} color="secondary" size="small"></AppToggleBtn>
+            <Button variant="outlined" size="small" sx={{borderColor: (t)=> t.palette.grey[300]}}  color="secondary"><FavoriteBorder /></Button>
+            <Button color="success" size="small" endIcon={<Download />} variant="outlined" >Download</Button>
+          </Stack>
         </Stack>
         <Box>
           <PhotoSecret_L url='https://content.onliner.by/news/1400x5616/1912a1a9d92cb927b85360d9440d05f2.jpg' />
@@ -72,25 +79,25 @@ export const Secret = () => {
               <ListItem sx={secretInfoStyles}>
                 <Title fontSize="small" htmlColor="grey" />
                 <Typography ml={3}>Title</Typography>
-                <Typography sx={{ marginLeft: 50, wordWrap: 'break-word', textAlign: 'right' }}>ppeeeeeeeeeeeeeeeeeeee p</Typography>
+                <Typography sx={secretDataStyles}>ppeeeeeeeeeeeeeeeeeeee p</Typography>
               </ListItem>
               <Divider variant="middle" />
               <ListItem sx={secretInfoStyles}>
                 <Today fontSize="small" htmlColor="grey"/>
                 <Typography ml={3}>Created at</Typography>
-                <Typography sx={{ marginLeft: 50, wordWrap: 'break-word', textAlign: 'right' }}>01.01.2020</Typography>
+                <Typography sx={secretDataStyles}>01.01.2020</Typography>
               </ListItem>
               <Divider variant="middle" />
               <ListItem sx={secretInfoStyles}>
                 <EventAvailable fontSize="small" htmlColor="grey"/>
                 <Typography ml={3}>Expired at</Typography>
-                <Typography sx={{ marginLeft: 50, wordWrap: 'break-word', textAlign: 'right' }}>01.01.2021</Typography>
+                <Typography sx={secretDataStyles}>01.01.2021</Typography>
               </ListItem>
               <Divider variant="middle" />
               <ListItem sx={secretInfoStyles}>
                 <CommentOutlined fontSize="small" htmlColor="grey"/>
                 <Typography ml={3}>Description</Typography>
-                <Typography sx={{ marginLeft: 50, wordWrap: 'break-word', textAlign: 'right' }}>ppeeeeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeep</Typography>
+                <Typography sx={secretDataStyles}>ppeeeeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeep</Typography>
               </ListItem>
               <Divider variant="middle" />
             </List>
