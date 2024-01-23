@@ -18,6 +18,8 @@ export const AvailableSecret: React.FC<ISecret> = ({ id, title, type, availableA
     <Card sx={{ flexBasis: '30%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} elevation={4}>
       <CardHeader
         title={title}
+        titleTypographyProps={{color:'text.secondary'}}
+        subheaderTypographyProps={{color: 'text.primary'}}
         subheader={`Created at: ${new Date(createdAt).toLocaleDateString()}`}
         avatar={<Avatar component={RouterLink} to={`../user/${userId}`}>QS</Avatar>} // TODO add usrName instead of QS
       // TODO: add action for user's secrets (change title and so on...)
@@ -40,8 +42,8 @@ export const AvailableSecret: React.FC<ISecret> = ({ id, title, type, availableA
       </CardMedia>
       <CardActionArea component={RouterLink} to={`../secret/${id}`}>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <Typography sx={{ textAlign: 'justify', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: 'hidden' }}>{description}</Typography>
-          <Typography color='black'>Available at: {availableAtUserTZ}</Typography>
+          <Typography sx={{ color: 'text.secondary', textAlign: 'justify', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: 'hidden' }}>{description}</Typography>
+          <Typography>Available at: {availableAtUserTZ}</Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>

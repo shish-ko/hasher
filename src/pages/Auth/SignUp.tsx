@@ -41,7 +41,7 @@ export const SignUp: React.FC = () => {
           <img src={loginSrc} />
         </Grid>
         <Grid item xs={4} component={'form'} onSubmit={handleSubmit(onSubmit)}>
-          <Typography variant='h4' color='black' textAlign='center'>Member signUp</Typography>
+          <Typography variant='h4' textAlign='center'>Member signUp</Typography>
           <Box mb={3}>
             <AppInput
               sx={{ marginBottom: 0 }}
@@ -74,12 +74,12 @@ export const SignUp: React.FC = () => {
           </AppButton>
           <Typography color={grey[500]} mt={3} textAlign='center'>
             Forgot &nbsp;
-            <Typography component='span' color='black'>
+            <Typography component='span' color='text.primary'>
               Username / Password?
             </Typography>
           </Typography>
           <Typography mt={40} textAlign='center'>
-            <Link component={RouterLink} to={'/login'} color='black' underline='hover'>Log into your account &raquo;</Link>
+            <Link component={RouterLink} to={'/login'} color='text.primary' underline='hover'>Log into your account &raquo;</Link>
           </Typography>
         </Grid>
       </Grid>

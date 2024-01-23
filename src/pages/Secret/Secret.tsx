@@ -1,7 +1,6 @@
 import { Share, Title } from "@mui/icons-material";
 import { Avatar, Box, Button, ButtonGroup, Divider, Grid, List, ListItem, Paper, Stack, Typography, styled } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
 import { AvailableSecret } from "~comps/Secrets/AvailableSecret";
@@ -10,10 +9,7 @@ import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
 import { IFutureSecret, ISecret, SERVER } from "~interfaces/index";
 import { useServerFetch } from "~utils/hooks";
 
-const statStyle: CSSProperties = {
-  fontSize: '1rem',
-  color: grey[600],
-};
+
 const StatTypography = styled(Typography)(() => ({
   fontSize: '1rem',
   color: grey[500],
