@@ -1,6 +1,7 @@
-import { Share, Title } from "@mui/icons-material";
+import { CommentOutlined, EventAvailable, Share, Title, Today } from "@mui/icons-material";
 import { Avatar, Box, Button, ButtonGroup, Divider, Grid, List, ListItem, Paper, Stack, Typography, styled } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import { CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
 import { AvailableSecret } from "~comps/Secrets/AvailableSecret";
@@ -14,6 +15,12 @@ const StatTypography = styled(Typography)(() => ({
   fontSize: '1rem',
   color: grey[500],
 }));
+
+const secretInfoStyles: CSSProperties = { 
+  // justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '100%'
+};
 
 export const Secret = () => {
   const { secretId } = useParams();
@@ -42,17 +49,17 @@ export const Secret = () => {
         </Box>
         <Stack alignItems='center' direction='row' justifyContent='space-between' px={4}>
           <List component={Stack} direction='row' disablePadding>
-            <ListItem sx={{flexDirection: 'column', alignItems: 'center'}} disablePadding>
+            <ListItem sx={{ flexDirection: 'column', alignItems: 'center' }} disablePadding>
               <StatTypography>Views</StatTypography>
               <StatTypography>1,000</StatTypography>
             </ListItem>
-            <Divider orientation="vertical" flexItem sx={{margin: '0 20px'}}/>
-            <ListItem sx={{flexDirection: 'column', alignItems: 'center'}} disablePadding>
+            <Divider orientation="vertical" flexItem sx={{ margin: '0 20px' }} />
+            <ListItem sx={{ flexDirection: 'column', alignItems: 'center' }} disablePadding>
               <StatTypography>Likes</StatTypography>
               <StatTypography>1,000</StatTypography>
             </ListItem>
-            <Divider orientation="vertical" flexItem sx={{margin: '0 20px'}}/>
-            <ListItem sx={{flexDirection: 'column', alignItems: 'center'}} disablePadding>
+            <Divider orientation="vertical" flexItem sx={{ margin: '0 20px' }} />
+            <ListItem sx={{ flexDirection: 'column', alignItems: 'center' }} disablePadding>
               <StatTypography>Downloads</StatTypography>
               <StatTypography>1,000</StatTypography>
             </ListItem>
@@ -62,25 +69,28 @@ export const Secret = () => {
         <Grid container>
           <Grid item xs={8}>
             <List>
-              <ListItem sx={{justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-                  <Title fontSize="small"/>
-                  <Typography> Title</Typography>
-                  <Typography sx={{ maxWidth: '65%', wordWrap: 'break-word', textAlign: 'right' }}>ppeeeeeeeeeeeeeeeeeeee p</Typography>
+              <ListItem sx={secretInfoStyles}>
+                <Title fontSize="small" htmlColor="grey" />
+                <Typography ml={3}>Title</Typography>
+                <Typography sx={{ marginLeft: 50, wordWrap: 'break-word', textAlign: 'right' }}>ppeeeeeeeeeeeeeeeeeeee p</Typography>
               </ListItem>
               <Divider variant="middle" />
-              <ListItem sx={{justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-                  <Typography>Created at</Typography>
-                  <Typography sx={{ maxWidth: '65%'}}>01.01.2020</Typography>
+              <ListItem sx={secretInfoStyles}>
+                <Today fontSize="small" htmlColor="grey"/>
+                <Typography ml={3}>Created at</Typography>
+                <Typography sx={{ marginLeft: 50, wordWrap: 'break-word', textAlign: 'right' }}>01.01.2020</Typography>
               </ListItem>
               <Divider variant="middle" />
-              <ListItem sx={{justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-                  <Typography>Expired at</Typography>
-                  <Typography sx={{ maxWidth: '65%' }}>01.01.2021</Typography>
+              <ListItem sx={secretInfoStyles}>
+                <EventAvailable fontSize="small" htmlColor="grey"/>
+                <Typography ml={3}>Expired at</Typography>
+                <Typography sx={{ marginLeft: 50, wordWrap: 'break-word', textAlign: 'right' }}>01.01.2021</Typography>
               </ListItem>
               <Divider variant="middle" />
-              <ListItem sx={{justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-                  <Typography>Description</Typography>
-                  <Typography sx={{ maxWidth: '65%', wordWrap: 'break-word', textAlign: 'right' }}>ppeeeeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeep</Typography>
+              <ListItem sx={secretInfoStyles}>
+                <CommentOutlined fontSize="small" htmlColor="grey"/>
+                <Typography ml={3}>Description</Typography>
+                <Typography sx={{ marginLeft: 50, wordWrap: 'break-word', textAlign: 'right' }}>ppeeeeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeep</Typography>
               </ListItem>
               <Divider variant="middle" />
             </List>
