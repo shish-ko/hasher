@@ -12,7 +12,7 @@ export const Description2: React.FC = () => {
           <Typography variant="h4" sx={{color: '#899878'}}>
             State of the art file care, Ready when you aren’t
           </Typography>
-          <Typography>
+          <Typography color='text.secondary'>
             Imagine having storage reservoir with futuristic technology for your sensitive documents. Where time stands till you want it to move. SecureVault provides next generation file security at your command.
           </Typography>
         </Grid>
@@ -22,7 +22,7 @@ export const Description2: React.FC = () => {
           <Typography variant="h4" sx={{color: '#899878'}}>
             Never again lose your important files in the crowd
           </Typography>
-          <Typography>
+          <Typography color='text.secondary'>
             Our File tagging and search feature is like the Saint Bernard of files, rescuing your important document from the chaotic whirlpool of files.
           </Typography>
         </Grid>
