@@ -2,6 +2,7 @@ import { createTheme, lighten } from '@mui/material';
 import { COLORS } from './colors';
 import type {} from '@mui/x-date-pickers/themeAugmentation';
 
+
 export const appTheme = createTheme({
   spacing: 4,
   palette: {
@@ -10,6 +11,9 @@ export const appTheme = createTheme({
     },
     background: {
       default: COLORS.darkBG,
+    },
+    secondary: {
+      main: '#1b5a5e'
     }
   },
   typography: {

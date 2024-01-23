@@ -1,7 +1,7 @@
-import { UploadFile } from "@mui/icons-material";
-import { Button, FilledTextFieldProps, FormControl, FormHelperText, FormLabel, InputLabel, OutlinedTextFieldProps, StandardTextFieldProps, TextField, darken, makeStyles, styled, useTheme } from "@mui/material";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
-import { FieldError, FieldErrors, FieldValues, Path, UseFormRegister } from "react-hook-form";
+import { Button, ButtonProps, darken, styled } from "@mui/material";
+import { grey } from "@mui/material/colors";
+import React, { useEffect, useState } from "react";
+import CircularProgress from '@mui/material/CircularProgress';
 import { COLORS } from "style/colors";
 
 interface IAppButtonProps {
@@ -33,27 +33,31 @@ export const AppButton = styled(Button)<IAppButtonProps>(({ theme, dark, disable
   };
 });
 
+type TAppToggleBtnProps = ButtonProps & {
+  inactiveIcon: string | JSX.Element,
+  activeIcon: string | JSX.Element,
+  isActive: boolean
+}
+export const AppToggleBtn: React.FC<TAppToggleBtnProps> = ({inactiveIcon, activeIcon, isActive, onClick, ...rest})=>{
+  const [children, setChildren] = useState<string | JSX.Element>(inactiveIcon);
+  useEffect(()=> {
+    if(isActive) {
+        setChildren(activeIcon);
+    } else {
+      setChildren(inactiveIcon);
+    }
+  }, [isActive]);
+ 
 
-// type InputProps = React.HTMLProps<HTMLInputElement> & {error?: FieldError}
-// type IUploadButtonProps = HTMLInputElement 
-
-// export const UploadButton = forwardRef<IUploadButtonProps, InputProps>(
-  
-//   function UploadButton(props, ref) {
-//     const [fileName, setFileName] = useState('');
-        
-//     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-//       props.onChange && props.onChange(e);
-//       // setFileName(e.target.value);
-//     };
-    
-//     return (
-//       <FormControl>
-//         <Button component='label' startIcon={<UploadFile />} variant="contained">Attach file
-//           <input type="file" hidden {...props} ref={ref}  />
-//         </Button>
-//         <FormHelperText>{props.error ? props.error.message : fileName}</FormHelperText>
-//       </FormControl>
-//     );
-//   }
-// );
+  return (
+    <Button {...rest} sx={{borderColor: grey[500]}} 
+      onClick={(e)=> {
+        setChildren(<CircularProgress sx={{width: '20px'}} size='small' color="inherit"/>);
+        onClick && onClick(e);}
+      }
+      variant={isActive ? 'contained' : 'outlined'}  
+    >
+      {children}
+    </Button>
+  );
+};
