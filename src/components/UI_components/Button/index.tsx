@@ -39,23 +39,29 @@ type TAppToggleBtnProps = ButtonProps & {
   isActive: boolean
 }
 export const AppToggleBtn: React.FC<TAppToggleBtnProps> = ({inactiveIcon, activeIcon, isActive, onClick, ...rest})=>{
+  const [pointerEvents, setPointerEvents] = useState<'auto' | 'none'>('auto');
   const [children, setChildren] = useState<string | JSX.Element>(inactiveIcon);
   useEffect(()=> {
+    setPointerEvents('auto');
     if(isActive) {
         setChildren(activeIcon);
     } else {
       setChildren(inactiveIcon);
     }
   }, [isActive]);
- 
+  
+  const clickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>)=> {
+    setChildren(<CircularProgress sx={{width: '20px'}} size='small' color="inherit"/>);
+    setPointerEvents('none');
+    onClick && onClick(e);
+  };
 
   return (
-    <Button {...rest} sx={{borderColor: grey[500]}} 
-      onClick={(e)=> {
-        setChildren(<CircularProgress sx={{width: '20px'}} size='small' color="inherit"/>);
-        onClick && onClick(e);}
-      }
-      variant={isActive ? 'contained' : 'outlined'}  
+    <Button 
+      sx={{borderColor: grey[500], pointerEvents: pointerEvents}} 
+      onClick={clickHandler}
+      variant={isActive ? 'contained' : 'outlined'}
+      {...rest}
     >
       {children}
     </Button>

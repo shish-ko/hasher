@@ -1,4 +1,4 @@
-import { Add, CommentOutlined, EventAvailable, FavoriteBorder, Remove, Share, Title, Today } from "@mui/icons-material";
+import { Add, CommentOutlined, EventAvailable, Favorite, FavoriteBorder, Remove, Share, Title, Today } from "@mui/icons-material";
 import Download from "@mui/icons-material/Download";
 import { Avatar, Box, Button, ButtonGroup, Divider, Grid, List, ListItem, Paper, Stack, Typography, styled } from "@mui/material";
 import { grey } from "@mui/material/colors";
@@ -47,7 +47,7 @@ export const Secret = () => {
           </Stack>
           <Stack direction='row' gap={2} sx={{height: 'fit-content'}}>
             <AppToggleBtn isActive={false} inactiveIcon={<Add />} activeIcon={<Remove />} color="secondary" size="small"></AppToggleBtn>
-            <Button variant="outlined" size="small" sx={{borderColor: (t)=> t.palette.grey[300]}}  color="secondary"><FavoriteBorder /></Button>
+            <AppToggleBtn isActive={true} inactiveIcon={<FavoriteBorder />} activeIcon={<Favorite />} color="secondary" size="small"></AppToggleBtn>
             <Button color="success" size="small" endIcon={<Download />} variant="outlined" >Download</Button>
           </Stack>
         </Stack>
