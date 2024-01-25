@@ -38,13 +38,18 @@ export const useAuth = () => {
   return {setUser, userIsLoggedIn, logOutUser};
 };
 
-export const useServerFetch = <T>(url: string, errorRedirect?: string) => {
+interface IUseServerFetchOptions {
+  errorRedirect?: string,
+}
+export const useServerFetch = <T>(url: string, {errorRedirect}: IUseServerFetchOptions={}) => {
   const [res, setRes] = useState<T>();
   const [reloadNumber, setReloadNumber] = useState(0);
   const showPopUp = usePopUp();
   const navigate = useNavigate();
   
-  const refetch =()=> {setReloadNumber(reloadNumber+1);};
+  const refetch =()=> {
+      setReloadNumber(reloadNumber+1);
+  };
 
   useEffect(()=> {
     async function fetcher() {
