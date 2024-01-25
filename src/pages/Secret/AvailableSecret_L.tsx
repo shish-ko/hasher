@@ -1,6 +1,6 @@
 import Remove from "@mui/icons-material/Remove";
 import Add from "@mui/icons-material/Add";
-import { Avatar, Box, Button, Divider, Grid, List, ListItem, Stack, Typography, styled } from "@mui/material";
+import { Avatar, Box, Button, Divider, Grid, List, ListItem, Stack, Typography } from "@mui/material";
 import { AppToggleBtn } from "~comps/UI_components/Button";
 import { Link } from "react-router-dom";
 import Today from "@mui/icons-material/Today";
@@ -12,13 +12,12 @@ import Title from "@mui/icons-material/Title";
 import Favorite from "@mui/icons-material/Favorite";
 import Download from "@mui/icons-material/Download";
 import { PhotoSecret_L } from "~comps/Secrets/PhotoSecret_L";
-import { grey } from "@mui/material/colors";
-import { CSSProperties } from "react";
-
-const StatTypography = styled(Typography)(() => ({
-  fontSize: '1rem',
-  color: grey[500],
-}));
+import { CSSProperties, useRef } from "react";
+import { StatTypography } from "~comps/UI_components/AppTypography";
+import { AppAudioPlayer } from "~comps/Secrets/AudioSecret";
+import { VideoSecret } from "~comps/Secrets/VideoSecret";
+import { DocSecret } from "~comps/Secrets/DocSecret";
+import { ISecret } from "~interfaces/index";
 
 const secretInfoStyles: CSSProperties = {
   alignItems: 'center',
@@ -32,7 +31,8 @@ const secretDataStyles: CSSProperties = {
   flexGrow: 1
 };
 
-export const AvailableSecret_L: React.FC = () => {
+export const AvailableSecret_L: React.FC<ISecret> = ({url, type, title, description, createdAt, availableAt}) => {
+  const mediaRef = useRef<HTMLDivElement>(null);
   return (
     <>
       <Stack direction='row' justifyContent='space-between' alignItems='center'>
@@ -42,12 +42,25 @@ export const AvailableSecret_L: React.FC = () => {
         </Stack>
         <Stack direction='row' gap={2} sx={{ height: 'fit-content' }}>
           <AppToggleBtn isActive={false} inactiveIcon={<Add />} activeIcon={<Remove />} color="secondary" size="small"></AppToggleBtn>
-          <AppToggleBtn isActive={true} inactiveIcon={<FavoriteBorder />} activeIcon={<Favorite />} color="secondary" size="small"></AppToggleBtn>
-          <Button color="success" size="small" endIcon={<Download />} variant="contained">Download</Button>
+          <AppToggleBtn isActive={false} inactiveIcon={<FavoriteBorder />} activeIcon={<Favorite />} color="secondary" size="small"></AppToggleBtn>
+          {/* <Button color="success" size="small" endIcon={<Download />} variant="contained">Download</Button> */}
         </Stack>
       </Stack>
-      <Box>
-        <PhotoSecret_L url='https://content.onliner.by/news/1400x5616/1912a1a9d92cb927b85360d9440d05f2.jpg' />
+      <Box ref={mediaRef} sx={{ position: 'relative' }}>
+        {
+          (function () {
+            switch (type) {
+              case 'AUDIO':
+                return <AppAudioPlayer url={url} />;
+              case 'VIDEO':
+                return <VideoSecret url={url} />;
+              case 'PHOTO':
+                return <PhotoSecret_L url={url} />;
+              default:
+                return <DocSecret url={url} />;
+            }
+          })()
+        }        
       </Box>
       <Stack alignItems='center' direction='row' justifyContent='space-between' px={4}>
         <List component={Stack} direction='row' disablePadding>
@@ -74,25 +87,25 @@ export const AvailableSecret_L: React.FC = () => {
             <ListItem sx={secretInfoStyles}>
               <Title fontSize="small" htmlColor="grey" />
               <Typography ml={3}>Title</Typography>
-              <Typography sx={secretDataStyles}>ppeeeeeeeeeeeeeeeeeeee p</Typography>
+              <Typography sx={secretDataStyles}>{title}</Typography>
             </ListItem>
             <Divider variant="middle" />
             <ListItem sx={secretInfoStyles}>
               <Today fontSize="small" htmlColor="grey" />
               <Typography ml={3}>Created at</Typography>
-              <Typography sx={secretDataStyles}>01.01.2020</Typography>
+              <Typography sx={secretDataStyles}>{new Date(createdAt).toLocaleString()}</Typography>
             </ListItem>
             <Divider variant="middle" />
             <ListItem sx={secretInfoStyles}>
               <EventAvailable fontSize="small" htmlColor="grey" />
               <Typography ml={3}>Expired at</Typography>
-              <Typography sx={secretDataStyles}>01.01.2021</Typography>
+              <Typography sx={secretDataStyles}>{new Date(availableAt).toLocaleString()}</Typography>
             </ListItem>
             <Divider variant="middle" />
             <ListItem sx={secretInfoStyles}>
               <CommentOutlined fontSize="small" htmlColor="grey" />
               <Typography ml={3}>Description</Typography>
-              <Typography sx={secretDataStyles}>ppeeeeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeep</Typography>
+              <Typography sx={secretDataStyles}>{description}</Typography>
             </ListItem>
             <Divider variant="middle" />
           </List>

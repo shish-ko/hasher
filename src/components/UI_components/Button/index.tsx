@@ -51,7 +51,7 @@ export const AppToggleBtn: React.FC<TAppToggleBtnProps> = ({inactiveIcon, active
   }, [isActive]);
   
   const clickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>)=> {
-    setChildren(<CircularProgress sx={{width: '20px'}} size='small' color="inherit"/>);
+    setChildren(<CircularProgress sx={{width: '24px'}} size='small' color="inherit"/>);
     setPointerEvents('none');
     onClick && onClick(e);
   };

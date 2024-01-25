@@ -6,6 +6,8 @@ import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import { IRootState, setAuthToken, setIsLogin } from "store/store";
 import { AxiosError, HttpStatusCode } from "axios";
 import { hidePopUp, setPopupMessage } from "store/popUpSlice";
+import { TypographyCountdown } from "~comps/UI_components/AppTypography";
+import { CountdownTimeDelta } from "react-countdown";
 
 
 let store: undefined | ToolkitStore<IRootState>;
@@ -108,4 +110,12 @@ export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
     });
   }
   return res;
+};
+
+export const countdownRenderer = ({ hours, minutes, seconds, milliseconds, completed }: CountdownTimeDelta) => {
+  if(completed) return <TypographyCountdown milliseconds={true}>--:--:---</TypographyCountdown>;
+  if (hours) {
+    return <TypographyCountdown fontSize='10rem'>{hours}:{minutes}:{seconds.toString().padStart(2, '0')}</TypographyCountdown>;
+  } 
+  return <TypographyCountdown fontSize='10rem' milliseconds={true}>{minutes}:{seconds.toString().padStart(2, '0')}:{milliseconds.toString().padStart(3, '0')}</TypographyCountdown >;
 };

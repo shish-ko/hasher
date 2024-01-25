@@ -29,7 +29,7 @@ export const AvailableSecret: React.FC<ISecret> = ({ id, title, type, availableA
           (function () {
             switch (type) {
               case 'AUDIO':
-                return <AppAudioPlayer renderTo={mediaRef} url={url} />;
+                return <AppAudioPlayer url={url} />;
               case 'VIDEO':
                 return <VideoSecret url={url} />;
               case 'PHOTO':
