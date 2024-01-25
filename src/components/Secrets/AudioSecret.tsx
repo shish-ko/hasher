@@ -1,16 +1,16 @@
 import { Pause, PlayArrow,  VolumeUp } from "@mui/icons-material";
-import { Collapse, IconButton, Slider, Stack } from "@mui/material";
+import { Box, Collapse, IconButton, Slider, Stack } from "@mui/material";
 import AudioMotionAnalyzer from "audiomotion-analyzer";
 import { SERVER_URL } from "app_constants";
 import React, { useEffect, useRef, useState } from "react";
 
 interface IAppAudioPlayerProps {
-  renderTo: React.RefObject<HTMLDivElement>;
   url: string;
 }
 
-export const AppAudioPlayer: React.FC<IAppAudioPlayerProps> = ({ renderTo, url }) => {
+export const AppAudioPlayer: React.FC<IAppAudioPlayerProps> = ({ url }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const renderRef = useRef<HTMLDivElement>(null);
   const [audioNode, setAudioNode] = useState<MediaElementAudioSourceNode>();
   const [isPLaying, setIsPlaying] = useState(false);
   const [isVolumeShown, setIsVolumeShown] = useState(false);
@@ -29,14 +29,14 @@ export const AppAudioPlayer: React.FC<IAppAudioPlayerProps> = ({ renderTo, url }
 
   useEffect(() => {
     let audioMotion: AudioMotionAnalyzer;
-    if (renderTo.current && audioRef.current) {
+    if (renderRef.current && audioRef.current) {
       if (!audioNode) {
         const context = new AudioContext();
         const audioNode = context.createMediaElementSource(audioRef.current);
         setAudioNode(audioNode);
       }
       audioMotion = new AudioMotionAnalyzer(
-        renderTo.current,
+        renderRef.current,
         {
           source: audioNode,
           height: 200,
@@ -50,9 +50,9 @@ export const AppAudioPlayer: React.FC<IAppAudioPlayerProps> = ({ renderTo, url }
     return () => {
       audioMotion?.destroy();
     };
-  }, [audioRef, renderTo, audioNode]);
+  }, [audioRef, renderRef, audioNode]);
   return (
-    <>
+    <Box ref={renderRef} position='relative'>
       <audio ref={audioRef} src={SERVER_URL + url} crossOrigin="anonymous" />
       <Stack direction='row' justifyContent='space-between' sx={{ position: 'absolute', bottom: '7px', left: 0, width: '100%' }}>
         {
@@ -69,6 +69,6 @@ export const AppAudioPlayer: React.FC<IAppAudioPlayerProps> = ({ renderTo, url }
           <IconButton><VolumeUp htmlColor="white" /></IconButton>
         </Stack>
       </Stack>
-    </>
+    </Box>
   );
 };
