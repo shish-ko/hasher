@@ -65,5 +65,5 @@ export const useServerFetch = <T>(url: string, errorRedirect?: string) => {
     }
     fetcher();
   }, [reloadNumber]);
-  return {res, refetch};
+  return {res, refetch, setRes};
 };
