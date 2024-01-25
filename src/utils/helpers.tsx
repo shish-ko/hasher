@@ -35,7 +35,6 @@ export async function loader(controller?: AbortController) {
           store?.dispatch(setPopupMessage({ type: 'error', message: 'Session expired. Log in again' }));
           store?.dispatch(setAuthToken(''));
           store?.dispatch(setIsLogin(false));
-          setTimeout(() => store?.dispatch(hidePopUp()), 1500);
         }
         return;
       }
