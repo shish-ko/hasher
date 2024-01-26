@@ -34,7 +34,7 @@ export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, available
             <Typography component='span' textTransform='capitalize' >{type} </Typography>
             will be available in:
           </Typography>
-          <Countdown  zeroPadTime={2} intervalDelay={80} precision={2} date={availableAt} onComplete={countdownHandler} renderer={countdownRenderer}/>
+          <Countdown  zeroPadTime={2} intervalDelay={80} precision={2} date={availableAt} onComplete={countdownHandler} renderer={countdownRenderer({fontSize: '4rem'})}/>
         </CardMedia>
       </CardActionArea>
       <CardActions>

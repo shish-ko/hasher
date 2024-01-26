@@ -31,12 +31,12 @@ const secretDataStyles: CSSProperties = {
   flexGrow: 1
 };
 
-export const AvailableSecret_L: React.FC<ISecret> = ({url, type, title, description, createdAt, availableAt}) => {
+export const AvailableSecret_L: React.FC<ISecret> = ({url, type, title, description, createdAt, availableAt, userId}) => {
   const mediaRef = useRef<HTMLDivElement>(null);
   return (
     <>
       <Stack direction='row' justifyContent='space-between' alignItems='center'>
-        <Stack direction='row' alignItems='center' gap={2} component={Link} to={'#'}>
+        <Stack direction='row' alignItems='center' gap={2} component={Link} to={`/user/${userId}`}>
           <Avatar>Avatr</Avatar>
           <Typography>Name</Typography>
         </Stack>
@@ -109,7 +109,6 @@ export const AvailableSecret_L: React.FC<ISecret> = ({url, type, title, descript
             </ListItem>
             <Divider variant="middle" />
           </List>
-
         </Grid>
       </Grid>
     </>

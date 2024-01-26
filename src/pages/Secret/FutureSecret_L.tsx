@@ -9,7 +9,6 @@ import { StatTypography } from "~comps/UI_components/AppTypography";
 import Share from "@mui/icons-material/Share";
 import Title from "@mui/icons-material/Title";
 import Today from "@mui/icons-material/Today";
-import { PhotoSecret_L } from "~comps/Secrets/PhotoSecret_L";
 import { CSSProperties } from "react";
 import { IFutureSecret } from "~interfaces/index";
 import { COLORS } from "style/colors";
@@ -33,7 +32,7 @@ export const FutureSecret_L: React.FC<IFutureSecretProps> =({title, type, userId
   return (
     <>
       <Stack direction='row' justifyContent='space-between' alignItems='center'>
-        <Stack direction='row' alignItems='center' gap={2} component={Link} to={'#'}>
+        <Stack direction='row' alignItems='center' gap={2} component={Link} to={`/user/${userId}`}>
           <Avatar>Avatr</Avatar>
           <Typography>Name</Typography>
         </Stack>
@@ -47,7 +46,7 @@ export const FutureSecret_L: React.FC<IFutureSecretProps> =({title, type, userId
             <Typography component='span' textTransform='capitalize' >{type} </Typography>
             will be available in:
           </Typography>
-          <Countdown  zeroPadTime={2} intervalDelay={80} precision={2} date={availableAt} onComplete={countdownHandler} renderer={countdownRenderer}/>
+          <Countdown  zeroPadTime={2} intervalDelay={80} precision={2} date={availableAt} onComplete={countdownHandler} renderer={countdownRenderer({fontSize: '10rem'})}/>
         
       </Box>
       <Stack alignItems='center' direction='row' justifyContent='space-between' px={4}>

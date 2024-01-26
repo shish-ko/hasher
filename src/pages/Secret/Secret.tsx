@@ -14,7 +14,7 @@ export const Secret = () => {
   // let { res, refetch } = useServerFetch<ISecret | IFutureSecret>(SERVER.SECRET + secretId, '/');
   let { res, refetch, setRes } = useServerFetch<ISecret | IFutureSecret>(SERVER.SECRET + secretId);
   if (import.meta.env.VITE_AUTH_FREE) {
-    res = get_MOCK_USER_SECRETS().futureSecrets[2];
+    res = get_MOCK_USER_SECRETS().futureSecrets[0];
   }
   const isAvailableSecret = res && ('url' in res) && ('description' in res);
   return (
