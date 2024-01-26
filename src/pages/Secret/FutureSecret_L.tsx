@@ -14,6 +14,7 @@ import { IFutureSecret } from "~interfaces/index";
 import { COLORS } from "style/colors";
 import Countdown from "react-countdown";
 import { countdownRenderer } from "~utils/helpers";
+import { ShareBlock } from "~comps/UI_components/ShareBlock/ShareBlock";
 
 const secretInfoStyles: CSSProperties = {
   alignItems: 'center',
@@ -56,7 +57,8 @@ export const FutureSecret_L: React.FC<IFutureSecretProps> =({title, type, userId
             <StatTypography>1,000</StatTypography>
           </ListItem>
         </List>
-        <Share />
+        {/* <Share /> */}
+        <ShareBlock />
       </Stack>
       <Grid container>
         <Grid item xs={8}>

@@ -18,6 +18,7 @@ import { AppAudioPlayer } from "~comps/Secrets/AudioSecret";
 import { VideoSecret } from "~comps/Secrets/VideoSecret";
 import { DocSecret } from "~comps/Secrets/DocSecret";
 import { ISecret } from "~interfaces/index";
+import { ShareBlock } from "~comps/UI_components/ShareBlock/ShareBlock";
 
 const secretInfoStyles: CSSProperties = {
   alignItems: 'center',
@@ -79,7 +80,8 @@ export const AvailableSecret_L: React.FC<ISecret> = ({url, type, title, descript
             <StatTypography>1,000</StatTypography>
           </ListItem>
         </List>
-        <Share />
+        {/* <Share /> */}
+        <ShareBlock />
       </Stack>
       <Grid container>
         <Grid item xs={8}>

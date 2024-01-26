@@ -14,6 +14,10 @@ export const appTheme = createTheme({
     },
     secondary: {
       main: '#1b5a5e'
+    },
+    shareBlock: {
+      main: 'none',
+      dark: 'none'
     }
   },
   typography: {
@@ -102,3 +106,18 @@ declare module '@mui/material/Typography' {
   }
 }
 
+declare module '@mui/material/styles' {
+  interface Palette {
+    shareBlock: Palette['primary'];
+  }
+
+  interface PaletteOptions {
+    shareBlock?: PaletteOptions['primary'];
+  }
+}
+
+declare module '@mui/material/FAB' {
+  interface FabPropsColorOverrides {
+    shareBlock: true;
+  }
+}
