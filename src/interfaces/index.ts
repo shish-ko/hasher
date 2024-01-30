@@ -20,7 +20,7 @@ type IRouterParams = 'userId';
 interface ISecret {
   id: string,
   availableAt: string,
-  type: TSecretType,
+  type: ESecretType,
   title: string,
   createdAt: string,
   url: string,
@@ -30,6 +30,16 @@ interface ISecret {
 
 
 type IFutureSecret = Omit<ISecret, 'url' | 'description'> 
+
+interface ISecretInteractions {
+  isLiked: boolean,
+  subscription: boolean,
+}
+
+interface ISecretRes<T> {
+  secret: T,
+  interaction: ISecretInteractions
+}
 
 interface IUserFetchRes {
   availableSecrets: ISecret[],
@@ -43,10 +53,9 @@ interface ISecretProps {
 type ISecretComponentProps = ISecret & {countdownHandler: ()=> void;}
 export enum SERVER {
   SECRET = 'secret/',
-  
+  SECRET_LIKE='secret/like/',
+  SECRET_SUBSCRIPTION = 'secret/subs/'
 }
-
-type TSecretType = ESecretType;
 
 enum ESecretType {
   AUDIO = 'AUDIO',
@@ -55,6 +64,6 @@ enum ESecretType {
   PHOTO = 'PHOTO',
 }
 
-export type { IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, TSecretType, ISecretComponentProps, ISecretProps, IFutureSecret, IUserFetchRes };
+export type { IAuthForm, ITokenPayload, ISecretRes, ISecretForm, ISecretInteractions, IRouterParams, ISecret, ISecretComponentProps, ISecretProps, IFutureSecret, IUserFetchRes };
 export { ESecretType};
 

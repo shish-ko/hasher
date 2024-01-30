@@ -10,7 +10,7 @@ import Share from "@mui/icons-material/Share";
 import Title from "@mui/icons-material/Title";
 import Today from "@mui/icons-material/Today";
 import { CSSProperties } from "react";
-import { IFutureSecret } from "~interfaces/index";
+import { IFutureSecret, ISecret, ISecretRes } from "~interfaces/index";
 import { COLORS } from "style/colors";
 import Countdown from "react-countdown";
 import { countdownRenderer } from "~utils/helpers";
@@ -27,9 +27,12 @@ const secretDataStyles: CSSProperties = {
   textAlign: 'right',
   flexGrow: 1
 };
-type IFutureSecretProps = IFutureSecret & { countdownHandler: () => void }
+type IFutureSecretProps = ISecretRes<ISecret> & {
+  setSecret: React.Dispatch<React.SetStateAction<ISecretRes<ISecret | IFutureSecret> | undefined>>;
+  countdownHandler: () => void 
+}
 
-export const FutureSecret_L: React.FC<IFutureSecretProps> =({title, type, userId, availableAt, createdAt, countdownHandler }) => {
+export const FutureSecret_L: React.FC<IFutureSecretProps> =({secret: {title, type, userId, availableAt, createdAt}, interaction: {isLiked}, countdownHandler, setSecret}  ) => {
   return (
     <>
       <Stack direction='row' justifyContent='space-between' alignItems='center'>

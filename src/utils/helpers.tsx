@@ -1,6 +1,6 @@
 import { SECOND, TEST_TOKEN } from "../app_constants";
 import jwtDecode from "jwt-decode";
-import { ESecretType,  ITokenPayload, IUserFetchRes, TSecretType } from "~interfaces/index";
+import { ESecretType,  ITokenPayload, IUserFetchRes } from "~interfaces/index";
 import { serverAPI } from "./axios";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import { IRootState, setAuthToken, setIsLogin } from "store/store";
@@ -55,7 +55,7 @@ export async function loader(controller?: AbortController) {
   }
 }
 
-export function getTypeImgUrl (type: TSecretType): string {
+export function getTypeImgUrl (type: ESecretType,): string {
   let imgSrc;
   switch (type) {
     case 'AUDIO':
@@ -92,7 +92,7 @@ export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
     res.availableSecrets.push({
       id: Math.random().toString(),
       availableAt: new Date().toISOString(),
-      type: type as TSecretType,
+      type: type as ESecretType,
       title: Math.random().toString(),
       createdAt: new Date(Date.now() - 1000000).toISOString(),
       url: Math.random().toString(),
@@ -104,7 +104,7 @@ export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
     res.futureSecrets.push({
       id: Math.random().toString(),
       availableAt: new Date(Date.now()+1000000).toISOString(),
-      type: type as TSecretType,
+      type: type as ESecretType,
       title: Math.random().toString(),
       createdAt: new Date(Date.now() - 1000000).toISOString(),
       userId: 1,
