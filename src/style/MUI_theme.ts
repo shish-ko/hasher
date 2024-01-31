@@ -116,7 +116,7 @@ declare module '@mui/material/styles' {
   }
 }
 
-declare module '@mui/material/FAB' {
+declare module '@mui/material/Fab' {
   interface FabPropsColorOverrides {
     shareBlock: true;
   }

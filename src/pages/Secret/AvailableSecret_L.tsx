@@ -101,7 +101,7 @@ export const AvailableSecret_L: React.FC<IAvailableSecretProps> = ({secret: {id,
           </ListItem>
         </List>
         {/* <Share /> */}
-        <ShareBlock />
+        <ShareBlock direction="left"/>
       </Stack>
       <Grid container>
         <Grid item xs={8}>

@@ -61,7 +61,7 @@ export const FutureSecret_L: React.FC<IFutureSecretProps> =({secret: {title, typ
           </ListItem>
         </List>
         {/* <Share /> */}
-        <ShareBlock />
+        <ShareBlock direction="left"/>
       </Stack>
       <Grid container>
         <Grid item xs={8}>

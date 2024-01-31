@@ -17,7 +17,7 @@ const Secret_future = styled(Card)(()=>({
 
 export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, availableAt, createdAt, title, countdownHandler, ...rest }) => {
   const [isShown, setIsShown] = useState(false);
-
+  console.log(availableAt)
   return (
     <Secret_future elevation={4} {...rest}>
       <CardHeader
@@ -34,7 +34,7 @@ export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, available
             <Typography component='span' textTransform='capitalize' >{type} </Typography>
             will be available in:
           </Typography>
-          <Countdown  zeroPadTime={2} intervalDelay={80} precision={2} date={availableAt} onComplete={countdownHandler} renderer={countdownRenderer({fontSize: '4rem'})}/>
+          <Countdown  zeroPadTime={2} intervalDelay={80} precision={3} date={availableAt} onComplete={countdownHandler} renderer={countdownRenderer({fontSize: '4rem'})}/>
         </CardMedia>
       </CardActionArea>
       <CardActions>

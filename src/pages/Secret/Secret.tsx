@@ -11,12 +11,12 @@ import { FutureSecret_L } from "./FutureSecret_L";
 export const Secret = () => {
   const { secretId } = useParams();
   // let { res, refetch } = useServerFetch<ISecret | IFutureSecret>(SERVER.SECRET + secretId, '/');
-  const { res, refetch, setRes } = useServerFetch<ISecretRes<ISecret | IFutureSecret>>(SERVER.SECRET + secretId);
+  let { res, refetch, setRes } = useServerFetch<ISecretRes<ISecret | IFutureSecret>>(SERVER.SECRET + secretId);
   if (import.meta.env.VITE_AUTH_FREE) {
-    setRes({
+    res= {
       secret: get_MOCK_USER_SECRETS().futureSecrets[0],
       interaction: { isLiked: true, subscription: false }
-    });
+    };
   }
   const isAvailableSecret = res?.secret && ('url' in res.secret) && ('description' in res.secret);
   return (
