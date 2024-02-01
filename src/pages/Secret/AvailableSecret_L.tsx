@@ -18,6 +18,7 @@ import { DocSecret } from "~comps/Secrets/DocSecret";
 import { IFutureSecret, ISecret, ISecretRes, SERVER } from "~interfaces/index";
 import { ShareBlock } from "~comps/UI_components/ShareBlock/ShareBlock";
 import { serverAPI } from "~utils/axios";
+import { SecretMedia } from "~comps/Secrets/SecretMedia";
 
 const secretInfoStyles: CSSProperties = {
   alignItems: 'center',
@@ -35,7 +36,6 @@ type IAvailableSecretProps = ISecretRes<ISecret> & {
   setSecret: React.Dispatch<React.SetStateAction<ISecretRes<ISecret | IFutureSecret> | undefined>>
 }
 export const AvailableSecret_L: React.FC<IAvailableSecretProps> = ({secret: {id, url, type, title, description, createdAt, availableAt, userId}, interaction: {isLiked, subscription}, setSecret}) => {
-  const mediaRef = useRef<HTMLDivElement>(null);
   const likeHandler = async () => {
     if (isLiked) {
       const {data} = await serverAPI.delete<ISecretRes<ISecret>>(SERVER.SECRET_LIKE + id);
@@ -67,22 +67,7 @@ export const AvailableSecret_L: React.FC<IAvailableSecretProps> = ({secret: {id,
           <AppToggleBtn isActive={isLiked} inactiveIcon={<FavoriteBorder />} activeIcon={<Favorite />} color="secondary" size="small" onClick={likeHandler}/>
         </Stack>
       </Stack>
-      <Box ref={mediaRef} sx={{ position: 'relative' }}>
-        {
-          (function () {
-            switch (type) {
-              case 'AUDIO':
-                return <AppAudioPlayer url={url} />;
-              case 'VIDEO':
-                return <VideoSecret url={url} />;
-              case 'PHOTO':
-                return <PhotoSecret_L url={url} />;
-              default:
-                return <DocSecret url={url} />;
-            }
-          })()
-        }        
-      </Box>
+      <SecretMedia url={url} type={type} availableAt={availableAt} countdownHandler={} />
       <Stack alignItems='center' direction='row' justifyContent='space-between' px={4}>
         <List component={Stack} direction='row' disablePadding>
           <ListItem sx={{ flexDirection: 'column', alignItems: 'center' }} disablePadding>
