@@ -29,7 +29,13 @@ interface ISecret {
 }
 
 
-type IFutureSecret = Omit<ISecret, 'url' | 'description'> 
+// type IFutureSecret = Omit<ISecret, 'url' | 'description'> 
+
+interface IFutureSecret extends Omit<ISecret, 'url' | 'description'> {
+  url: null;
+  description: null
+}
+
 
 interface ISecretInteractions {
   isLiked: boolean,

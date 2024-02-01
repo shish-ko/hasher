@@ -11,7 +11,7 @@ import { countdownRenderer } from "~utils/helpers";
 interface ISecretMediaProps {
   type: ESecretType;
   availableAt: string;
-  url?: string;
+  url: string | null;
   countdownHandler: () => void 
 }
 

@@ -5,7 +5,7 @@ import { serverAPI } from "./axios";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import { IRootState, setAuthToken, setIsLogin } from "store/store";
 import { AxiosError, HttpStatusCode } from "axios";
-import { hidePopUp, setPopupMessage } from "store/popUpSlice";
+import { setPopupMessage } from "store/popUpSlice";
 import { TypographyCountdown } from "~comps/UI_components/AppTypography";
 import { CountdownTimeDelta } from "react-countdown";
 import { TypographyProps } from "@mui/material";
@@ -108,6 +108,8 @@ export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
       title: Math.random().toString(),
       createdAt: new Date(Date.now() - 1000000).toISOString(),
       userId: 1,
+      url: null,
+      description: null,
     });
   }
   return res;
