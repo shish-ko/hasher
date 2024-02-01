@@ -1,4 +1,4 @@
-import { SECOND, TEST_TOKEN } from "../app_constants";
+import { ONE_HOUR, SECOND, TEST_TOKEN } from "../app_constants";
 import jwtDecode from "jwt-decode";
 import { ESecretType,  ITokenPayload, IUserFetchRes } from "~interfaces/index";
 import { serverAPI } from "./axios";
@@ -7,7 +7,7 @@ import { IRootState, setAuthToken, setIsLogin } from "store/store";
 import { AxiosError, HttpStatusCode } from "axios";
 import { setPopupMessage } from "store/popUpSlice";
 import { TypographyCountdown } from "~comps/UI_components/AppTypography";
-import { CountdownTimeDelta } from "react-countdown";
+import { CountdownTimeDelta, zeroPad } from "react-countdown";
 import { TypographyProps } from "@mui/material";
 
 
@@ -115,10 +115,10 @@ export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
   return res;
 };
 
-export const countdownRenderer =(typographyProps?: TypographyProps) => ({ hours, minutes, seconds, milliseconds, completed }: CountdownTimeDelta) => {
+export const countdownRenderer =(typographyProps?: TypographyProps) => ({ days, hours, minutes, seconds, milliseconds, completed, total }: CountdownTimeDelta) => {
   if(completed) return <TypographyCountdown  {...typographyProps} milliseconds={true}>--:--:---</TypographyCountdown>;
-  if (hours) {
-    return <TypographyCountdown {...typographyProps}>{hours}:{minutes}:{seconds.toString().padStart(2, '0')}</TypographyCountdown>;
+  if (total > ONE_HOUR) {
+    return <TypographyCountdown {...typographyProps}>{days}:{hours}:{zeroPad(minutes)}:{zeroPad(seconds)}</TypographyCountdown>;
   } 
-  return <TypographyCountdown {...typographyProps} milliseconds={true}>{minutes}:{seconds.toString().padStart(2, '0')}:{milliseconds.toString().padStart(3, '0')}</TypographyCountdown >;
+  return <TypographyCountdown {...typographyProps} milliseconds={true}> {zeroPad(minutes)}:{zeroPad(seconds)}:{zeroPad(milliseconds, 3)}</TypographyCountdown >;
 };
