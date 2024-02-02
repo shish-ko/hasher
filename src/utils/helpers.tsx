@@ -97,6 +97,7 @@ export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
       createdAt: new Date(Date.now() - 1000000).toISOString(),
       url: Math.random().toString(),
       userId: 1,
+      views: 123,
       description: Math.random().toString(),
     });
   }
@@ -108,6 +109,7 @@ export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
       title: Math.random().toString(),
       createdAt: new Date(Date.now() - 1000000).toISOString(),
       userId: 1,
+      views: 123,
       url: null,
       description: null,
     });
@@ -118,7 +120,7 @@ export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
 export const countdownRenderer =(typographyProps?: TypographyProps) => ({ days, hours, minutes, seconds, milliseconds, completed, total }: CountdownTimeDelta) => {
   if(completed) return <TypographyCountdown  {...typographyProps} milliseconds={true}>--:--:---</TypographyCountdown>;
   if (total > ONE_HOUR) {
-    return <TypographyCountdown {...typographyProps}>{days}:{hours}:{zeroPad(minutes)}:{zeroPad(seconds)}</TypographyCountdown>;
+    return <TypographyCountdown {...typographyProps}>{days}d:{zeroPad(hours)}:{zeroPad(minutes)}:{zeroPad(seconds)}</TypographyCountdown>;
   } 
   return <TypographyCountdown {...typographyProps} milliseconds={true}> {zeroPad(minutes)}:{zeroPad(seconds)}:{zeroPad(milliseconds, 3)}</TypographyCountdown >;
 };

@@ -39,16 +39,18 @@ export const useAuth = () => {
 };
 
 interface IUseServerFetchOptions {
-  errorRedirect?: string,
+  redirectOnError?: string,
 }
-export const useServerFetch = <T>(url: string, {errorRedirect}: IUseServerFetchOptions={}) => {
+export const useServerFetch = <T>(url: string, {redirectOnError}: IUseServerFetchOptions={}) => {
   const [res, setRes] = useState<T>();
-  const [reloadNumber, setReloadNumber] = useState(0);
+  const [fetch, setFetch] = useState(false);
   const showPopUp = usePopUp();
   const navigate = useNavigate();
-  
+
+  const isDevMode = import.meta.env.VITE_AUTH_FREE;
+
   const refetch =()=> {
-      setReloadNumber(reloadNumber+1);
+      setFetch(!fetch);
   };
 
   useEffect(()=> {
@@ -60,15 +62,16 @@ export const useServerFetch = <T>(url: string, {errorRedirect}: IUseServerFetchO
       } catch (e) {
         if(e instanceof AxiosError) {
           showPopUp(e.response?.data.message || e.message, 'error');   
-          if(errorRedirect) {
+          if(redirectOnError && !isDevMode ) {
             setTimeout(() => {
-              navigate(errorRedirect);
+              navigate(redirectOnError);
             }, 0);
           }       
         }
       }
     }
     fetcher();
-  }, [reloadNumber]);
+  }, [fetch]);
+  
   return {res, refetch, setRes};
 };

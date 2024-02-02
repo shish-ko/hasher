@@ -22,30 +22,26 @@ interface ISecret {
   availableAt: string,
   type: ESecretType,
   title: string,
+  views: number,
   createdAt: string,
   url: string,
   userId: number;
   description: string;
 }
 
-
-// type IFutureSecret = Omit<ISecret, 'url' | 'description'> 
-
 interface IFutureSecret extends Omit<ISecret, 'url' | 'description'> {
   url: null;
   description: null
 }
 
-
-interface ISecretInteractions {
-  isLiked: boolean,
-  subscription: boolean,
+interface ISecretStats {
+  likesNum: number;
+  subscribersNum: number;
+  isLiked: boolean;
+  isSubscribed: boolean
 }
 
-interface ISecretRes<T> {
-  secret: T,
-  interaction: ISecretInteractions
-}
+type TSecretWithStats<T> = T & {stats: ISecretStats}
 
 interface IUserFetchRes {
   availableSecrets: ISecret[],
@@ -70,6 +66,6 @@ enum ESecretType {
   PHOTO = 'PHOTO',
 }
 
-export type { IAuthForm, ITokenPayload, ISecretRes, ISecretForm, ISecretInteractions, IRouterParams, ISecret, ISecretComponentProps, ISecretProps, IFutureSecret, IUserFetchRes };
+export type { TSecretWithStats, IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, ISecretComponentProps, ISecretProps, IFutureSecret, IUserFetchRes };
 export { ESecretType};
 

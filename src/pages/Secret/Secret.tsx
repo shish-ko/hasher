@@ -2,7 +2,7 @@ import { Avatar, Divider, Grid, List, ListItem, Paper, Stack, Tooltip, Typograph
 import { useParams } from "react-router-dom";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
 import { SecretSkeleton } from "~comps/UI_components/Sceletons/SecretSkeleton";
-import { IFutureSecret, ISecret, ISecretRes, SERVER } from "~interfaces/index";
+import { IFutureSecret, ISecret, ISecretRes, SERVER, TSecretWithStats } from "~interfaces/index";
 import { useServerFetch } from "~utils/hooks";
 import { get_MOCK_USER_SECRETS } from "~utils/helpers";
 import { AppToggleBtn } from "~comps/UI_components/Button";
@@ -35,34 +35,30 @@ const secretDataStyles: CSSProperties = {
 
 export const Secret = () => {
   const { secretId } = useParams();
-  // let { res, refetch } = useServerFetch<ISecret | IFutureSecret>(SERVER.SECRET + secretId, '/');
-  let { res, refetch, setRes } = useServerFetch<ISecretRes<ISecret | IFutureSecret>>(SERVER.SECRET + secretId);
+  let { res, refetch, setRes } = useServerFetch<TSecretWithStats<ISecret | IFutureSecret>>(SERVER.SECRET + secretId, {redirectOnError: '/'});
   if (import.meta.env.VITE_AUTH_FREE) {
-    res = {
-      secret: get_MOCK_USER_SECRETS().availableSecrets[0],
-      interaction: { isLiked: true, subscription: false }
-    };
+    res = {...get_MOCK_USER_SECRETS().availableSecrets[0], stats: {isLiked: true, isSubscribed: false, likesNum: 122, subscribersNum: 11}};
   }
 
   if (res) {
-    const { secret: { id, type, title, description, createdAt, availableAt, userId }, interaction: { isLiked, subscription } } = res;
+    const { id, type, title, description, createdAt, availableAt, userId, views, url, stats: {isLiked, isSubscribed, likesNum, subscribersNum} }  = res;
 
     const likeHandler = async () => {
       if (isLiked) {
-        const { data } = await serverAPI.delete<ISecretRes<ISecret | IFutureSecret>>(SERVER.SECRET_LIKE + id);
+        const { data } = await serverAPI.delete<TSecretWithStats<ISecret | IFutureSecret>>(SERVER.SECRET_LIKE + id);
         setRes(data);
       } else {
-        const { data } = await serverAPI.post<ISecretRes<ISecret | IFutureSecret>>(SERVER.SECRET_LIKE + id);
+        const { data } = await serverAPI.post<TSecretWithStats<ISecret | IFutureSecret>>(SERVER.SECRET_LIKE + id);
         setRes(data);
       }
     };
 
     const subscriptionHandler = async () => {
-      if (subscription) {
-        const { data } = await serverAPI.delete<ISecretRes<ISecret>>(SERVER.SECRET_SUBSCRIPTION + id);
+      if (isSubscribed) {
+        const { data } = await serverAPI.delete<TSecretWithStats<ISecret | IFutureSecret>>(SERVER.SECRET_SUBSCRIPTION + id);
         setRes(data);
       } else {
-        const { data } = await serverAPI.post<ISecretRes<ISecret>>(SERVER.SECRET_SUBSCRIPTION + id);
+        const { data } = await serverAPI.post<TSecretWithStats<ISecret | IFutureSecret>>(SERVER.SECRET_SUBSCRIPTION + id);
         setRes(data);
       }
     };
@@ -76,9 +72,9 @@ export const Secret = () => {
               <Typography>Name</Typography>
             </Stack>
             <Stack direction='row' gap={2} sx={{ height: 'fit-content' }}>
-              <Tooltip title={subscription ? 'unsubscribe' : 'subscribe'} >
+              <Tooltip title={isSubscribed ? 'unsubscribe' : 'subscribe'} >
                 <span>
-                  <AppToggleBtn isActive={subscription} inactiveIcon={<Add />} activeIcon={<Remove />} color="secondary" size="small" onClick={subscriptionHandler} />
+                  <AppToggleBtn isActive={isSubscribed} inactiveIcon={<Add />} activeIcon={<Remove />} color="secondary" size="small" onClick={subscriptionHandler} />
                 </span>
               </Tooltip>
               <Tooltip title={isLiked ? 'remove like' : 'like'} >
@@ -88,22 +84,22 @@ export const Secret = () => {
               </Tooltip>
             </Stack>
           </Stack>
-          <SecretMedia url={res.secret.url} type={type} availableAt={availableAt} countdownHandler={refetch} />
+          <SecretMedia url={url} type={type} availableAt={availableAt} countdownHandler={refetch} />
           <Stack alignItems='center' direction='row' justifyContent='space-between' px={4}>
             <List component={Stack} direction='row' disablePadding>
               <ListItem sx={{ flexDirection: 'column', alignItems: 'center' }} disablePadding>
                 <StatTypography>Views</StatTypography>
-                <StatTypography>1,000</StatTypography>
+                <StatTypography>{views}</StatTypography>
               </ListItem>
               <Divider orientation="vertical" flexItem sx={{ margin: '0 20px' }} />
               <ListItem sx={{ flexDirection: 'column', alignItems: 'center' }} disablePadding>
                 <StatTypography>Likes</StatTypography>
-                <StatTypography>1,000</StatTypography>
+                <StatTypography>{likesNum}</StatTypography>
               </ListItem>
               <Divider orientation="vertical" flexItem sx={{ margin: '0 20px' }} />
               <ListItem sx={{ flexDirection: 'column', alignItems: 'center' }} disablePadding>
-                <StatTypography>Downloads</StatTypography>
-                <StatTypography>1,000</StatTypography>
+                <StatTypography>Subscribers</StatTypography>
+                <StatTypography>{subscribersNum}</StatTypography>
               </ListItem>
             </List>
             <ShareBlock direction="left" />
