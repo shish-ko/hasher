@@ -13,9 +13,9 @@ export const useAppDispatch: DispatchFunc = useDispatch;
 export const usePopUp = () => {
   const dispatch = useAppDispatch();
 
-  function active(message: string, type: 'alert' | 'error' | 'info' = 'info') {
-    dispatch(setPopupMessage({message, type}));
-    setTimeout(()=> {dispatch(hidePopUp());}, 2500);
+  function active(message: string, type: 'success' | 'error' | 'info' = 'info') {
+    dispatch(setPopupMessage({ message, type }));
+    setTimeout(() => { dispatch(hidePopUp()); }, 2500);
   }
   return active;
 };
@@ -23,9 +23,9 @@ export const usePopUp = () => {
 export const useAuth = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  function setUser (token: string) {
-    dispatch(setUserData (token));
-  } 
+  function setUser(token: string) {
+    dispatch(setUserData(token));
+  }
   function userIsLoggedIn() {
     dispatch(setIsLogin(true));
   }
@@ -35,13 +35,14 @@ export const useAuth = () => {
     await serverAPI.get('auth/logout');
     navigate('/');
   }
-  return {setUser, userIsLoggedIn, logOutUser};
+  return { setUser, userIsLoggedIn, logOutUser };
 };
 
 interface IUseServerFetchOptions {
   redirectOnError?: string,
 }
-export const useServerFetch = <T>(url: string, {redirectOnError}: IUseServerFetchOptions={}) => {
+export const useServerFetch = <T>(url: string, { redirectOnError }: IUseServerFetchOptions = {}) => {
+  const [searchParams, setSearchParams] = useState<URLSearchParams>();
   const [res, setRes] = useState<T>();
   const [fetch, setFetch] = useState(false);
   const showPopUp = usePopUp();
@@ -49,29 +50,34 @@ export const useServerFetch = <T>(url: string, {redirectOnError}: IUseServerFetc
 
   const isDevMode = import.meta.env.VITE_AUTH_FREE;
 
-  const refetch =()=> {
+  const refetch = (newSearchParams?: URLSearchParams) => {
+    if (newSearchParams) {
+      setSearchParams(newSearchParams);
+    }else {
       setFetch(!fetch);
+    }
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     async function fetcher() {
-      try{
+      try {
         setRes(undefined);
-        const {data}= await serverAPI.get<T>(url);
+        console.log(searchParams);
+        const { data } = await serverAPI.get<T>(url, {params: searchParams});
         setRes(data);
       } catch (e) {
-        if(e instanceof AxiosError) {
-          showPopUp(e.response?.data.message || e.message, 'error');   
-          if(redirectOnError && !isDevMode ) {
+        if (e instanceof AxiosError) {
+          showPopUp(e.response?.data.message || e.message, 'error');
+          if (redirectOnError && !isDevMode) {
             setTimeout(() => {
               navigate(redirectOnError);
             }, 0);
-          }       
+          }
         }
       }
     }
     fetcher();
-  }, [fetch]);
-  
-  return {res, refetch, setRes};
+  }, [fetch, searchParams]);
+
+  return { res, refetch, setRes };
 };

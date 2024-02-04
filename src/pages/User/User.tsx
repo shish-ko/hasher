@@ -13,7 +13,7 @@ export const User: React.FC = () => {
   const { newSecrets } = useAppSelector((state) => state.user);
   const hasPageBeenRendered = useRef(false);
   // eslint-disable-next-line prefer-const
-  let { res: secrets, refetch } = useServerFetch<IUserFetchRes>(`user/${userId}`);
+  let { res: secrets, refetch } = useServerFetch<IUserFetchRes>(`user/${userId}`, {redirectOnError: '/'});
   if (import.meta.env.VITE_AUTH_FREE) {
     secrets = get_MOCK_USER_SECRETS();
   }
@@ -28,7 +28,7 @@ export const User: React.FC = () => {
   return (
     <AppBlock component='section'>
       {secrets ?
-        < SecretsList secrets={secrets!} expiredSecretHandler={refetch} />
+        < SecretsList secrets={secrets!} refetch={refetch} />
         :
         <div>loading...</div>}
     </AppBlock>

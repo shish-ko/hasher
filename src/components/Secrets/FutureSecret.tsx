@@ -17,7 +17,6 @@ const Secret_future = styled(Card)(()=>({
 
 export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, availableAt, createdAt, title, countdownHandler, ...rest }) => {
   const [isShown, setIsShown] = useState(false);
-  console.log(availableAt)
   return (
     <Secret_future elevation={4} {...rest}>
       <CardHeader
