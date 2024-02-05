@@ -1,10 +1,14 @@
-import { ListItem, ListItemAvatar, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
+import { Avatar, ListItem, ListItemAvatar, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector, useAuth } from "utils/hooks";
 import { Button } from "~comps/UI_components/Button/Button";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import DefaultAccIcon from '@mui/icons-material/AccountCircleOutlined';
+import UserPagedIcon from '@mui/icons-material/BallotOutlined';
+import LogoutOutIcon from '@mui/icons-material/LogoutOutlined';
+import ProfileIcon from '@mui/icons-material/AssignmentIndOutlined';
 
 export const Auth = () => {
   const { isLogin, name, id } = useAppSelector((store) => store.user);
@@ -21,10 +25,32 @@ export const Auth = () => {
   return (
     isLogin ?
       <>
-        <ListItem disablePadding sx={{ width: 'fit-content' }}>
-          <ListItemAvatar>{name[0]}</ListItemAvatar>
-          <ListItemText><Typography variant="appNav">{name}</Typography></ListItemText>
+        <ListItem disablePadding
+          sx={{ width: 'fit-content', cursor: 'pointer' }}
+          // onMouseLeave={handleCloseMenu} 
+          onMouseEnter={handleOpenMenu}>
+          {!name ? <Avatar sx={{ mr: 1 }}>{name[0]}</Avatar> : <DefaultAccIcon sx={{ mr: 1 }} />}
+          <ListItemText primaryTypographyProps={{ variant: 'appNav' }}>{name}</ListItemText>
         </ListItem>
+        <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={handleCloseMenu} autoFocus={false}>
+          <MenuItem component={Link} to={`user/${id}`} onClick={handleCloseMenu}>
+            <ListItemIcon>
+              <UserPagedIcon />
+            </ListItemIcon>
+            <ListItemText>User page</ListItemText>
+          </MenuItem>
+          <MenuItem component={Link} to={'#'} onClick={handleCloseMenu}>
+            <ListItemIcon>
+              <ProfileIcon />
+            </ListItemIcon>
+            <ListItemText>Profile</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={logOutUser}>
+            <ListItemIcon>
+              <LogoutOutIcon />
+            </ListItemIcon>
+            Log out</MenuItem>
+        </Menu>
       </> :
       <>
         <ListItem disablePadding sx={{ width: 'fit-content', cursor: 'pointer' }} onClick={handleOpenMenu}>
