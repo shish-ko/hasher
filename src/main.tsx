@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { routeObj } from 'router/router.tsx';
-import { store } from 'store/store';
 import './style/index.scss';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -10,6 +9,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { appTheme } from 'style/MUI_theme';
 import { CacheProvider } from '@emotion/react';
 import createEmotionCache from 'createEmotionCache';
+import { store } from 'store/store';
 
 injectStore(store);
 const router = createBrowserRouter(routeObj);

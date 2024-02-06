@@ -1,4 +1,4 @@
-import { Avatar, ListItem, ListItemAvatar, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
+import { Avatar, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector, useAuth } from "utils/hooks";
@@ -11,7 +11,7 @@ import LogoutOutIcon from '@mui/icons-material/LogoutOutlined';
 import ProfileIcon from '@mui/icons-material/AssignmentIndOutlined';
 
 export const Auth = () => {
-  const { isLogin, name, id } = useAppSelector((store) => store.user);
+  const { isLogged, name, id } = useAppSelector((store) => store.user);
   const { logOutUser } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLLIElement>(null);
 
@@ -23,7 +23,7 @@ export const Auth = () => {
   };
 
   return (
-    isLogin ?
+    isLogged ?
       <>
         <ListItem disablePadding
           sx={{ width: 'fit-content', cursor: 'pointer' }}

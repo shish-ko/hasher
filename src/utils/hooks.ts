@@ -1,10 +1,14 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { hidePopUp, setPopupMessage } from "store/popUpSlice";
-import { IAppDispatch, IRootState, setAuthToken, setIsLogin, setUserData } from "store/store";
+import { removeUserData, setUserData } from "store/userSlice";
 import { serverAPI } from "./axios";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { AxiosError } from "axios";
+import { IAppDispatch, IRootState } from "store/store";
+import jwtDecode from "jwt-decode";
+import { ITokenPayload } from "~interfaces/index";
+import { popUpSecretHandler } from "./helpers";
 
 type DispatchFunc = () => IAppDispatch;
 export const useAppSelector: TypedUseSelectorHook<IRootState> = useSelector;
@@ -24,18 +28,17 @@ export const useAuth = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   function setUser(token: string) {
-    dispatch(setUserData(token));
-  }
-  function userIsLoggedIn() {
-    dispatch(setIsLogin(true));
+    const payload = jwtDecode<ITokenPayload>(token);
+    dispatch(setUserData({...payload, authToken: token }));
+    popUpSecretHandler.setPopUpTimers();
   }
   async function logOutUser() {
-    dispatch(setIsLogin(false));
-    dispatch(setAuthToken(''));
+    dispatch(removeUserData());
     await serverAPI.get('auth/logout');
+    popUpSecretHandler.removePopUpTimers();
     navigate('/');
   }
-  return { setUser, userIsLoggedIn, logOutUser };
+  return { setUser, logOutUser };
 };
 
 interface IUseServerFetchOptions {
@@ -62,7 +65,6 @@ export const useServerFetch = <T>(url: string, { redirectOnError }: IUseServerFe
     async function fetcher() {
       try {
         setRes(undefined);
-        console.log(searchParams);
         const { data } = await serverAPI.get<T>(url, {params: searchParams});
         setRes(data);
       } catch (e) {

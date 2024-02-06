@@ -20,10 +20,10 @@ const AddButton = styled(IconButton)(({ theme }) => {
 export const ProtectedRoutes: React.FC = () => {
   const showPopUp = usePopUp();
   const [isSecretFormActive, setIsSecretFormActive] = useState(false);
-  const { isLogin } = useAppSelector((store) => store.user);
+  const { isLogged } = useAppSelector((store) => store.user);
   useEffect(() => {
-    if (!isLogin) {
-      showPopUp('Session has expired. Please log in again', 'alert');
+    if (!isLogged) {
+      showPopUp('Session has expired. Please log in again', 'error');
     }
     const script = document.createElement('script');
     script.src = 'https://connect.facebook.net/en_US/sdk.js';
@@ -43,7 +43,7 @@ export const ProtectedRoutes: React.FC = () => {
     return () => { document.body.removeChild(script); };
   }, []);
   return (
-    isLogin ?
+    isLogged ?
       <>
         <Outlet />
         <AddButton size="large" onClick={()=>setIsSecretFormActive(!isSecretFormActive)}>

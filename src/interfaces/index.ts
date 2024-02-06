@@ -43,7 +43,7 @@ interface ISecretStats {
 
 type TSecretWithStats<T> = T & {stats: ISecretStats}
 
-interface IUserFetchRes {
+interface IUserSecrets {
   availableSecrets: ISecret[],
   futureSecrets: IFutureSecret[]
 }
@@ -54,6 +54,7 @@ interface ISecretProps {
 
 type ISecretComponentProps = ISecret & {countdownHandler: ()=> void;}
 export enum SERVER {
+  USER = 'user/',
   SECRET = 'secret/',
   SECRET_LIKE='secret/like/',
   SECRET_SUBSCRIPTION = 'secret/subs/'
@@ -66,6 +67,6 @@ enum ESecretType {
   PHOTO = 'PHOTO',
 }
 
-export type { TSecretWithStats, IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, ISecretComponentProps, ISecretProps, IFutureSecret, IUserFetchRes };
+export type { TSecretWithStats, IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, ISecretComponentProps, ISecretProps, IFutureSecret, IUserSecrets };
 export { ESecretType};
 

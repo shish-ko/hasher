@@ -5,7 +5,7 @@ import { serverAPI } from "~utils/axios";
 import { Form, useLocation } from "react-router-dom";
 import { FIVE_MINUTES } from "app_constants";
 import { useAppDispatch, useAppSelector, usePopUp } from "~utils/hooks";
-import { addNewSecret } from "store/store";
+// import { addNewSecret } from "store/store";
 import { Button, Dialog, DialogTitle, FormControl, FormHelperText,  Input, InputLabel, Stack, Typography } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -53,7 +53,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
       formCloseHandler();
       showPopUp('Secret has been added', 'info');
       if (url.pathname === `/user/${id}`) {
-        dispatch(addNewSecret());
+        // dispatch(addNewSecret());
       }
     } catch {
       showPopUp('Something went wrong', 'error');
@@ -80,7 +80,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
                   control={control}
                   rules={{
                     required: 'provide expired date',
-                    validate: (date) => (new Date(date.$d).getTime() - Date.now()) > FIVE_MINUTES || 'date must be at least 5 minutes later from submit time'
+                    // validate: (date) => (new Date(date.$d).getTime() - Date.now()) > FIVE_MINUTES || 'date must be at least 5 minutes later from submit time'
                   }}
                   render={({ field }) => {
                     return <DateTimePicker

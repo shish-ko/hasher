@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IUserFetchRes } from "~interfaces/index";
+import { IUserSecrets } from "~interfaces/index";
 import { AvailableSecret } from "./AvailableSecret";
 import { Box, Button, Divider, Menu, MenuItem, MenuItemProps, Stack, Typography, styled } from "@mui/material";
 import { FutureSecret } from "./FutureSecret";
@@ -8,7 +8,7 @@ import DownIcon from '@mui/icons-material/South';
 import UpIcon from '@mui/icons-material/North';
 
 interface ISecretsList {
-  secrets: IUserFetchRes,
+  secrets: IUserSecrets,
   refetch: (searchParams?: URLSearchParams) => void,
 }
 

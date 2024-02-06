@@ -1,6 +1,5 @@
 import ReactDOMServer from 'react-dom/server';
 import { routeObj } from 'router/router.tsx';
-import { store } from 'store/store';
 import './style/index.scss';
 import { StaticHandlerContext, StaticRouterProvider, createStaticHandler, createStaticRouter } from 'react-router-dom/server';
 import { Provider } from 'react-redux';
@@ -12,6 +11,7 @@ import { appTheme } from 'style/MUI_theme';
 import { CacheProvider } from '@emotion/react';
 import createEmotionCache from './createEmotionCache';
 import createEmotionServer from '@emotion/server/create-instance';
+import { store } from 'store/store';
 // import fetch, { Response } from 'node-fetch';
 
 injectStore(store);

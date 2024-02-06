@@ -27,7 +27,7 @@ export const AuthCheckingRoutes: React.FC = () => {
   useEffect(() => {
     async function authChecker() {
       const token = await loader();
-      if(token) {
+      if (token) {
         setUser(token);
       }
       setIsChecking(false);

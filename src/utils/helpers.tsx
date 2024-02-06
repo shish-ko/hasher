@@ -1,14 +1,15 @@
 import { ONE_HOUR, SECOND, TEST_TOKEN } from "../app_constants";
 import jwtDecode from "jwt-decode";
-import { ESecretType,  ITokenPayload, IUserFetchRes } from "~interfaces/index";
+import { ESecretType, ITokenPayload, IUserSecrets, SERVER } from "~interfaces/index";
 import { serverAPI } from "./axios";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
-import { IRootState, setAuthToken, setIsLogin } from "store/store";
+import { removeUserData, setAuthToken } from "store/userSlice";
 import { AxiosError, HttpStatusCode } from "axios";
 import { setPopupMessage } from "store/popUpSlice";
 import { TypographyCountdown } from "~comps/UI_components/AppTypography";
 import { CountdownTimeDelta, zeroPad } from "react-countdown";
 import { TypographyProps } from "@mui/material";
+import { IRootState } from "store/store";
 
 
 let store: undefined | ToolkitStore<IRootState>;
@@ -36,8 +37,7 @@ export async function loader(controller?: AbortController) {
         if (e instanceof AxiosError && e.response?.status === HttpStatusCode.Unauthorized) {
           controller?.abort();
           store?.dispatch(setPopupMessage({ type: 'error', message: 'Session expired. Log in again' }));
-          store?.dispatch(setAuthToken(''));
-          store?.dispatch(setIsLogin(false));
+          store?.dispatch(removeUserData());
         }
         return;
       }
@@ -55,7 +55,7 @@ export async function loader(controller?: AbortController) {
   }
 }
 
-export function getTypeImgUrl (type: ESecretType,): string {
+export function getTypeImgUrl(type: ESecretType,): string {
   let imgSrc;
   switch (type) {
     case 'AUDIO':
@@ -70,8 +70,8 @@ export function getTypeImgUrl (type: ESecretType,): string {
     case 'PHOTO':
       imgSrc = "/icons/photo.png";
       break;
-    default: 
-      imgSrc="/icons/doc.png";
+    default:
+      imgSrc = "/icons/doc.png";
       break;
   }
   return imgSrc;
@@ -86,8 +86,8 @@ export function passwordValidator(password: string) {
   return true;
 }
 
-export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
-  const res: IUserFetchRes = {availableSecrets: [], futureSecrets: [] };
+export const get_MOCK_USER_SECRETS = (): IUserSecrets => {
+  const res: IUserSecrets = { availableSecrets: [], futureSecrets: [] };
   for (const type of Object.keys(ESecretType)) {
     res.availableSecrets.push({
       id: Math.random().toString(),
@@ -104,7 +104,7 @@ export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
   for (const type of Object.keys(ESecretType)) {
     res.futureSecrets.push({
       id: Math.random().toString(),
-      availableAt: new Date(Date.now()+1000000).toISOString(),
+      availableAt: new Date(Date.now() + 1000000).toISOString(),
       type: type as ESecretType,
       title: Math.random().toString(),
       createdAt: new Date(Date.now() - 1000000).toISOString(),
@@ -117,10 +117,44 @@ export const get_MOCK_USER_SECRETS = (): IUserFetchRes=> {
   return res;
 };
 
-export const countdownRenderer =(typographyProps?: TypographyProps) => ({ days, hours, minutes, seconds, milliseconds, completed, total }: CountdownTimeDelta) => {
-  if(completed) return <TypographyCountdown  {...typographyProps} milliseconds={true}>--:--:---</TypographyCountdown>;
+export const countdownRenderer = (typographyProps?: TypographyProps) => ({ days, hours, minutes, seconds, milliseconds, completed, total }: CountdownTimeDelta) => {
+  if (completed) return <TypographyCountdown  {...typographyProps} milliseconds={true}>--:--:---</TypographyCountdown>;
   if (total > ONE_HOUR) {
     return <TypographyCountdown {...typographyProps}>{days}d:{zeroPad(hours)}:{zeroPad(minutes)}:{zeroPad(seconds)}</TypographyCountdown>;
-  } 
+  }
   return <TypographyCountdown {...typographyProps} milliseconds={true}> {zeroPad(minutes)}:{zeroPad(seconds)}:{zeroPad(milliseconds, 3)}</TypographyCountdown >;
 };
+
+class SecretAvailabilityHandler {
+  private userSecretsTimeouts: NodeJS.Timeout[];
+  private subscribedSecretsTimeouts: NodeJS.Timeout[];
+
+  constructor() {
+    this.userSecretsTimeouts = [],
+    this.subscribedSecretsTimeouts = [];
+  }
+
+  async setPopUpTimers() {
+    const userID = store?.getState().user.id;
+    if (userID) {
+      const { data } = await serverAPI.get<IUserSecrets>(SERVER.USER + userID);
+      this.removePopUpTimers();
+      data.futureSecrets.forEach((secret) => {
+        const timeout = new Date(secret.availableAt).getTime() - Date.now();
+        const timeoutID = setTimeout(() => {
+          store?.dispatch(setPopupMessage({ type: 'info', message: 'Secret is available now' }));
+        }, timeout);
+        this.userSecretsTimeouts.push(timeoutID);
+        // TODO add subscription timeouts
+      });
+    }
+  }
+
+  removePopUpTimers() {
+    this.userSecretsTimeouts.forEach(timeout => clearTimeout(timeout));
+    this.subscribedSecretsTimeouts.forEach(timeout => clearTimeout(timeout));
+  }
+
+}
+
+export const popUpSecretHandler = new SecretAvailabilityHandler();
