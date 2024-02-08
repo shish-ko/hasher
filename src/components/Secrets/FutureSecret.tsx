@@ -7,7 +7,7 @@ import { COLORS } from "style/colors";
 import { IFutureSecret } from "~interfaces/index";
 import { countdownRenderer } from "~utils/helpers";
 
-type IFutureSecretProps = IFutureSecret & { countdownHandler: () => void } & CardProps
+type IFutureSecretProps = Omit<IFutureSecret, 'url' | 'description' | 'views'> & { countdownHandler: () => void } & CardProps
 
 const Secret_future = styled(Card)(()=>({
   display: 'flex',
@@ -15,7 +15,7 @@ const Secret_future = styled(Card)(()=>({
   justifyContent: 'space-between',
 }));
 
-export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, availableAt, createdAt, title, countdownHandler, ...rest }) => {
+export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, userId, availableAt, createdAt, title, countdownHandler, ...rest }) => {
   const [isShown, setIsShown] = useState(false);
   return (
     <Secret_future elevation={4} {...rest}>
@@ -24,7 +24,7 @@ export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, available
         subheader={`Created at: ${new Date(createdAt).toLocaleDateString()}`}
         titleTypographyProps={{color:'text.secondary'}}
         subheaderTypographyProps={{color: 'text.primary'}}
-        avatar={<Avatar component={RouterLink} to={`../user/${id}`}>QS</Avatar>} // TODO add usrName instead of QS
+        avatar={<Avatar component={RouterLink} to={`../user/${userId}`}>QS</Avatar>} // TODO add usrName instead of QS
       // TODO: add action for user's secrets (change title and so on...)
       />
       <CardActionArea component={RouterLink} to={`../secret/${id}`}>

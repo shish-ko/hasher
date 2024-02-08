@@ -10,10 +10,9 @@ export const StatTypography = styled(Typography)(() => ({
 interface ITypographyCountdownProps extends TypographyProps {
   milliseconds? :boolean
 }
-export const TypographyCountdown = styled(Typography)<ITypographyCountdownProps>(({theme, milliseconds})=>{
+export const TypographyCountdown = styled(Typography, {shouldForwardProp: (prop) => prop !== 'milliseconds'})<ITypographyCountdownProps>(({theme, milliseconds})=>{
   const res: CSSProperties = {
     fontFamily: "AlarmClock",
-    // fontSize: '4rem',
     textAlign: 'center',
     display: 'block'
   };

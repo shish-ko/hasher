@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import jwtDecode from "jwt-decode";
-import { ITokenPayload, IUserSecrets } from "~interfaces/index";
+import { IUserSecrets } from "~interfaces/index";
 
 interface IUserSlice {
   id?: number,
@@ -25,6 +24,9 @@ const userSlice = createSlice({
     setUserSecrets: (state, {payload}: {payload: IUserSecrets}) => {
       state.secrets=payload;
     }, 
+    addNewSecret: (store) => {
+      store.newSecrets+=1;
+    },
     setAuthToken: (state, {payload}: {payload: string}) => {
       state.authToken = payload;
     },
@@ -42,6 +44,6 @@ const userSlice = createSlice({
     }
   }
 });
-export const {setUserData, setUserSecrets, removeUserData, setAuthToken } = userSlice.actions;
+export const {setUserData, setUserSecrets, removeUserData, setAuthToken, addNewSecret } = userSlice.actions;
 export {userSlice};
 

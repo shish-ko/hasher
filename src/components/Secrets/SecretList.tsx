@@ -52,7 +52,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets: { availableSecret
                 <SortMenuItem onClick={availableDESC}><DownIcon fontSize="small"/> Available DESC</SortMenuItem>
               </Menu>
         <Stack direction='row' gap='5%' flexWrap='wrap' rowGap={10} mt={20}>
-          {availableSecrets.map((secret) => <AvailableSecret {...secret} />)}
+          {availableSecrets.map((secret) => <AvailableSecret {...secret} key={secret.id}/>)}
         </Stack>
       </> :
       <Typography variant="h3" color="white" textAlign='center'>There is no available secrets</Typography>
@@ -64,7 +64,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets: { availableSecret
             <>
               <Typography variant="h3" color="white" textAlign='center'>Future secrets:</Typography>
               <Stack direction='row' gap='5%' flexWrap='wrap' rowGap={10}>
-                {futureSecrets.map((secret) => <FutureSecret {...secret} countdownHandler={refetch} sx={{ flexBasis: '30%' }} />)}
+                {futureSecrets.map((secret) => <FutureSecret {...secret} countdownHandler={refetch} sx={{ flexBasis: '30%' }} key={secret.id}/>)}
               </Stack>
             </> :
             <Typography variant="h3" color="white" textAlign='center'>There is no future secrets</Typography>

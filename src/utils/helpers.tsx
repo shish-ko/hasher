@@ -122,7 +122,7 @@ export const countdownRenderer = (typographyProps?: TypographyProps) => ({ days,
   if (total > ONE_HOUR) {
     return <TypographyCountdown {...typographyProps}>{days}d:{zeroPad(hours)}:{zeroPad(minutes)}:{zeroPad(seconds)}</TypographyCountdown>;
   }
-  return <TypographyCountdown {...typographyProps} milliseconds={true}> {zeroPad(minutes)}:{zeroPad(seconds)}:{zeroPad(milliseconds, 3)}</TypographyCountdown >;
+  return <TypographyCountdown {...typographyProps} milliseconds> {zeroPad(minutes)}:{zeroPad(seconds)}:{zeroPad(milliseconds, 3)}</TypographyCountdown >;
 };
 
 class SecretAvailabilityHandler {

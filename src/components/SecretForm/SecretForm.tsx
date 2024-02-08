@@ -5,7 +5,6 @@ import { serverAPI } from "~utils/axios";
 import { Form, useLocation } from "react-router-dom";
 import { FIVE_MINUTES } from "app_constants";
 import { useAppDispatch, useAppSelector, usePopUp } from "~utils/hooks";
-// import { addNewSecret } from "store/store";
 import { Button, Dialog, DialogTitle, FormControl, FormHelperText,  Input, InputLabel, Stack, Typography } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -13,6 +12,7 @@ import dayjs from "dayjs";
 import { AppButton } from "~comps/UI_components/Button";
 import { UploadFile } from "@mui/icons-material";
 import { FutureSecret } from "~comps/Secrets/FutureSecret";
+import { addNewSecret } from "store/userSlice";
 
 const formStyles: CSSProperties = {
   margin: '0 auto',
@@ -37,7 +37,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
   const showPopUp = usePopUp();
   const url = useLocation();
   const maxTitleLength = 70;
-  const minDate = dayjs().add(5, 'minute');
+  const minDate = dayjs().add(2, 'minute');
   const maxDate = dayjs().add(5, 'years');
   
   const submitHandler: SubmitHandler<ISecretForm> = async ({ date, file, title, description }) => {
@@ -53,7 +53,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
       formCloseHandler();
       showPopUp('Secret has been added', 'info');
       if (url.pathname === `/user/${id}`) {
-        // dispatch(addNewSecret());
+        dispatch(addNewSecret());
       }
     } catch {
       showPopUp('Something went wrong', 'error');
@@ -80,7 +80,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
                   control={control}
                   rules={{
                     required: 'provide expired date',
-                    // validate: (date) => (new Date(date.$d).getTime() - Date.now()) > FIVE_MINUTES || 'date must be at least 5 minutes later from submit time'
+                    validate: (date) => (new Date(date.$d).getTime() - Date.now()) > FIVE_MINUTES || 'date must be at least 2 minutes later from submit time'
                   }}
                   render={({ field }) => {
                     return <DateTimePicker
