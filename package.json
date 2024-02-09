@@ -4,11 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "ts-node --esm server ",
-    "dev:no-token": "cross-env VITE_AUTH_FREE=true ts-node --esm server",
-    "build": "tsc && vite build",
+    "dev": "ts-node --esm ./src/server ",
+    "dev:no-token": "cross-env VITE_AUTH_FREE=true ts-node --esm ./src/server",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "vite build --ssrManifest --outDir dist/client",
+    "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "cross-env NODE_ENV=production node server"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",

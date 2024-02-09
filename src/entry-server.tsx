@@ -1,7 +1,6 @@
 import ReactDOMServer from 'react-dom/server';
-import { routeObj } from 'router/router.tsx';
 import './style/index.scss';
-import { StaticHandlerContext, StaticRouterProvider, createStaticHandler, createStaticRouter } from 'react-router-dom/server';
+import { StaticRouterProvider, createStaticHandler, createStaticRouter } from 'react-router-dom/server';
 import { Provider } from 'react-redux';
 import { injectStore } from '~utils/helpers';
 import createFetchRequest from '~utils/reqest';
@@ -12,6 +11,7 @@ import { CacheProvider } from '@emotion/react';
 import createEmotionCache from './createEmotionCache';
 import createEmotionServer from '@emotion/server/create-instance';
 import { store } from 'store/store';
+import { routeObj } from 'router/router';
 // import fetch, { Response } from 'node-fetch';
 
 injectStore(store);
@@ -29,7 +29,7 @@ export async function render(req: Request) {
     throw context;
   }
 
-  const router = createStaticRouter(dataRoutes, context as StaticHandlerContext);
+  const router = createStaticRouter(dataRoutes, context);
   // MUI ssr
   const cache = createEmotionCache();
   const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(cache);
@@ -41,7 +41,7 @@ export async function render(req: Request) {
           <CssBaseline />
           <StaticRouterProvider
             router={router}
-            context={context as StaticHandlerContext}
+            context={context}
             />
         </ThemeProvider>
       </CacheProvider>
