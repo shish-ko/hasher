@@ -1,0 +1,127 @@
+@mixin auth-round ($bg-color) {
+  border-radius: 40px;
+  padding: 15px 40px;
+  border: none;
+  background-color: $bg-color;
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+
+.auth {
+  padding: 130px 120px 20px;  
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 100px;
+  color: $text;
+  text-align: center;
+  align-items: flex-start;
+}
+
+.auth-form {
+  // width: 290px;
+
+  &__title {
+    font-weight: 700;
+    font-size: 2.4rem;
+    color: $text_dark;
+    padding-bottom: 5.4rem;
+  }
+
+  &__item {
+    margin-bottom: 10px;
+  }
+
+  &__submit {
+    @include auth-round(green);
+    color: white;
+    display: block;
+    width: 100%;
+    margin-top: 40px;
+
+    &:hover{
+      background-color: lighten($color: green, $amount: 2);
+    }
+    &:active {
+      background-color: darken($color: green, $amount: 2);
+    }
+    &:disabled {
+      background-color: $bg_grey;
+    }
+  }
+
+  &__error {
+    color: $form_error;
+    font-weight: 300;
+  }
+
+  &__custom-input {
+    position: relative;
+
+    .auth-form__input {
+      display: block;
+      width: 100%;
+      @include auth-round($bg_grey);
+      padding-left: 60px;
+      &::placeholder {
+        font-weight: 300;
+      }
+        
+      &:focus {
+        outline: none;
+        animation: input_spread .2s linear;
+        &::placeholder {
+          color: $bg_grey;
+        }
+        & + img {
+          transform: translate(-5px, -50%); 
+          filter: grayscale(0);         
+        }
+      }
+    }
+    .auth-form__input-icon {
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      width: 12px;
+      transition: transform .2s ease-in-out;
+      filter: grayscale(1);
+    }
+  }
+
+  &__recover {
+    color: $text_light;
+    margin-top: 1rem;
+    font-weight: 300;
+    &_dark {
+      color: $text;
+    }
+  }
+  
+  &__toggle {
+    line-height: 1.4rem;
+    margin-top: 180px;
+  }
+}
+
+.authSpinner {
+  animation: loaderSpin 3s infinite;
+}
+
+@keyframes loaderSpin {
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes input_spread {
+  100%{
+    box-shadow: 0 0 70px 25px green;
+    opacity: 0;
+  }
+}
