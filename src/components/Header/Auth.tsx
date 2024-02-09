@@ -2,7 +2,6 @@ import { Avatar, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Typograph
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector, useAuth } from "utils/hooks";
-import { Button } from "~comps/UI_components/Button/Button";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import DefaultAccIcon from '@mui/icons-material/AccountCircleOutlined';

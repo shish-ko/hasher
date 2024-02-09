@@ -25,9 +25,9 @@ export async function render(req: Request) {
 
   // If we got a redirect response, short circuit and const our Express server
   // handle that directly
-  // if (context instanceof Response) {
-  //   throw context;
-  // }
+  if (context instanceof Response) {
+    throw context;
+  }
 
   const router = createStaticRouter(dataRoutes, context as StaticHandlerContext);
   // MUI ssr

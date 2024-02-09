@@ -1,5 +1,5 @@
 import { Request as expressReq } from "express";
-import { Request, Headers as myHeaders} from 'node-fetch';
+// import { Request, Headers as myHeaders} from 'node-fetch';
 
 export default function createFetchRequest(req: expressReq) {
   const origin = `${req.protocol}://${req.get("host")}`;
@@ -9,7 +9,7 @@ export default function createFetchRequest(req: expressReq) {
   const controller = new AbortController();
   req.on("close", () => controller.abort());
 
-  const headers = new myHeaders();
+  const headers = new Headers();
 
   for (const [key, values] of Object.entries(req.headers)) {
     if (values) {
@@ -37,7 +37,7 @@ export default function createFetchRequest(req: expressReq) {
 }
 interface Iinit {
   method: string;
-  headers: myHeaders;
+  headers: Headers;
   signal: AbortSignal;
   body?: string  
 }

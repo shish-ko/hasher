@@ -1,10 +1,10 @@
 import { LoaderFunction, useLoaderData, useParams } from "react-router-dom";
 import { serverAPI } from "~utils/axios";
 import { Helmet } from 'react-helmet';
-import { ISecret } from "~interfaces/index";
+import { IFutureSecret } from "~interfaces/index";
 
 export const FB_Secret =() => {
-  const secret = useLoaderData() as Omit<ISecret, 'url' | 'countdownHandler'>;
+  const secret = useLoaderData() as IFutureSecret;
   const { secretId } = useParams();
   return (
     <Helmet>
@@ -16,8 +16,8 @@ export const FB_Secret =() => {
   );
 };
 
-export const loader: LoaderFunction = async ({params}): Promise<Omit<ISecret, "url">> => {
-  // const { data } = await serverAPI.get(`fbscraper/secret/${params.secretId}`);
-  return {title: 'qweqweqwewqe', type: 'VIDEO'} ;
+export const loader: LoaderFunction = async ({params}): Promise<IFutureSecret> => {
+  const { data } = await serverAPI.get<IFutureSecret>(`fbscraper/secret/${params.secretId}`);
+  return data;
 };
 

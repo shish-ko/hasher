@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { routeObj } from 'router/router.tsx';
 import './style/index.scss';

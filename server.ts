@@ -5,6 +5,10 @@ import fs from 'node:fs/promises';
 import { fileURLToPath } from 'url';
 import proxy from 'express-http-proxy';
 import { Helmet } from 'react-helmet';
+import  { installGlobals } from "@remix-run/node";
+
+// Polyfill Web Fetch API
+installGlobals();
 
 async function startServer() {
   const app = express();
