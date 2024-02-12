@@ -14,6 +14,7 @@ import { store } from 'store/store';
 import { routeObj } from 'router/router';
 // import fetch, { Response } from 'node-fetch';
 
+
 injectStore(store);
 
 export async function render(req: Request) {

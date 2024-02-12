@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "ts-node --esm ./src/server ",
-    "dev:no-token": "cross-env VITE_AUTH_FREE=true ts-node --esm ./src/server",
+    "dev": "ts-node --esm ./server ",
+    "dev:no-token": "cross-env VITE_AUTH_FREE=true ts-node --esm ./server",
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build --ssrManifest --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
@@ -20,8 +20,9 @@
     "@mui/icons-material": "^5.15.1",
     "@mui/material": "^5.15.0",
     "@mui/x-date-pickers": "^6.19.0",
-    "@reduxjs/toolkit": "^1.9.6",
+    "@reduxjs/toolkit": "^2.0.0-alpha.4",
     "@remix-run/node": "^2.6.0",
+    "@rollup/plugin-commonjs": "^25.0.7",
     "@types/express": "^4.17.21",
     "@types/facebook-js-sdk": "^3.3.10",
     "@types/react-helmet": "^6.1.9",
@@ -40,7 +41,8 @@
     "react-hook-form": "^7.47.0",
     "react-redux": "^8.1.3",
     "react-router-dom": "^6.16.0",
-    "react-spinners": "^0.13.8"
+    "react-spinners": "^0.13.8",
+    "redux-dynamic-modules-core": "^5.2.3"
   },
   "devDependencies": {
     "@types/express-http-proxy": "^1.6.6",
