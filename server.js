@@ -9,7 +9,7 @@ import { installGlobals } from "@remix-run/node";
 
 // Polyfill Web Fetch API
 installGlobals();
-
+Error.stackTraceLimit=Infinity
 const isProduction = process.env.NODE_ENV === 'production';
 console.log(isProduction);
 const port = process.env.PORT || 5173;

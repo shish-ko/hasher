@@ -1,4 +1,4 @@
-import React, { CSSProperties, useState } from "react";
+import { CSSProperties, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ESecretType, ISecretForm } from "~interfaces/index";
 import { serverAPI } from "~utils/axios";
@@ -9,7 +9,7 @@ import { Button, Dialog, DialogTitle, FormControl, FormHelperText,  Input, Input
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import * as datePicker from '@mui/x-date-pickers/AdapterDayjs';
 const { AdapterDayjs } = datePicker;
-import dayjs from "dayjs";
+import * as dayjs from "dayjs";
 import { AppButton } from "~comps/UI_components/Button";
 import { UploadFile } from "@mui/icons-material";
 import { FutureSecret } from "~comps/Secrets/FutureSecret";

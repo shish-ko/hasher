@@ -1,5 +1,4 @@
 import { Stack, Typography, useTheme } from "@mui/material";
-import React from "react";
 import CountUp from "react-countup";
 // import { useLoaderData } from "react-router-dom";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";

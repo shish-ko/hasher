@@ -1,5 +1,4 @@
 import { SERVER_URL } from "app_constants";
-import React from "react";
 import { ISecretProps } from "~interfaces/index";
 
 export const VideoSecret: React.FC<ISecretProps> =({url}) => {

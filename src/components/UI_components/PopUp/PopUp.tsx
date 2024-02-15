@@ -1,5 +1,4 @@
 import { Alert, Snackbar } from "@mui/material";
-import React from "react";
 import { hidePopUp } from "store/popUpSlice";
 import { useAppDispatch, useAppSelector } from "utils/hooks";
 

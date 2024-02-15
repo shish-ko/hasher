@@ -1,5 +1,4 @@
 import { Box, Link, Stack, Typography } from "@mui/material";
-import React from "react";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
 import { Facebook, Twitter, YouTube } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";

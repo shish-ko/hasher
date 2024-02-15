@@ -1,4 +1,4 @@
-import ReactDOMServer from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import './style/index.scss';
 import { StaticRouterProvider, createStaticHandler, createStaticRouter } from 'react-router-dom/server';
 import { Provider } from 'react-redux';
@@ -35,7 +35,7 @@ export async function render(req: Request) {
   const cache = createEmotionCache();
   const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(cache);
 
-  const appHtml = ReactDOMServer.renderToString(
+  const appHtml = renderToString(
     <Provider store={store}>
       <CacheProvider value={cache}>
         <ThemeProvider theme={appTheme}>

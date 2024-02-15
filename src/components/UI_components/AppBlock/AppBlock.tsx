@@ -1,5 +1,4 @@
 import { Box, BoxProps, Container } from "@mui/material";
-import React from "react";
 
 interface IAppBlockProps extends BoxProps {
   bgColor?: string,
