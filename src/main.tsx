@@ -1,6 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { routeObj } from 'router/router.tsx';
 import './style/index.scss';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -10,11 +7,13 @@ import { appTheme } from 'style/MUI_theme';
 import { CacheProvider } from '@emotion/react';
 import createEmotionCache from 'createEmotionCache';
 import { store } from 'store/store';
+import { routeObj } from 'router/router';
+import { hydrateRoot } from 'react-dom/client';
 
 injectStore(store);
 const router = createBrowserRouter(routeObj);
 const cache = createEmotionCache();
-ReactDOM.hydrateRoot(document.getElementById('root')!,
+hydrateRoot(document.getElementById('root')!,
   // <React.StrictMode>
   <Provider store={store}>
     <CacheProvider value={cache}>

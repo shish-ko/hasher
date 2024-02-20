@@ -1,6 +1,6 @@
 import { Button, ButtonProps, darken, styled } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import { COLORS } from "style/colors";
 

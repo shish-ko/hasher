@@ -1,25 +1,26 @@
-import ReactDOMServer from 'react-dom/server';
-import { routeObj } from 'router/router.tsx';
+import { renderToString } from 'react-dom/server';
 import './style/index.scss';
-import { StaticHandlerContext, StaticRouterProvider, createStaticHandler, createStaticRouter } from 'react-router-dom/server';
+import { StaticRouterProvider, createStaticHandler, createStaticRouter } from 'react-router-dom/server';
 import { Provider } from 'react-redux';
 import { injectStore } from '~utils/helpers';
 import createFetchRequest from '~utils/reqest';
-import { Request } from 'express';
+// import { Request, Response } from 'express';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { appTheme } from 'style/MUI_theme';
 import { CacheProvider } from '@emotion/react';
 import createEmotionCache from './createEmotionCache';
 import createEmotionServer from '@emotion/server/create-instance';
 import { store } from 'store/store';
+import { routeObj } from 'router/router';
 // import fetch, { Response } from 'node-fetch';
+
 
 injectStore(store);
 
-export async function render(req: Request) {
+export async function render(req: Request, res: Response) {
   // router ssr
   const { query, dataRoutes } = createStaticHandler(routeObj);
-  const fetchRequest = createFetchRequest(req);
+  const fetchRequest = createFetchRequest(req, res);
   const context = await query(fetchRequest);
 
 
@@ -29,19 +30,19 @@ export async function render(req: Request) {
     throw context;
   }
 
-  const router = createStaticRouter(dataRoutes, context as StaticHandlerContext);
+  const router = createStaticRouter(dataRoutes, context);
   // MUI ssr
   const cache = createEmotionCache();
   const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(cache);
 
-  const appHtml = ReactDOMServer.renderToString(
+  const appHtml = renderToString(
     <Provider store={store}>
       <CacheProvider value={cache}>
         <ThemeProvider theme={appTheme}>
           <CssBaseline />
           <StaticRouterProvider
             router={router}
-            context={context as StaticHandlerContext}
+            context={context}
             />
         </ThemeProvider>
       </CacheProvider>

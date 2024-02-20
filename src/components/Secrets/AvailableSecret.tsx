@@ -1,5 +1,5 @@
 import { Avatar, Box, Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia, Collapse, IconButton, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ISecret } from "~interfaces/index";
 import { Facebook, Instagram, Share, Twitter } from "@mui/icons-material";

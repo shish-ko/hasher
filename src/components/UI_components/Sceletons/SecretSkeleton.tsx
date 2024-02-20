@@ -1,5 +1,4 @@
 import { Avatar, Divider, Grid, List, Skeleton, Stack } from "@mui/material";
-import React from "react";
 
 export const SecretSkeleton: React.FC =()=> {
   return (

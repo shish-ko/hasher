@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IUserSecrets } from "~interfaces/index";
 import { AvailableSecret } from "./AvailableSecret";
 import { Box, Button, Divider, Menu, MenuItem, MenuItemProps, Stack, Typography, styled } from "@mui/material";

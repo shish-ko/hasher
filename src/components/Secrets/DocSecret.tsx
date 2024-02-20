@@ -1,6 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
 import { SERVER_URL } from "app_constants";
-import React from "react";
 import { ISecretProps } from "~interfaces/index";
 import DownloadIcon from '@mui/icons-material/Download';
 

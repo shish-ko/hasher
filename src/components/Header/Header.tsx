@@ -1,4 +1,3 @@
-import React from "react";
 import { Auth } from "./Auth";
 import { Link, List, ListItem, Stack, Typography, useTheme } from "@mui/material";
 import logo from '../../assets/Logo.png';

@@ -2,7 +2,7 @@ import { Avatar, Divider, Grid, List, ListItem, Paper, Stack, Tooltip, Typograph
 import { useParams } from "react-router-dom";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
 import { SecretSkeleton } from "~comps/UI_components/Sceletons/SecretSkeleton";
-import { IFutureSecret, ISecret, ISecretRes, SERVER, TSecretWithStats } from "~interfaces/index";
+import { IFutureSecret, ISecret, SERVER, TSecretWithStats } from "~interfaces/index";
 import { useServerFetch } from "~utils/hooks";
 import { get_MOCK_USER_SECRETS } from "~utils/helpers";
 import { AppToggleBtn } from "~comps/UI_components/Button";

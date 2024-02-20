@@ -1,5 +1,4 @@
 import { Grid, Typography } from "@mui/material";
-import React from "react";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
 import index1 from '../../assets/index1.png';
 import index2 from '../../assets/index2.png';

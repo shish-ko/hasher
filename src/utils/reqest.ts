@@ -1,13 +1,13 @@
-import { Request as expressReq } from "express";
+import { Request as expressReq, Response as expressRes } from "express";
 // import { Request, Headers as myHeaders} from 'node-fetch';
 
-export default function createFetchRequest(req: expressReq) {
+export default function createFetchRequest(req: expressReq, res: expressRes) {
   const origin = `${req.protocol}://${req.get("host")}`;
   // Note: This had to take originalUrl into account for presumably vite's proxying
   const url = new URL(req.originalUrl || req.url, origin);
 
   const controller = new AbortController();
-  req.on("close", () => controller.abort());
+  res.on("close", () => controller.abort());
 
   const headers = new Headers();
 

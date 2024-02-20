@@ -43,8 +43,9 @@ export const useAuth = () => {
 
 interface IUseServerFetchOptions {
   redirectOnError?: string,
+  errorMsg?: string,
 }
-export const useServerFetch = <T>(url: string, { redirectOnError }: IUseServerFetchOptions = {}) => {
+export const useServerFetch = <T>(url: string, { redirectOnError, errorMsg }: IUseServerFetchOptions = {}) => {
   const [searchParams, setSearchParams] = useState<URLSearchParams>();
   const [res, setRes] = useState<T>();
   const [fetch, setFetch] = useState(false);
@@ -69,7 +70,7 @@ export const useServerFetch = <T>(url: string, { redirectOnError }: IUseServerFe
         setRes(data);
       } catch (e) {
         if (e instanceof AxiosError) {
-          showPopUp(e.response?.data.message || e.message, 'error');
+          showPopUp(errorMsg || e.response?.data.message || e.message, 'error');
           if (redirectOnError && !isDevMode) {
             setTimeout(() => {
               navigate(redirectOnError);
