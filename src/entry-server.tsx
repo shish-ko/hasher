@@ -4,7 +4,7 @@ import { StaticRouterProvider, createStaticHandler, createStaticRouter } from 'r
 import { Provider } from 'react-redux';
 import { injectStore } from '~utils/helpers';
 import createFetchRequest from '~utils/reqest';
-import { Request } from 'express';
+// import { Request, Response } from 'express';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { appTheme } from 'style/MUI_theme';
 import { CacheProvider } from '@emotion/react';
@@ -17,10 +17,10 @@ import { routeObj } from 'router/router';
 
 injectStore(store);
 
-export async function render(req: Request) {
+export async function render(req: Request, res: Response) {
   // router ssr
   const { query, dataRoutes } = createStaticHandler(routeObj);
-  const fetchRequest = createFetchRequest(req);
+  const fetchRequest = createFetchRequest(req, res);
   const context = await query(fetchRequest);
 
 

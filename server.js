@@ -1,15 +1,15 @@
 import express from 'express';
-// import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import fs from 'node:fs/promises';
 import { fileURLToPath } from 'url';
 import proxy from 'express-http-proxy';
 import { Helmet } from 'react-helmet';
 import { installGlobals } from "@remix-run/node";
+import process from 'process';
 
 // Polyfill Web Fetch API
 installGlobals();
-Error.stackTraceLimit=Infinity
+
 const isProduction = process.env.NODE_ENV === 'production';
 console.log(isProduction);
 const port = process.env.PORT || 5173;
@@ -33,11 +33,13 @@ async function startServer() {
       appType: 'custom'
     });
     app.use(vite.middlewares);
+  } else {
+    const compression = (await import('compression')).default;
+    const sirv = (await import('sirv')).default;
+    app.use(compression());
+    app.use(base, sirv('./dist/client', { extensions: [] }));
   }
 
-  // app.use((req, res, next) => {
-  //   vite.middlewares.handle(req, res, next);
-  // });
   app.use('/secret', (req, res, next) => {
     if (req.headers['user-agent']?.includes('facebookexternalhit/1.1')) {
       return proxy('localhost:5173/', {
@@ -63,7 +65,7 @@ async function startServer() {
         template = templateHtml;
         render = (await import('./dist/server/entry-server.js')).render;
       }
-      const { appHtml, emotionCss } = await render(req);
+      const { appHtml, emotionCss } = await render(req, res);
       let html = template.replace(`<!--ssr-outlet-->`, appHtml);
       //meta ssr
       const helmet = Helmet.renderStatic();
