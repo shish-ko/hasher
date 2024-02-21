@@ -8,7 +8,6 @@ export const Auth = () => {
   const { isLogged, name, id } = useAppSelector((store) => store.user);
   const { logOutUser } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLLIElement>(null);
-  console.log(AccountCircleOutlined)
   const handleOpenMenu = (e: React.MouseEvent<HTMLLIElement>) => {
     setAnchorEl(e.currentTarget);
   };

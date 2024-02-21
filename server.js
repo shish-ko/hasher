@@ -11,7 +11,8 @@ import process from 'process';
 installGlobals();
 
 const isProduction = process.env.NODE_ENV === 'production';
-console.log(isProduction);
+const SERVER_URL = isProduction ? 'https://secret-server-srv.onrender.com/' : 'http://localhost:3000/';
+
 const port = process.env.PORT || 5173;
 const base = process.env.BASE || '/';
 
@@ -38,7 +39,7 @@ async function startServer() {
 
   app.use('/secret', (req, res, next) => {
     if (req.headers['user-agent']?.includes('facebookexternalhit/1.1')) {
-      return proxy('localhost:5173/', {
+      return proxy(SERVER_URL, {
         proxyReqPathResolver(req) {
           return req.originalUrl.replace('/secret/', '/fb_scraper/secret/');
         },

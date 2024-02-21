@@ -45,7 +45,8 @@ import Facebook$1 from "@mui/icons-material/Facebook.js";
 import Share$1 from "@mui/icons-material/Share.js";
 import Twitter$1 from "@mui/icons-material/Twitter.js";
 import Instagram$1 from "@mui/icons-material/Instagram.js";
-const SERVER_URL = "http://localhost:3000/";
+const isProdMode = process.env.NODE_ENV === "production";
+const SERVER_URL = isProdMode ? "https://secret-server-srv.onrender.com/" : "http://localhost:3000/";
 const SECOND = 1e3;
 const TEST_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3MDcxNjg5MDQsImV4cCI6MTczODcwNDkwNCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsImlkIjoiMyIsIm5hbWUiOiJRd2VyIn0.R-PYGtD5IWrRVr_nwjtIUyb0aEcaM6yUkIa6-H9dmRI";
 const FIVE_MINUTES = 3e5;
@@ -202,7 +203,6 @@ async function loader$1(controller) {
     }
   }
   async function refreshToken() {
-    console.log("refresh tokens");
     const res = await serverAPI.get("auth/refresh-tokens");
     const { token: newToken } = res.data;
     store$1 == null ? void 0 : store$1.dispatch(setAuthToken(newToken));
@@ -719,7 +719,7 @@ const Subscription = () => {
   const { register, formState: { errors }, handleSubmit } = useForm();
   return /* @__PURE__ */ jsxs(AppBlock, { children: [
     /* @__PURE__ */ jsx(Typography, { variant: "h3", textAlign: "center", color: "white", children: "Join the Secret Service’s  Club for insider tips and top-secret promotions. Trust us, you don’t want to miss this!" }),
-    /* @__PURE__ */ jsx(Stack, { alignItems: "center", children: /* @__PURE__ */ jsxs("form", { onSubmit: handleSubmit((val) => console.log(val)), className: "subscriptionForm", children: [
+    /* @__PURE__ */ jsx(Stack, { alignItems: "center", children: /* @__PURE__ */ jsxs("form", { onSubmit: handleSubmit((val) => void 0), className: "subscriptionForm", children: [
       /* @__PURE__ */ jsx(
         AppInput,
         {
@@ -929,7 +929,6 @@ const FutureSecret = ({ id, type, userId, availableAt, createdAt, title, countdo
           method: "share",
           href: "https://youtube.com/"
         }, function(response) {
-          console.log(response.error_code);
         });
       }, children: /* @__PURE__ */ jsx(Facebook, {}) }),
       /* @__PURE__ */ jsx(IconButton, { children: /* @__PURE__ */ jsx(Twitter, {}) }),
@@ -1225,7 +1224,6 @@ const AvailableSecret = ({ id, title, type, availableAt, url, createdAt, userId,
           method: "share",
           href: "https://youtube.com/"
         }, function(response) {
-          console.log(response.error_code);
         });
       }, children: /* @__PURE__ */ jsx(Facebook, {}) }),
       /* @__PURE__ */ jsx(IconButton, { children: /* @__PURE__ */ jsx(Twitter, {}) }),
@@ -1523,7 +1521,6 @@ const routeObj = createRoutesFromElements(
       /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(SignUp, {}), path: "/signup" }),
       /* @__PURE__ */ jsxs(Route, { element: /* @__PURE__ */ jsx(ProtectedRoutes, {}), children: [
         /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(User, {}), path: "/user/:userId", action: async (res) => {
-          console.log(res);
           return null;
         } }),
         /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(Secret, {}), path: "/secret/:secretId" })
