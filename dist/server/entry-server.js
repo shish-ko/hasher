@@ -26,7 +26,7 @@ import { useForm, Controller } from "react-hook-form";
 import CircularProgress from "@mui/material/node/CircularProgress/index.js";
 import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import * as datePicker from "@mui/x-date-pickers/node/AdapterDayjs/index.js";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import AddIcon from "@mui/icons-material/Add.js";
 import AudioMotionAnalyzer from "audiomotion-analyzer";
 import DownloadIcon from "@mui/icons-material/Download.js";
