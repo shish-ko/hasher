@@ -3,7 +3,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ESecretType, ISecretForm } from "~interfaces/index";
 import { serverAPI } from "~utils/axios";
 import { Form, useLocation } from "react-router-dom";
-import { FIVE_MINUTES } from "app_constants";
+import { ONE_MINUTE } from "app_constants";
 import { useAppDispatch, useAppSelector, usePopUp } from "~utils/hooks";
 import { Button, Dialog, DialogTitle, FormControl, FormHelperText,  Input, InputLabel, Stack, Typography } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -14,6 +14,7 @@ import { AppButton } from "~comps/UI_components/Button";
 import { UploadFile } from "@mui/icons-material";
 import { FutureSecret } from "~comps/Secrets/FutureSecret";
 import { addNewSecret } from "store/userSlice";
+import { fileValidator } from "~utils/helpers";
 
 const formStyles: CSSProperties = {
   margin: '0 auto',
@@ -81,7 +82,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
                   control={control}
                   rules={{
                     required: 'provide expired date',
-                    validate: (date) => (new Date(date.$d).getTime() - Date.now()) > FIVE_MINUTES || 'date must be at least 2 minutes later from submit time'
+                    validate: (date) => (new Date(date.$d).getTime() - Date.now()) > (2 * ONE_MINUTE) || 'date must be at least 2 minutes later from submit time'
                   }}
                   render={({ field }) => {
                     return <DateTimePicker
@@ -118,7 +119,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
             </FormControl>
             <FormControl>
               <Button component='label' startIcon={<UploadFile />} variant="contained">Attach file
-                <input type="file" hidden {...register('file', {onChange: (e)=>{trigger();setFileName(e.target?.value);}, required: {value: true, message: 'attach the file'}})} />
+                <input type="file" hidden {...register('file', {onChange: (e)=>{trigger();setFileName(e.target?.value);}, required: {value: true, message: 'Attach the file'}, validate: fileValidator})} />
               </Button>
               <FormHelperText error={!!errors.file}>{errors.file ? errors.file.message : fileName}</FormHelperText>
             </FormControl>

@@ -1,4 +1,4 @@
-import { ONE_HOUR, SECOND, TEST_TOKEN } from "../app_constants";
+import { ONE_HOUR, SECOND, TEST_TOKEN, TWENTY_FIFE_MB } from "../app_constants";
 import jwtDecode from "jwt-decode";
 import { ESecretType, ITokenPayload, IUserSecrets, SERVER } from "~interfaces/index";
 import { serverAPI } from "./axios";
@@ -123,6 +123,13 @@ export const countdownRenderer = (typographyProps?: TypographyProps) => ({ days,
     return <TypographyCountdown {...typographyProps}>{days}d:{zeroPad(hours)}:{zeroPad(minutes)}:{zeroPad(seconds)}</TypographyCountdown>;
   }
   return <TypographyCountdown {...typographyProps} milliseconds> {zeroPad(minutes)}:{zeroPad(seconds)}:{zeroPad(milliseconds, 3)}</TypographyCountdown >;
+};
+
+export const fileValidator =(files: File[]) => {
+  if (files[0].size > TWENTY_FIFE_MB) {
+    return 'File size should be less than 25Mb';
+  }
+  return true;
 };
 
 class SecretAvailabilityHandler {
