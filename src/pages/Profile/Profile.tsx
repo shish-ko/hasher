@@ -1,12 +1,21 @@
 import { AccountCircleOutlined } from "@mui/icons-material";
-import { Avatar, Box, Checkbox, FormControl, FormControlLabel, FormLabel, Grid, List, ListItem, Stack, TextField, Typography } from "@mui/material";
+import { Avatar, Checkbox, FormControlLabel, Grid, List, ListItem, Stack, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
 import { AppButton } from "~comps/UI_components/Button";
-import { AppInput } from "~comps/UI_components/Inputs";
+import { IAccountInfo, SERVER } from "~interfaces/index";
+import { serverAPI } from "~utils/axios";
 import { useAppSelector } from "~utils/hooks";
 
 export const Profile: React.FC = () => {
   const { name, userPic } = useAppSelector((store) => store.user);
+  const [userName, setUserName] = useState(name);
+
+  const handleUserNameChange = async () => {
+    const accountInfo = await serverAPI.put<IAccountInfo>(SERVER.ACCOUNT_NAME, {userName});
+    return
+  };
+
   return (
     <AppBlock bgColor="white">
       <Typography variant="h3" textAlign='center'>Profile settings</Typography>
@@ -16,7 +25,7 @@ export const Profile: React.FC = () => {
             {userPic ? <img src={userPic} alt="user picture" /> : <AccountCircleOutlined sx={{ height: 200, width: 200 }} />}
           </Avatar>
           <Stack gap={2}>
-            <AppButton>
+            <AppButton >
               {userPic ? 'Change profile photo' : 'Add profile photo'}
             </AppButton>
             <AppButton disabled={!userPic} dark={true}>
@@ -27,12 +36,13 @@ export const Profile: React.FC = () => {
         <Grid item sm={6} component={List} gap={4} display='flex' flexDirection='column'>
           <ListItem disableGutters>
             <TextField
-              defaultValue={name}
+              value={userName}
+              onChange={(e)=> setUserName(e.target.value)}
               variant="standard"
               label='User name'
               sx={{ mr: 4 }}
             />
-            <AppButton sx={{p: 3}}>Change user name</AppButton>
+            <AppButton sx={{p: 3}} disabled={userName===name}>Change user name</AppButton>
           </ListItem>
           <ListItem disableGutters>
             <TextField
