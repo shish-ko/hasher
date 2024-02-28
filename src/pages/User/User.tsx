@@ -1,10 +1,8 @@
-import { SERVER_URL } from "app_constants";
 import { useEffect, useRef } from "react";
-import { LoaderFunctionArgs, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { SecretsList } from "~comps/Secrets/SecretList";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
 import { IRouterParams, IUserSecrets } from "~interfaces/index";
-import { serverAPI } from "~utils/axios";
 import { get_MOCK_USER_SECRETS } from "~utils/helpers";
 import { useAppSelector, useServerFetch } from "~utils/hooks";
 
@@ -33,14 +31,4 @@ export const User: React.FC = () => {
         <div>loading...</div>}
     </AppBlock>
   );
-};
-
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  console.log('user ' + Date.now());
-  try {
-    const res = await serverAPI.get(SERVER_URL + `user/${params.userId}`);
-    return res.data;
-  } catch {
-    return null;
-  }
 };

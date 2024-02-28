@@ -8,6 +8,7 @@ import { User } from "pages/User/User";
 import { AuthCheckingRoutes } from "pages/Auth/AuthCheckingRoutes";
 import { FB_Secret, loader } from "pages/Scrapers/FB_Secret";
 import { Secret } from "pages/Secret/Secret";
+import { Profile } from "pages/Profile/Profile";
 
 
 export const routeObj = createRoutesFromElements(
@@ -17,6 +18,7 @@ export const routeObj = createRoutesFromElements(
       <Route element={<LogIn />} path="/login" />
       <Route element={<SignUp />} path="/signup" />
       <Route element={<ProtectedRoutes />} >
+        <Route element={<Profile/>} path="/profile" />
         <Route element={<User />} path="/user/:userId" action={async (res) => { console.log(res); return null; }} />
         <Route element={<Secret />} path="/secret/:secretId" />
       </Route>

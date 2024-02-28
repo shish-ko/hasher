@@ -19,7 +19,7 @@ serverAPI.interceptors.request.use(async (config)=>{
 });
 serverAPI.interceptors.response.use((response)=> {
   const {url, method} = response.config;
-  if((url?.includes(SERVER.SECRET_SUBSCRIPTION)) || (url?.includes(SERVER.SECRET) && method==='post')){
+  if((url?.includes(SERVER.SECRET_SUBSCRIPTION)) || (url?.includes('secret') && method==='post')){
    popUpSecretHandler.setPopUpTimers();
   }
   return response;

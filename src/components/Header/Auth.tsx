@@ -2,7 +2,7 @@ import { Avatar, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Typograph
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector, useAuth } from "utils/hooks";
-import {ArrowDropDown,  ArrowDropUp, AccountCircleOutlined, BallotOutlined, LogoutOutlined, AssignmentIndOutlined} from '@mui/icons-material';
+import { ArrowDropDown, ArrowDropUp, AccountCircleOutlined, BallotOutlined, LogoutOutlined, AssignmentIndOutlined } from '@mui/icons-material';
 
 export const Auth = () => {
   const { isLogged, name, id } = useAppSelector((store) => store.user);
@@ -32,7 +32,7 @@ export const Auth = () => {
             </ListItemIcon>
             <ListItemText>User page</ListItemText>
           </MenuItem>
-          <MenuItem component={Link} to={'#'} onClick={handleCloseMenu}>
+          <MenuItem component={Link} to={'/profile'} onClick={handleCloseMenu}>
             <ListItemIcon>
               <AssignmentIndOutlined />
             </ListItemIcon>
@@ -42,7 +42,8 @@ export const Auth = () => {
             <ListItemIcon>
               <LogoutOutlined />
             </ListItemIcon>
-            Log out</MenuItem>
+            <ListItemText>Log out</ListItemText>
+          </MenuItem>
         </Menu>
       </> :
       <>

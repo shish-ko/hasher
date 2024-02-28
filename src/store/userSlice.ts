@@ -8,6 +8,7 @@ interface IUserSlice {
   isLogged: boolean,
   authToken?: string,
   newSecrets: number,
+  userPic?: string
 }
 
 const initialState: IUserSlice = {
