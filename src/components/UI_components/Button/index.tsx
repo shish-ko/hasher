@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import { COLORS } from "style/colors";
 
-interface IAppButtonProps {
+type IAppButtonProps = {
   dark?: unknown,
-}
+} & ButtonProps
 
 export const AppButton = styled(Button)<IAppButtonProps>(({ theme, dark, disabled }) => {
   let bgColor = theme.palette.success.main;

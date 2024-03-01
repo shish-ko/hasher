@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IUserSecrets } from "~interfaces/index";
+import { INITIAL_NAME } from "app_constants";
+import { IAccountInfo, IToken, IUserSecrets } from "~interfaces/index";
 
 interface IUserSlice {
   id?: number,
@@ -13,7 +14,7 @@ interface IUserSlice {
 
 const initialState: IUserSlice = {
   isLogged: false,
-  name: 'anonymous',
+  name: '',
   secrets: {availableSecrets:[], futureSecrets: []},
   newSecrets: 0,
 };
@@ -31,8 +32,10 @@ const userSlice = createSlice({
     setAuthToken: (state, {payload}: {payload: string}) => {
       state.authToken = payload;
     },
-    setUserData: (state, {payload}: {payload: Pick<IUserSlice, 'id' | 'name' | 'authToken'>}) => {
-      state.authToken=payload.authToken;
+    setUserData: (state, {payload}: {payload: IAccountInfo & Partial<IToken>}) => {
+      if(payload.token){
+        state.authToken=payload.token;
+      }
       state.id=payload.id;
       state.name=payload.name;
       state.isLogged=true;
@@ -45,6 +48,6 @@ const userSlice = createSlice({
     }
   }
 });
-export const {setUserData, setUserSecrets, removeUserData, setAuthToken, addNewSecret } = userSlice.actions;
+export const { setUserData, setUserSecrets, removeUserData, setAuthToken, addNewSecret } = userSlice.actions;
 export {userSlice};
 

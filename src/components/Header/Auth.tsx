@@ -3,9 +3,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector, useAuth } from "utils/hooks";
 import { ArrowDropDown, ArrowDropUp, AccountCircleOutlined, BallotOutlined, LogoutOutlined, AssignmentIndOutlined } from '@mui/icons-material';
+import { SERVER_ASSETS } from "app_constants";
 
 export const Auth = () => {
-  const { isLogged, name, id } = useAppSelector((store) => store.user);
+  const { isLogged, name, id, userPic } = useAppSelector((store) => store.user);
   const { logOutUser } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLLIElement>(null);
   const handleOpenMenu = (e: React.MouseEvent<HTMLLIElement>) => {
@@ -22,7 +23,7 @@ export const Auth = () => {
           sx={{ width: 'fit-content', cursor: 'pointer' }}
           // onMouseLeave={handleCloseMenu} 
           onMouseEnter={handleOpenMenu}>
-          {!name ? <Avatar sx={{ mr: 1 }}>{name[0]}</Avatar> : <AccountCircleOutlined sx={{ mr: 1 }} />}
+          {userPic ? <Avatar sx={{ mr: 1 }} src={SERVER_ASSETS + userPic}/> : <AccountCircleOutlined sx={{ mr: 1 }} />}
           <ListItemText primaryTypographyProps={{ variant: 'appNav' }}>{name}</ListItemText>
         </ListItem>
         <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={handleCloseMenu} autoFocus={false}>

@@ -1,9 +1,13 @@
-import { useAuth } from "~utils/hooks";
+import { useAppDispatch, useAuth } from "~utils/hooks";
 import { useState, useEffect, CSSProperties } from 'react';
 import { loader } from '~utils/helpers';
 import { Outlet } from "react-router-dom";
 import { Backdrop, Container, Stack, Typography } from "@mui/material";
 import spinner from '../../assets/spinner.png';
+import { setAuthToken } from "store/userSlice";
+import { serverAPI } from "~utils/axios";
+import { IAccountInfo, SERVER } from "~interfaces/index";
+import { FAKE_USER_DATA } from "~utils/mock_data";
 
 const titleStyle: CSSProperties = {
   fontFamily: 'Bowlby One',
@@ -23,12 +27,19 @@ const subTitleStyle: CSSProperties = {
 export const AuthCheckingRoutes: React.FC = () => {
   const { setUser } = useAuth();
   const [isChecking, setIsChecking] = useState(true);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     async function authChecker() {
       const token = await loader();
       if (token) {
-        setUser(token);
+        if(import.meta.env.VITE_AUTH_FREE) {
+          setUser({token, ...FAKE_USER_DATA});
+        } else {
+          dispatch(setAuthToken(token));
+          const {data} = await serverAPI.get<IAccountInfo>(SERVER.ACCOUNT_INFO);
+          setUser(data);
+        }
       }
       setIsChecking(false);
     }

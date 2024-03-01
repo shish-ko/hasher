@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { AxiosError } from "axios";
 import { IAppDispatch, IRootState } from "store/store";
-import jwtDecode from "jwt-decode";
-import { ITokenPayload } from "~interfaces/index";
+import { IAccountInfo, IToken } from "~interfaces/index";
 import { popUpSecretHandler } from "./helpers";
 
 type DispatchFunc = () => IAppDispatch;
@@ -27,9 +26,8 @@ export const usePopUp = () => {
 export const useAuth = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  function setUser(token: string) {
-    const payload = jwtDecode<ITokenPayload>(token);
-    dispatch(setUserData({...payload, authToken: token }));
+  function setUser(payload: IAccountInfo & Partial<IToken>) {
+    dispatch(setUserData(payload));
     popUpSecretHandler.setPopUpTimers();
   }
   async function logOutUser() {

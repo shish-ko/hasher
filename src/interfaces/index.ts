@@ -12,11 +12,20 @@ interface ISecretForm {
 
 interface ITokenPayload {
   exp: number,
-  name?: string,
   id: number,
-  userPic?: string,
-  emailSubs: boolean,
 }
+
+interface IToken {
+  token: string,
+}
+
+interface IAccountInfo {
+  id: number,
+  emailSubs: boolean,
+  userPic: string | null,
+  name: string,  
+}
+
 type IRouterParams = 'userId';
 
 interface ISecret {
@@ -60,15 +69,10 @@ export enum SERVER {
   SECRET = 'secret/',
   SECRET_LIKE = 'secret/like/',
   SECRET_SUBSCRIPTION = 'secret/subs/',
-  ACCOUNT_NAME = 'account/name/',
+  ACCOUNT_INFO = 'account/info/',
+  ACCOUNT_NAME = 'account/username/',
   ACCOUNT_USERPIC = 'account/userpic',
   ACCOUNT_PASSWORD = 'account/password/'
-}
-
-interface IAccountInfo {
-  name?: string,
-  userPic?: string,
-  emailSubs?: boolean,
 }
 
 enum ESecretType {
@@ -78,6 +82,6 @@ enum ESecretType {
   PHOTO = 'PHOTO',
 }
 
-export type { TSecretWithStats, IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, ISecretComponentProps, ISecretProps, IFutureSecret, IUserSecrets, IAccountInfo };
+export type { IToken, TSecretWithStats, IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, ISecretComponentProps, ISecretProps, IFutureSecret, IUserSecrets, IAccountInfo };
 export { ESecretType };
 

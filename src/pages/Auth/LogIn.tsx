@@ -3,11 +3,10 @@ import loginSrc from '~assets/login.webp';
 import MailIcon from '~assets/envelope-solid.svg?react';
 import LockIcon from '~assets/lock-solid.svg?react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { IAuthForm, ITokenPayload } from 'interfaces';
+import { IAccountInfo, IAuthForm, IToken } from 'interfaces';
 import { SERVER_URL } from 'app_constants';
 import { useAuth, usePopUp } from 'utils/hooks';
 import { useState } from 'react';
-import jwtDecode from 'jwt-decode';
 import { serverAPI } from '~utils/axios';
 import axios from 'axios';
 import { AppBlock } from '~comps/UI_components/AppBlock/AppBlock';
@@ -27,12 +26,10 @@ export const LogIn: React.FC = () => {
   const onSubmit: SubmitHandler<IAuthForm> = async (data) => {
     setIsSubmitting(true);
     try {
-      const res = await serverAPI.post(SERVER_URL + 'auth/login', data);
-      const { token }: { token: string } = res.data;
-      const { id } = jwtDecode<ITokenPayload>(token);
-      setUser(token);
+      const res = await serverAPI.post<IToken & IAccountInfo>(SERVER_URL + 'auth/login', data);
+      setUser(res.data);
       showPopUp('Login successfully');
-      navigate(`/user/${id}`);
+      navigate(`/user/${res.data.id}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         showPopUp(error.response?.data.message, 'error');

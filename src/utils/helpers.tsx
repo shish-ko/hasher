@@ -18,7 +18,7 @@ export const injectStore = (_store: ToolkitStore<IRootState>) => {
   store = _store;
 };
 
-export async function loader(controller?: AbortController) {
+export async function loader(controller?: AbortController): Promise<string | undefined> {
   if (import.meta.env.VITE_AUTH_FREE) return TEST_TOKEN;
   const oldToken = store?.getState().user.authToken;
   if (!oldToken) { // e.d. after refresh, when no token at store but refresh token can be at cookies
