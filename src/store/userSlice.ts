@@ -1,23 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { INITIAL_NAME } from "app_constants";
-import { IAccountInfo, IToken, IUserSecrets } from "~interfaces/index";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { IAccountInfo, IToken, IUserSecrets, SERVER } from "~interfaces/index";
+import { serverAPI } from "~utils/axios";
 
-interface IUserSlice {
-  id?: number,
-  name: string,
+type IUserSlice = {
   secrets: IUserSecrets,
   isLogged: boolean,
   authToken?: string,
   newSecrets: number,
-  userPic?: string
-}
+} & IAccountInfo
 
 const initialState: IUserSlice = {
+  id: 0,
   isLogged: false,
   name: '',
   secrets: {availableSecrets:[], futureSecrets: []},
   newSecrets: 0,
+  userPic: null,
+  emailSubs: false
 };
+
+const updateAccountInfo = createAsyncThunk(
+  'user/updateAccountInfo',
+  async (accountInfo: Partial<IAccountInfo>) => {
+    const response = await serverAPI.put<IAccountInfo>(SERVER.ACCOUNT_INFO, accountInfo);
+    return response.data;
+  },
+);
 
 const userSlice = createSlice({
   name: 'user',
@@ -42,12 +50,19 @@ const userSlice = createSlice({
     },
     removeUserData: (state)=> {
       state.authToken=undefined;
-      state.id=undefined;
+      state.id=0;
       state.name='';
       state.isLogged=false;
     }
-  }
+  },
+  extraReducers(builder) {
+    builder.addCase(updateAccountInfo.fulfilled, (state, action) => {
+      return {...state, ...action.payload};
+    });
+  },
 });
+
+
 export const { setUserData, setUserSecrets, removeUserData, setAuthToken, addNewSecret } = userSlice.actions;
-export {userSlice};
+export {userSlice, updateAccountInfo};
 
