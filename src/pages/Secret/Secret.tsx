@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import { SecretMedia } from "~comps/Secrets/SecretMedia";
 import { CSSProperties } from "react";
 import { serverAPI } from "~utils/axios";
+import { SERVER_URL } from "app_constants";
 
 const SecretListItem = styled(ListItem)({
   alignItems: 'center',
@@ -37,11 +38,14 @@ export const Secret = () => {
   const { secretId } = useParams();
   let { res, refetch, setRes } = useServerFetch<TSecretWithStats<ISecret | IFutureSecret>>(SERVER.SECRET + secretId, {redirectOnError: '/'});
   if (import.meta.env.VITE_AUTH_FREE) {
-    res = {...get_MOCK_USER_SECRETS().availableSecrets[0], stats: {isLiked: true, isSubscribed: false, likesNum: 122, subscribersNum: 11}};
+    res = {...get_MOCK_USER_SECRETS().availableSecrets[0], stats: {isLiked: true, isSubscribed: false, likesNum: 122, subscribersNum: 11}, user: {id: 1, userPic: null, name: 'Anonymous'}};
   }
 
   if (res) {
-    const { id, type, title, description, createdAt, availableAt, userId, views, url, stats: {isLiked, isSubscribed, likesNum, subscribersNum} }  = res;
+    const { id, type, title, description, createdAt, availableAt, userId, views, url, 
+      stats: {isLiked, isSubscribed, likesNum, subscribersNum}, 
+      user: { userPic, name } 
+    }  = res;
 
     const likeHandler = async () => {
       if (isLiked) {
@@ -68,8 +72,8 @@ export const Secret = () => {
         <Paper elevation={14} component={Stack} gap={4} p={5}>
           <Stack direction='row' justifyContent='space-between' alignItems='center'>
             <Stack direction='row' alignItems='center' gap={2} component={Link} to={`/user/${userId}`}>
-              <Avatar>Avatr</Avatar>
-              <Typography>Name</Typography>
+              <Avatar src={SERVER_URL+userPic}>{name.slice(0,2)}</Avatar>
+              <Typography>{name}</Typography>
             </Stack>
             <Stack direction='row' gap={2} sx={{ height: 'fit-content' }}>
               <Tooltip title={isSubscribed ? 'unsubscribe' : 'subscribe'} >

@@ -34,7 +34,7 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
   const [fileName, setFileName] = useState(' ');
   const [preview, setPreview] = useState<ISecretForm>();
   const titleText = watch('title', '');
-  const { id } = useAppSelector((state) => state.user);
+  const { id, name, userPic } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const showPopUp = usePopUp();
   const url = useLocation();
@@ -126,7 +126,21 @@ export const SecretForm: React.FC<ISecretFormProps> = ({ formCloseHandler, isSec
             <Button color="warning" variant="outlined" onClick={previewHandler}>Get preview</Button>
             <AppButton type='submit'>Submit</AppButton>
           </Stack>
-          {preview && <FutureSecret sx={{maxWidth: formStyles.width}} userId={id!} id="1" title={preview.title} availableAt={preview.date.$d} createdAt={new Date().toDateString()} type={ESecretType.DOC} countdownHandler={()=>{}} />}
+          {preview && 
+            <FutureSecret 
+              sx={{maxWidth: formStyles.width}} 
+              userId={id!} 
+              id="1" 
+              title={preview.title} 
+              availableAt={preview.date.$d} 
+              createdAt={new Date().toDateString()} 
+              type={ESecretType.DOC} 
+              countdownHandler={()=>{}} 
+              user={ {id, name, userPic} }
+              views={0}
+              url={null}
+              description={null}
+            />}
 
       </Stack>
 

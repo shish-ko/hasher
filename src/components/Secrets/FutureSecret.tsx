@@ -1,13 +1,14 @@
 import { Facebook, Instagram, Share, Twitter } from "@mui/icons-material";
 import { Avatar, Box, Card, CardActionArea, CardActions, CardHeader, CardMedia, CardProps, Collapse, IconButton, Typography, styled } from "@mui/material";
+import { SERVER_URL } from "app_constants";
 import { useState } from "react";
 import Countdown from "react-countdown";
 import { Link as RouterLink } from 'react-router-dom';
 import { COLORS } from "style/colors";
-import { IFutureSecret } from "~interfaces/index";
+import { IFutureSecretWithUser } from "~interfaces/index";
 import { countdownRenderer } from "~utils/helpers";
 
-type IFutureSecretProps = Omit<IFutureSecret, 'url' | 'description' | 'views'> & { countdownHandler: () => void } & CardProps
+type IFutureSecretProps = IFutureSecretWithUser & { countdownHandler: () => void } & CardProps
 
 const Secret_future = styled(Card)(()=>({
   display: 'flex',
@@ -15,7 +16,7 @@ const Secret_future = styled(Card)(()=>({
   justifyContent: 'space-between',
 }));
 
-export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, userId, availableAt, createdAt, title, countdownHandler, ...rest }) => {
+export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, userId, availableAt, createdAt, title, countdownHandler, user: {userPic, name},  ...rest }) => {
   const [isShown, setIsShown] = useState(false);
   return (
     <Secret_future elevation={4} {...rest}>
@@ -24,7 +25,7 @@ export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, userId, a
         subheader={`Created at: ${new Date(createdAt).toLocaleDateString()}`}
         titleTypographyProps={{color:'text.secondary'}}
         subheaderTypographyProps={{color: 'text.primary'}}
-        avatar={<Avatar component={RouterLink} to={`../user/${userId}`}>QS</Avatar>} // TODO add usrName instead of QS
+        avatar={<Avatar component={RouterLink} to={`../user/${userId}`} src={SERVER_URL+userPic}>{name}</Avatar>} // TODO add usrName instead of QS
       // TODO: add action for user's secrets (change title and so on...)
       />
       <CardActionArea component={RouterLink} to={`../secret/${id}`}>

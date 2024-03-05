@@ -1,15 +1,16 @@
 import { Avatar, Box, Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia, Collapse, IconButton, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { ISecret } from "~interfaces/index";
+import { ISecretWithUser } from "~interfaces/index";
 import { Facebook, Instagram, Share, Twitter } from "@mui/icons-material";
 import { AppAudioPlayer } from "~comps/Secrets/AudioSecret";
 import { VideoSecret } from "./VideoSecret";
 import { PhotoSecret } from "./PhotoSecret";
 import { DocSecret } from "./DocSecret";
+import { SERVER_URL } from "app_constants";
 
 
-export const AvailableSecret: React.FC<ISecret> = ({ id, title, type, availableAt, url, createdAt, userId, description }) => {
+export const AvailableSecret: React.FC<ISecretWithUser> = ({ id, title, type, availableAt, url, createdAt, userId, description, user: {userPic, name} }) => {
   const [isShown, setIsShown] = useState(false);
   const mediaRef = useRef<HTMLDivElement>(null);
   const availableAtUserTZ = new Date(availableAt).toLocaleString();
@@ -21,7 +22,7 @@ export const AvailableSecret: React.FC<ISecret> = ({ id, title, type, availableA
         titleTypographyProps={{color:'text.secondary'}}
         subheaderTypographyProps={{color: 'text.primary'}}
         subheader={`Created at: ${new Date(createdAt).toLocaleDateString()}`}
-        avatar={<Avatar component={RouterLink} to={`../user/${userId}`}>QS</Avatar>} // TODO add usrName instead of QS
+        avatar={<Avatar component={RouterLink} to={`../user/${userId}`} src={SERVER_URL + userPic}>{name}</Avatar>} // TODO add usrName instead of QS
       // TODO: add action for user's secrets (change title and so on...)
       />
       <CardMedia ref={mediaRef} component='div' sx={{ position: 'relative' }}>

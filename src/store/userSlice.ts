@@ -22,6 +22,7 @@ const initialState: IUserSlice = {
 const updateAccountInfo = createAsyncThunk(
   'user/updateAccountInfo',
   async (accountInfo: Partial<IAccountInfo>) => {
+    console.log(accountInfo);
     const response = await serverAPI.put<IAccountInfo>(SERVER.ACCOUNT_INFO, accountInfo);
     return response.data;
   },
@@ -47,6 +48,8 @@ const userSlice = createSlice({
       state.id=payload.id;
       state.name=payload.name;
       state.isLogged=true;
+      state.emailSubs=payload.emailSubs;
+      state.userPic=payload.userPic;
     },
     removeUserData: (state)=> {
       state.authToken=undefined;
@@ -57,6 +60,7 @@ const userSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(updateAccountInfo.fulfilled, (state, action) => {
+      // state.emailSubs = action.payload.emailSubs;
       return {...state, ...action.payload};
     });
   },

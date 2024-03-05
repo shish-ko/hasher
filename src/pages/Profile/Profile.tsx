@@ -1,6 +1,6 @@
 import { AccountCircleOutlined } from "@mui/icons-material";
 import { Avatar, Button, Checkbox, FormControlLabel, Grid, List, ListItem, Stack, TextField, Tooltip, Typography } from "@mui/material";
-import { ONE_MB } from "app_constants";
+import { ONE_MB, SERVER_URL } from "app_constants";
 import { ChangeEvent, useState } from "react";
 import { updateAccountInfo } from "store/userSlice";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
@@ -12,23 +12,11 @@ import { useAppDispatch, useAppSelector, useAuth, usePopUp } from "~utils/hooks"
 export const Profile: React.FC = () => {
   const { name, userPic, emailSubs } = useAppSelector((store) => store.user);
   const { setUser } = useAuth();
-  const [userName, setUserName] = useState(name);
-  const [displayedUserPic, setDisplayedUserPic] = useState<string | undefined>(userPic ? userPic : undefined);
+  const [displayedUserName, setDisplayedUserName] = useState(name);
+  const [displayedUserPic, setDisplayedUserPic] = useState(userPic ? SERVER_URL + userPic : undefined);
   const showPopUp = usePopUp();
   const [pickedFile, setPickedFile] = useState<File>();
   const dispatch = useAppDispatch();
-
-  const handleUserNameChange = async () => {
-    const { data } = await serverAPI.put<IAccountInfo>(SERVER.ACCOUNT_NAME, { userName });
-    setUser(data);
-    showPopUp('User name successfully updated');
-  };
-
-  const handleEmailSubsChange = async (_, checked: boolean) => {
-    const { data } = await serverAPI.put<IAccountInfo>(SERVER.ACCOUNT_INFO, {emailSubs: checked});
-    setUser(data);
-    showPopUp('User name successfully updated');
-  };
 
   const userPicHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
@@ -48,8 +36,22 @@ export const Profile: React.FC = () => {
     }
   };
 
+  const changeUserName = async () => {
+    await dispatch(updateAccountInfo({name: displayedUserName}));
+    showPopUp("User name successfully changed");
+  };
+  
+  const toggleEmailSubs = async (_, emailSubs: boolean) => {
+    await dispatch(updateAccountInfo({emailSubs}));
+    if(emailSubs) {
+      showPopUp("You will receive e-mail notifications when secrets, you subscribed to, become available");
+    } else {
+      showPopUp("You will NOT receive e-mail notifications when secrets, you subscribed to, become available");
+    }
+  };
+
   const cancelUserPicChange = () => {
-    setDisplayedUserPic(userPic ? userPic : undefined);
+    setDisplayedUserPic(userPic ? SERVER_URL + userPic : undefined);
   };
 
   const submitUserPicChange = async () => {
@@ -57,7 +59,15 @@ export const Profile: React.FC = () => {
     formData.append('userPic', pickedFile!);
     const {data} = await serverAPI.put<IAccountInfo>(SERVER.ACCOUNT_USERPIC, formData);
     setUser(data);
+    setDisplayedUserPic(data.userPic ? SERVER_URL + data.userPic : undefined);
     showPopUp('UserPic successfully updated');
+  };
+
+  const deleteUserPic = async () => {
+    const {data} = await serverAPI.delete<IAccountInfo>(SERVER.ACCOUNT_USERPIC);
+    setUser(data);
+    setDisplayedUserPic(undefined);
+    showPopUp('User picture has been reset');
   };
 
   return (
@@ -74,10 +84,9 @@ export const Profile: React.FC = () => {
                 <input type="file" hidden onChange={userPicHandler} />
                 {displayedUserPic ? 'Change profile photo' : 'Add profile photo'}
               </Button>
-
             </Tooltip>
-            {userPic == displayedUserPic ?
-              <Button disabled={!userPic} color="success">
+            {userPic == displayedUserPic?.replace(SERVER_URL, '') ?
+              <Button disabled={!userPic} color='error' onClick={deleteUserPic}>
                 Delete profile photo
               </Button> :
               <Stack direction='row' justifyContent='space-around'>
@@ -85,21 +94,20 @@ export const Profile: React.FC = () => {
                 <Button onClick={cancelUserPicChange} color="error">cancel</Button>
               </Stack>
             }
-
           </Stack>
         </Grid>
         <Grid item sm={6} component={List} gap={4} display='flex' flexDirection='column'>
           <ListItem disableGutters>
             <TextField
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
+              value={displayedUserName}
+              onChange={(e) => setDisplayedUserName(e.target.value)}
               variant="standard"
               label='User name'
               sx={{ mr: 4 }}
             />
             <AppButton sx={{ p: 3 }}
-              disabled={userName === name}
-              onClick={handleUserNameChange}>
+              disabled={displayedUserName === name}
+              onClick={changeUserName}>
               Change user name
             </AppButton>
           </ListItem>
@@ -115,8 +123,7 @@ export const Profile: React.FC = () => {
           </ListItem>
           <ListItem disableGutters>
             <FormControlLabel 
-              defaultChecked={emailSubs}
-              control={<Checkbox onChange={(_, emailSubs) => dispatch(updateAccountInfo({emailSubs}))}/>}
+              control={<Checkbox defaultChecked={emailSubs} onChange={toggleEmailSubs}/>}
               label='Receive email notifications when secrets you subscribed to becomes available' 
             />
           </ListItem>

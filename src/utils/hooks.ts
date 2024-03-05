@@ -16,7 +16,7 @@ export const useAppDispatch: DispatchFunc = useDispatch;
 export const usePopUp = () => {
   const dispatch = useAppDispatch();
 
-  function active(message: string, type: 'success' | 'error' | 'info' = 'info') {
+  function active(message: string, type: 'success' | 'error' |  'info' = 'info') {
     dispatch(setPopupMessage({ message, type }));
     setTimeout(() => { dispatch(hidePopUp()); }, 2500);
   }

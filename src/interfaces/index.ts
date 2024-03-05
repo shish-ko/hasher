@@ -26,6 +26,8 @@ interface IAccountInfo {
   name: string,  
 }
 
+type IUserInfoForSecrets = Omit<IAccountInfo, 'emailSubs'>
+
 type IRouterParams = 'userId';
 
 interface ISecret {
@@ -52,11 +54,18 @@ interface ISecretStats {
   isSubscribed: boolean
 }
 
-type TSecretWithStats<T> = T & { stats: ISecretStats }
+type TSecretWithStats<T> = T & { stats: ISecretStats, user: IUserInfoForSecrets };
+
+interface ISecretWithUser extends ISecret {
+  user: IUserInfoForSecrets
+}
+interface IFutureSecretWithUser extends IFutureSecret {
+  user: IUserInfoForSecrets
+}
 
 interface IUserSecrets {
-  availableSecrets: ISecret[],
-  futureSecrets: IFutureSecret[]
+  availableSecrets: ISecretWithUser[],
+  futureSecrets: IFutureSecretWithUser[]
 }
 
 interface ISecretProps {
@@ -70,7 +79,6 @@ export enum SERVER {
   SECRET_LIKE = 'secret/like/',
   SECRET_SUBSCRIPTION = 'secret/subs/',
   ACCOUNT_INFO = 'account/info/',
-  ACCOUNT_NAME = 'account/username/',
   ACCOUNT_USERPIC = 'account/userpic',
   ACCOUNT_PASSWORD = 'account/password/'
 }
@@ -82,6 +90,6 @@ enum ESecretType {
   PHOTO = 'PHOTO',
 }
 
-export type { IToken, TSecretWithStats, IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, ISecretComponentProps, ISecretProps, IFutureSecret, IUserSecrets, IAccountInfo };
+export type { ISecretWithUser, IFutureSecretWithUser, IToken, TSecretWithStats, IAuthForm, ITokenPayload, ISecretForm, IRouterParams, ISecret, ISecretComponentProps, ISecretProps, IFutureSecret, IUserSecrets, IAccountInfo };
 export { ESecretType };
 
