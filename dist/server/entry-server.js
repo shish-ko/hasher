@@ -10,8 +10,8 @@ import { createStaticHandler, createStaticRouter, StaticRouterProvider } from "r
 import { useSelector, useDispatch, Provider } from "react-redux";
 import jwtDecode from "jwt-decode";
 import axios, { AxiosError, HttpStatusCode } from "axios";
-import { createSlice, configureStore } from "@reduxjs/toolkit";
-import { styled, Typography, createTheme, lighten, Box, Container, Stack, Link, ListItem, Avatar, ListItemText, Menu, MenuItem, ListItemIcon, useTheme, List, Snackbar, Alert, Grid, Button, darken, TextField, keyframes, Paper, InputAdornment, SvgIcon, Card, CardHeader, CardActionArea, CardMedia, CardActions, Collapse, IconButton, Dialog, DialogTitle, FormControl, FormHelperText, InputLabel, Input, Slider, CardContent, Divider, Backdrop, Skeleton, SpeedDial, SpeedDialIcon, SpeedDialAction, Tooltip, ThemeProvider, CssBaseline } from "@mui/material";
+import { createAsyncThunk, createSlice, configureStore } from "@reduxjs/toolkit";
+import { styled, Typography, createTheme, lighten, Box, Container, Stack, Link, ListItem, Avatar, ListItemText, Menu, MenuItem, ListItemIcon, useTheme, List, Snackbar, Alert, Grid, Button, darken, TextField, keyframes, Paper, InputAdornment, SvgIcon, Card, CardHeader, CardActionArea, CardMedia, CardActions, Collapse, IconButton, Dialog, DialogTitle, FormControl, FormHelperText, InputLabel, Input, Slider, CardContent, Divider, Backdrop, Skeleton, SpeedDial, SpeedDialIcon, SpeedDialAction, Tooltip, FormControlLabel, Checkbox, Slide, Grow, ThemeProvider, CssBaseline } from "@mui/material";
 import { grey } from "@mui/material/node/colors/index.js";
 import Countdown, { zeroPad } from "react-countdown";
 import { CacheProvider } from "@emotion/react";
@@ -49,13 +49,18 @@ const isProdMode = process.env.NODE_ENV === "production";
 const SERVER_URL = isProdMode ? "https://secret-server-srv.onrender.com/" : "http://localhost:3000/";
 const SECOND = 1e3;
 const TEST_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3MDcxNjg5MDQsImV4cCI6MTczODcwNDkwNCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsImlkIjoiMyIsIm5hbWUiOiJRd2VyIn0.R-PYGtD5IWrRVr_nwjtIUyb0aEcaM6yUkIa6-H9dmRI";
-const FIVE_MINUTES = 3e5;
+const ONE_MINUTE = 6e4;
 const ONE_HOUR = 36e5;
+const TWENTY_FIFE_MB = 25e6;
+const ONE_MB = 1e6;
 var SERVER = /* @__PURE__ */ ((SERVER2) => {
   SERVER2["USER"] = "user/";
   SERVER2["SECRET"] = "secret/";
   SERVER2["SECRET_LIKE"] = "secret/like/";
   SERVER2["SECRET_SUBSCRIPTION"] = "secret/subs/";
+  SERVER2["ACCOUNT_INFO"] = "account/info/";
+  SERVER2["ACCOUNT_USERPIC"] = "account/userpic";
+  SERVER2["ACCOUNT_PASSWORD"] = "account/password/";
   return SERVER2;
 })(SERVER || {});
 var ESecretType = /* @__PURE__ */ ((ESecretType2) => {
@@ -81,7 +86,7 @@ serverAPI.interceptors.request.use(async (config) => {
 });
 serverAPI.interceptors.response.use((response) => {
   const { url, method } = response.config;
-  if ((url == null ? void 0 : url.includes(SERVER.SECRET_SUBSCRIPTION)) || (url == null ? void 0 : url.includes(SERVER.SECRET)) && method === "post") {
+  if ((url == null ? void 0 : url.includes(SERVER.SECRET_SUBSCRIPTION)) || (url == null ? void 0 : url.includes("secret")) && method === "post") {
     popUpSecretHandler.setPopUpTimers();
   }
   return response;
@@ -93,11 +98,21 @@ serverAPI.interceptors.response.use((response) => response, (error) => {
   return Promise.reject(error);
 });
 const initialState$1 = {
+  id: 0,
   isLogged: false,
-  name: "anonymous",
+  name: "",
   secrets: { availableSecrets: [], futureSecrets: [] },
-  newSecrets: 0
+  newSecrets: 0,
+  userPic: null,
+  emailSubs: false
 };
+const updateAccountInfo = createAsyncThunk(
+  "user/updateAccountInfo",
+  async (accountInfo) => {
+    const response = await serverAPI.put(SERVER.ACCOUNT_INFO, accountInfo);
+    return response.data;
+  }
+);
 const userSlice = createSlice({
   name: "user",
   initialState: initialState$1,
@@ -112,17 +127,26 @@ const userSlice = createSlice({
       state.authToken = payload;
     },
     setUserData: (state, { payload }) => {
-      state.authToken = payload.authToken;
+      if (payload.token) {
+        state.authToken = payload.token;
+      }
       state.id = payload.id;
       state.name = payload.name;
       state.isLogged = true;
+      state.emailSubs = payload.emailSubs;
+      state.userPic = payload.userPic;
     },
     removeUserData: (state) => {
       state.authToken = void 0;
-      state.id = void 0;
+      state.id = 0;
       state.name = "";
       state.isLogged = false;
     }
+  },
+  extraReducers(builder) {
+    builder.addCase(updateAccountInfo.fulfilled, (state, action) => {
+      return { ...state, ...action.payload };
+    });
   }
 });
 const { setUserData, setUserSecrets, removeUserData, setAuthToken, addNewSecret } = userSlice.actions;
@@ -168,14 +192,14 @@ const TypographyCountdown = styled(Typography, { shouldForwardProp: (prop) => pr
     };
   }
 });
-var define_import_meta_env_default$3 = { VITE_FB_APP_ID: "889879815995119", BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: true };
+var define_import_meta_env_default$4 = { VITE_FB_APP_ID: "889879815995119", BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: true };
 let store$1;
 const injectStore = (_store) => {
   store$1 = _store;
 };
 async function loader$1(controller) {
   var _a;
-  if (define_import_meta_env_default$3.VITE_AUTH_FREE)
+  if (define_import_meta_env_default$4.VITE_AUTH_FREE)
     return TEST_TOKEN;
   const oldToken = store$1 == null ? void 0 : store$1.getState().user.authToken;
   if (!oldToken) {
@@ -271,6 +295,12 @@ const countdownRenderer = (typographyProps) => ({ days, hours, minutes, seconds,
     ":",
     zeroPad(milliseconds, 3)
   ] });
+};
+const fileValidator = (files) => {
+  if (files[0].size > TWENTY_FIFE_MB) {
+    return "File size should be less than 25Mb";
+  }
+  return true;
 };
 class SecretAvailabilityHandler {
   constructor() {
@@ -439,7 +469,7 @@ const Footer = () => {
     /* @__PURE__ */ jsx(Typography, { mt: 7, color: "text.secondary", children: "©SecretService 2023" })
   ] }) });
 };
-var define_import_meta_env_default$2 = { VITE_FB_APP_ID: "889879815995119", BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: true };
+var define_import_meta_env_default$3 = { VITE_FB_APP_ID: "889879815995119", BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: true };
 const useAppSelector = useSelector;
 const useAppDispatch = useDispatch;
 const usePopUp = () => {
@@ -455,9 +485,8 @@ const usePopUp = () => {
 const useAuth = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  function setUser(token) {
-    const payload = jwtDecode(token);
-    dispatch(setUserData({ ...payload, authToken: token }));
+  function setUser(payload) {
+    dispatch(setUserData(payload));
     popUpSecretHandler.setPopUpTimers();
   }
   async function logOutUser() {
@@ -474,7 +503,7 @@ const useServerFetch = (url, { redirectOnError, errorMsg } = {}) => {
   const [fetch, setFetch] = useState(false);
   const showPopUp = usePopUp();
   const navigate = useNavigate();
-  const isDevMode = define_import_meta_env_default$2.VITE_AUTH_FREE;
+  const isDevMode = define_import_meta_env_default$3.VITE_AUTH_FREE;
   const refetch = (newSearchParams) => {
     if (newSearchParams) {
       setSearchParams(newSearchParams);
@@ -505,7 +534,7 @@ const useServerFetch = (url, { redirectOnError, errorMsg } = {}) => {
   return { res, refetch, setRes };
 };
 const Auth = () => {
-  const { isLogged, name, id } = useAppSelector((store2) => store2.user);
+  const { isLogged, name, id, userPic } = useAppSelector((store2) => store2.user);
   const { logOutUser } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const handleOpenMenu = (e) => {
@@ -522,7 +551,7 @@ const Auth = () => {
         sx: { width: "fit-content", cursor: "pointer" },
         onMouseEnter: handleOpenMenu,
         children: [
-          !name ? /* @__PURE__ */ jsx(Avatar, { sx: { mr: 1 }, children: name[0] }) : /* @__PURE__ */ jsx(AccountCircleOutlined, { sx: { mr: 1 } }),
+          userPic ? /* @__PURE__ */ jsx(Avatar, { sx: { mr: 1 }, src: SERVER_URL + userPic }) : /* @__PURE__ */ jsx(AccountCircleOutlined, { sx: { mr: 1 } }),
           /* @__PURE__ */ jsx(ListItemText, { primaryTypographyProps: { variant: "appNav" }, children: name })
         ]
       }
@@ -532,13 +561,13 @@ const Auth = () => {
         /* @__PURE__ */ jsx(ListItemIcon, { children: /* @__PURE__ */ jsx(BallotOutlined, {}) }),
         /* @__PURE__ */ jsx(ListItemText, { children: "User page" })
       ] }),
-      /* @__PURE__ */ jsxs(MenuItem, { component: Link$1, to: "#", onClick: handleCloseMenu, children: [
+      /* @__PURE__ */ jsxs(MenuItem, { component: Link$1, to: "/profile", onClick: handleCloseMenu, children: [
         /* @__PURE__ */ jsx(ListItemIcon, { children: /* @__PURE__ */ jsx(AssignmentIndOutlined, {}) }),
         /* @__PURE__ */ jsx(ListItemText, { children: "Profile" })
       ] }),
       /* @__PURE__ */ jsxs(MenuItem, { onClick: logOutUser, children: [
         /* @__PURE__ */ jsx(ListItemIcon, { children: /* @__PURE__ */ jsx(LogoutOutlined, {}) }),
-        "Log out"
+        /* @__PURE__ */ jsx(ListItemText, { children: "Log out" })
       ] })
     ] })
   ] }) : /* @__PURE__ */ jsxs(Fragment, { children: [
@@ -763,11 +792,9 @@ const LogIn = () => {
     setIsSubmitting(true);
     try {
       const res = await serverAPI.post(SERVER_URL + "auth/login", data);
-      const { token } = res.data;
-      const { id } = jwtDecode(token);
-      setUser(token);
+      setUser(res.data);
       showPopUp("Login successfully");
-      navigate(`/user/${id}`);
+      navigate(`/user/${res.data.id}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         showPopUp((_a = error.response) == null ? void 0 : _a.data.message, "error");
@@ -899,7 +926,7 @@ const Secret_future = styled(Card)(() => ({
   flexDirection: "column",
   justifyContent: "space-between"
 }));
-const FutureSecret = ({ id, type, userId, availableAt, createdAt, title, countdownHandler, ...rest }) => {
+const FutureSecret = ({ id, type, userId, availableAt, createdAt, title, countdownHandler, user: { userPic, name }, ...rest }) => {
   const [isShown, setIsShown] = useState(false);
   return /* @__PURE__ */ jsxs(Secret_future, { elevation: 4, ...rest, children: [
     /* @__PURE__ */ jsx(
@@ -909,7 +936,7 @@ const FutureSecret = ({ id, type, userId, availableAt, createdAt, title, countdo
         subheader: `Created at: ${new Date(createdAt).toLocaleDateString()}`,
         titleTypographyProps: { color: "text.secondary" },
         subheaderTypographyProps: { color: "text.primary" },
-        avatar: /* @__PURE__ */ jsx(Avatar, { component: Link$1, to: `../user/${userId}`, children: "QS" })
+        avatar: /* @__PURE__ */ jsx(Avatar, { component: Link$1, to: `../user/${userId}`, src: SERVER_URL + userPic, children: name })
       }
     ),
     /* @__PURE__ */ jsx(CardActionArea, { component: Link$1, to: `../secret/${id}`, children: /* @__PURE__ */ jsxs(CardMedia, { sx: { height: "200px", backgroundColor: "black", padding: "30px 0" }, children: [
@@ -950,7 +977,7 @@ const SecretForm = ({ formCloseHandler, isSecretFormActive }) => {
   const [fileName, setFileName] = useState(" ");
   const [preview, setPreview] = useState();
   const titleText = watch("title", "");
-  const { id } = useAppSelector((state) => state.user);
+  const { id, name, userPic } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const showPopUp = usePopUp();
   const url = useLocation();
@@ -995,7 +1022,7 @@ const SecretForm = ({ formCloseHandler, isSecretFormActive }) => {
               control,
               rules: {
                 required: "provide expired date",
-                validate: (date) => new Date(date.$d).getTime() - Date.now() > FIVE_MINUTES || "date must be at least 2 minutes later from submit time"
+                validate: (date) => new Date(date.$d).getTime() - Date.now() > 2 * ONE_MINUTE || "date must be at least 2 minutes later from submit time"
               },
               render: ({ field }) => {
                 return /* @__PURE__ */ jsx(
@@ -1045,15 +1072,31 @@ const SecretForm = ({ formCloseHandler, isSecretFormActive }) => {
               var _a;
               trigger();
               setFileName((_a = e.target) == null ? void 0 : _a.value);
-            }, required: { value: true, message: "attach the file" } }) })
+            }, required: { value: true, message: "Attach the file" }, validate: fileValidator }) })
           ] }),
           /* @__PURE__ */ jsx(FormHelperText, { error: !!errors.file, children: errors.file ? errors.file.message : fileName })
         ] }),
         /* @__PURE__ */ jsx(Button, { color: "warning", variant: "outlined", onClick: previewHandler, children: "Get preview" }),
         /* @__PURE__ */ jsx(AppButton, { type: "submit", children: "Submit" })
       ] }),
-      preview && /* @__PURE__ */ jsx(FutureSecret, { sx: { maxWidth: formStyles.width }, userId: id, id: "1", title: preview.title, availableAt: preview.date.$d, createdAt: (/* @__PURE__ */ new Date()).toDateString(), type: ESecretType.DOC, countdownHandler: () => {
-      } })
+      preview && /* @__PURE__ */ jsx(
+        FutureSecret,
+        {
+          sx: { maxWidth: formStyles.width },
+          userId: id,
+          id: "1",
+          title: preview.title,
+          availableAt: preview.date.$d,
+          createdAt: (/* @__PURE__ */ new Date()).toDateString(),
+          type: ESecretType.DOC,
+          countdownHandler: () => {
+          },
+          user: { id, name, userPic },
+          views: 0,
+          url: null,
+          description: null
+        }
+      )
     ] })
   ] });
 };
@@ -1183,7 +1226,7 @@ const DocSecret = ({ url }) => {
     /* @__PURE__ */ jsx(Box, { sx: { position: "absolute", top: 0, left: 0, bottom: 0, right: 0, backdropFilter: "blur(2px)" }, children: /* @__PURE__ */ jsx(Button, { LinkComponent: "a", download: true, href: SERVER_URL + url, variant: "contained", startIcon: /* @__PURE__ */ jsx(DownloadIcon, {}), sx: { position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }, children: "Download" }) })
   ] });
 };
-const AvailableSecret = ({ id, title, type, availableAt, url, createdAt, userId, description }) => {
+const AvailableSecret = ({ id, title, type, availableAt, url, createdAt, userId, description, user: { userPic, name } }) => {
   const [isShown, setIsShown] = useState(false);
   const mediaRef = useRef(null);
   const availableAtUserTZ = new Date(availableAt).toLocaleString();
@@ -1195,7 +1238,7 @@ const AvailableSecret = ({ id, title, type, availableAt, url, createdAt, userId,
         titleTypographyProps: { color: "text.secondary" },
         subheaderTypographyProps: { color: "text.primary" },
         subheader: `Created at: ${new Date(createdAt).toLocaleDateString()}`,
-        avatar: /* @__PURE__ */ jsx(Avatar, { component: Link$1, to: `../user/${userId}`, children: "QS" })
+        avatar: /* @__PURE__ */ jsx(Avatar, { component: Link$1, to: `../user/${userId}`, src: SERVER_URL + userPic, children: name })
       }
     ),
     /* @__PURE__ */ jsx(CardMedia, { ref: mediaRef, component: "div", sx: { position: "relative" }, children: function() {
@@ -1286,13 +1329,13 @@ const SecretsList = ({ secrets: { availableSecrets, futureSecrets }, refetch }) 
     ] }) : /* @__PURE__ */ jsx(Typography, { variant: "h3", color: "white", textAlign: "center", children: "There is no future secrets" }) })
   ] });
 };
-var define_import_meta_env_default$1 = { VITE_FB_APP_ID: "889879815995119", BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: true };
+var define_import_meta_env_default$2 = { VITE_FB_APP_ID: "889879815995119", BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: true };
 const User = () => {
   const { userId } = useParams();
   const { newSecrets } = useAppSelector((state) => state.user);
   const hasPageBeenRendered = useRef(false);
   let { res: secrets, refetch } = useServerFetch(`user/${userId}`, { redirectOnError: "/" });
-  if (define_import_meta_env_default$1.VITE_AUTH_FREE) {
+  if (define_import_meta_env_default$2.VITE_AUTH_FREE) {
     secrets = get_MOCK_USER_SECRETS();
   }
   useEffect(() => {
@@ -1305,6 +1348,13 @@ const User = () => {
   return /* @__PURE__ */ jsx(AppBlock, { component: "section", children: secrets ? /* @__PURE__ */ jsx(SecretsList, { secrets, refetch }) : /* @__PURE__ */ jsx("div", { children: "loading..." }) });
 };
 const spinner = "/assets/spinner-BFdlZ5un.png";
+const FAKE_USER_DATA = {
+  id: 1,
+  userPic: null,
+  name: "Qwer",
+  emailSubs: false
+};
+var define_import_meta_env_default$1 = { VITE_FB_APP_ID: "889879815995119", BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: true };
 const titleStyle = {
   fontFamily: "Bowlby One",
   fontSize: "52px",
@@ -1322,11 +1372,18 @@ const subTitleStyle = {
 const AuthCheckingRoutes = () => {
   const { setUser } = useAuth();
   const [isChecking, setIsChecking] = useState(true);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     async function authChecker() {
       const token = await loader$1();
       if (token) {
-        setUser(token);
+        if (define_import_meta_env_default$1.VITE_AUTH_FREE) {
+          setUser({ token, ...FAKE_USER_DATA });
+        } else {
+          dispatch(setAuthToken(token));
+          const { data } = await serverAPI.get(SERVER.ACCOUNT_INFO);
+          setUser(data);
+        }
       }
       setIsChecking(false);
     }
@@ -1428,10 +1485,22 @@ const Secret = () => {
   const { secretId } = useParams();
   let { res, refetch, setRes } = useServerFetch(SERVER.SECRET + secretId, { redirectOnError: "/" });
   if (define_import_meta_env_default.VITE_AUTH_FREE) {
-    res = { ...get_MOCK_USER_SECRETS().availableSecrets[0], stats: { isLiked: true, isSubscribed: false, likesNum: 122, subscribersNum: 11 } };
+    res = { ...get_MOCK_USER_SECRETS().availableSecrets[0], stats: { isLiked: true, isSubscribed: false, likesNum: 122, subscribersNum: 11 }, user: { id: 1, userPic: null, name: "Anonymous" } };
   }
   if (res) {
-    const { id, type, title, description, createdAt, availableAt, userId, views, url, stats: { isLiked, isSubscribed, likesNum, subscribersNum } } = res;
+    const {
+      id,
+      type,
+      title,
+      description,
+      createdAt,
+      availableAt,
+      userId,
+      views,
+      url,
+      stats: { isLiked, isSubscribed, likesNum, subscribersNum },
+      user: { userPic, name }
+    } = res;
     const likeHandler = async () => {
       if (isLiked) {
         const { data } = await serverAPI.delete(SERVER.SECRET_LIKE + id);
@@ -1453,8 +1522,8 @@ const Secret = () => {
     return /* @__PURE__ */ jsx(AppBlock, { children: /* @__PURE__ */ jsxs(Paper, { elevation: 14, component: Stack, gap: 4, p: 5, children: [
       /* @__PURE__ */ jsxs(Stack, { direction: "row", justifyContent: "space-between", alignItems: "center", children: [
         /* @__PURE__ */ jsxs(Stack, { direction: "row", alignItems: "center", gap: 2, component: Link$1, to: `/user/${userId}`, children: [
-          /* @__PURE__ */ jsx(Avatar, { children: "Avatr" }),
-          /* @__PURE__ */ jsx(Typography, { children: "Name" })
+          /* @__PURE__ */ jsx(Avatar, { src: SERVER_URL + userPic, children: name.slice(0, 2) }),
+          /* @__PURE__ */ jsx(Typography, { children: name })
         ] }),
         /* @__PURE__ */ jsxs(Stack, { direction: "row", gap: 2, sx: { height: "fit-content" }, children: [
           /* @__PURE__ */ jsx(Tooltip, { title: isSubscribed ? "unsubscribe" : "subscribe", children: /* @__PURE__ */ jsx("span", { children: /* @__PURE__ */ jsx(AppToggleBtn, { isActive: isSubscribed, inactiveIcon: /* @__PURE__ */ jsx(AddIcon, {}), activeIcon: /* @__PURE__ */ jsx(Remove, {}), color: "secondary", size: "small", onClick: subscriptionHandler }) }) }),
@@ -1513,6 +1582,167 @@ const Secret = () => {
   }
   return /* @__PURE__ */ jsx(AppBlock, { children: /* @__PURE__ */ jsx(Paper, { elevation: 14, component: Stack, gap: 4, p: 5, children: /* @__PURE__ */ jsx(SecretSkeleton, {}) }) });
 };
+const Profile = () => {
+  var _a, _b;
+  const { name, userPic, emailSubs } = useAppSelector((store2) => store2.user);
+  const { setUser } = useAuth();
+  const [displayedUserName, setDisplayedUserName] = useState(name);
+  const [displayedUserPic, setDisplayedUserPic] = useState(userPic ? SERVER_URL + userPic : void 0);
+  const showPopUp = usePopUp();
+  const [pickedFile, setPickedFile] = useState();
+  const dispatch = useAppDispatch();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const [isPasswordFormActive, setIsPasswordFormActive] = useState(false);
+  const slideContainer = useRef(null);
+  const userPicHandler = (e) => {
+    var _a2;
+    const reader = new FileReader();
+    reader.onload = function(e2) {
+      var _a3;
+      setDisplayedUserPic((_a3 = e2.target) == null ? void 0 : _a3.result);
+    };
+    const file = (_a2 = e.target.files) == null ? void 0 : _a2[0];
+    if (file) {
+      if (file.type !== "image/jpeg") {
+        showPopUp("File type is not supported.", "error");
+      } else if (file.size > 5 * ONE_MB) {
+        showPopUp("File size exceed 5mB.", "error");
+      } else {
+        reader.readAsDataURL(file);
+        setPickedFile(file);
+      }
+    }
+  };
+  const changeUserName = async () => {
+    await dispatch(updateAccountInfo({ name: displayedUserName }));
+    showPopUp("User name successfully changed");
+  };
+  const toggleEmailSubs = async (_, emailSubs2) => {
+    await dispatch(updateAccountInfo({ emailSubs: emailSubs2 }));
+    if (emailSubs2) {
+      showPopUp("You will receive e-mail notifications when secrets, you subscribed to, become available");
+    } else {
+      showPopUp("You will NOT receive e-mail notifications when secrets, you subscribed to, become available");
+    }
+  };
+  const cancelUserPicChange = () => {
+    setDisplayedUserPic(userPic ? SERVER_URL + userPic : void 0);
+  };
+  const submitUserPicChange = async () => {
+    const formData = new FormData();
+    formData.append("userPic", pickedFile);
+    const { data } = await serverAPI.put(SERVER.ACCOUNT_USERPIC, formData);
+    setUser(data);
+    setDisplayedUserPic(data.userPic ? SERVER_URL + data.userPic : void 0);
+    showPopUp("UserPic successfully updated");
+  };
+  const deleteUserPic = async () => {
+    const { data } = await serverAPI.delete(SERVER.ACCOUNT_USERPIC);
+    setUser(data);
+    setDisplayedUserPic(void 0);
+    showPopUp("User picture has been reset");
+  };
+  const passwordChangeHandler = async (data) => {
+    var _a2;
+    try {
+      await serverAPI.put(SERVER.ACCOUNT_PASSWORD, data);
+      reset();
+      setIsPasswordFormActive(false);
+      showPopUp("Password successfully updated");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        showPopUp((_a2 = error.response) == null ? void 0 : _a2.data.message, "error");
+      }
+    }
+  };
+  return /* @__PURE__ */ jsxs(AppBlock, { bgColor: "white", children: [
+    /* @__PURE__ */ jsx(Typography, { variant: "h3", textAlign: "center", children: "Profile settings" }),
+    /* @__PURE__ */ jsxs(Grid, { container: true, alignItems: "flex-start", children: [
+      /* @__PURE__ */ jsxs(Grid, { item: true, container: true, sm: 6, direction: "row", gap: 5, alignItems: "flex-end", display: "flex", children: [
+        /* @__PURE__ */ jsx(Avatar, { sx: { height: 250, width: 250 }, src: displayedUserPic, children: /* @__PURE__ */ jsx(AccountCircleOutlined, { sx: { height: 200, width: 200 } }) }),
+        /* @__PURE__ */ jsxs(Stack, { gap: 2, children: [
+          /* @__PURE__ */ jsx(Tooltip, { title: "File type: jpg, max-size: 5mb", placement: "top-end", children: /* @__PURE__ */ jsxs(Button, { component: "label", variant: "contained", color: "success", children: [
+            /* @__PURE__ */ jsx("input", { type: "file", hidden: true, onChange: userPicHandler }),
+            displayedUserPic ? "Change profile photo" : "Add profile photo"
+          ] }) }),
+          userPic == (displayedUserPic == null ? void 0 : displayedUserPic.replace(SERVER_URL, "")) ? /* @__PURE__ */ jsx(Button, { disabled: !userPic, color: "error", onClick: deleteUserPic, children: "Delete profile photo" }) : /* @__PURE__ */ jsxs(Stack, { direction: "row", justifyContent: "space-around", children: [
+            /* @__PURE__ */ jsx(Button, { onClick: submitUserPicChange, children: "submit" }),
+            /* @__PURE__ */ jsx(Button, { onClick: cancelUserPicChange, color: "error", children: "cancel" })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxs(Grid, { item: true, sm: 4, component: List, gap: 4, display: "flex", flexDirection: "column", disablePadding: true, children: [
+        /* @__PURE__ */ jsxs(ListItem, { disableGutters: true, children: [
+          /* @__PURE__ */ jsx(
+            TextField,
+            {
+              value: displayedUserName,
+              onChange: (e) => setDisplayedUserName(e.target.value),
+              variant: "standard",
+              label: "User name",
+              sx: { mr: 4 }
+            }
+          ),
+          /* @__PURE__ */ jsx(
+            AppButton,
+            {
+              sx: { p: 3 },
+              disabled: displayedUserName === name,
+              onClick: changeUserName,
+              children: "Change user name"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsx(ListItem, { disableGutters: true, children: /* @__PURE__ */ jsx(
+          FormControlLabel,
+          {
+            control: /* @__PURE__ */ jsx(Checkbox, { defaultChecked: emailSubs, onChange: toggleEmailSubs }),
+            label: "Receive email notifications when secrets you subscribed to becomes available"
+          }
+        ) }),
+        /* @__PURE__ */ jsxs(ListItem, { disableGutters: true, ref: slideContainer, sx: { display: "block", overflow: "hidden" }, children: [
+          /* @__PURE__ */ jsx(Slide, { direction: "down", appear: false, in: !isPasswordFormActive, container: slideContainer.current, children: /* @__PURE__ */ jsx(AppButton, { fullWidth: true, onClick: () => setIsPasswordFormActive(true), children: "Change account password" }) }),
+          /* @__PURE__ */ jsxs("form", { onSubmit: handleSubmit(passwordChangeHandler), children: [
+            /* @__PURE__ */ jsx(Grow, { in: isPasswordFormActive, timeout: { exit: 2e3 }, children: /* @__PURE__ */ jsxs(FormControl, { fullWidth: true, children: [
+              /* @__PURE__ */ jsx(
+                TextField,
+                {
+                  variant: "standard",
+                  label: "New password",
+                  sx: { mr: 4 },
+                  type: "password",
+                  ...register("newPassword", { validate: passwordValidator })
+                }
+              ),
+              /* @__PURE__ */ jsx(FormHelperText, { error: !!errors.newPassword, children: (_a = errors.newPassword) == null ? void 0 : _a.message })
+            ] }) }),
+            /* @__PURE__ */ jsx(Grow, { in: isPasswordFormActive, timeout: { enter: 1e3, exit: 1e3 }, children: /* @__PURE__ */ jsxs(FormControl, { fullWidth: true, children: [
+              /* @__PURE__ */ jsx(
+                TextField,
+                {
+                  variant: "standard",
+                  label: "Old password",
+                  sx: { mr: 4 },
+                  type: "password",
+                  ...register("oldPassword", { validate: passwordValidator })
+                }
+              ),
+              /* @__PURE__ */ jsx(FormHelperText, { error: !!errors.oldPassword, children: (_b = errors.oldPassword) == null ? void 0 : _b.message })
+            ] }) }),
+            /* @__PURE__ */ jsx(Grow, { in: isPasswordFormActive, timeout: { enter: 2e3 }, children: /* @__PURE__ */ jsxs(Box, { mt: 2, children: [
+              /* @__PURE__ */ jsx(Button, { type: "submit", children: "Change password" }),
+              /* @__PURE__ */ jsx(Button, { color: "error", onClick: () => {
+                reset();
+                setIsPasswordFormActive(false);
+              }, children: "Cancel" })
+            ] }) })
+          ] })
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsx(Stack, { direction: "row", gap: 5, alignItems: "flex-end" })
+  ] });
+};
 const routeObj = createRoutesFromElements(
   /* @__PURE__ */ jsxs(Route, { element: /* @__PURE__ */ jsx(DefaultUI, {}), path: "/", children: [
     /* @__PURE__ */ jsxs(Route, { element: /* @__PURE__ */ jsx(AuthCheckingRoutes, {}), children: [
@@ -1520,6 +1750,7 @@ const routeObj = createRoutesFromElements(
       /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(LogIn, {}), path: "/login" }),
       /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(SignUp, {}), path: "/signup" }),
       /* @__PURE__ */ jsxs(Route, { element: /* @__PURE__ */ jsx(ProtectedRoutes, {}), children: [
+        /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(Profile, {}), path: "/profile" }),
         /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(User, {}), path: "/user/:userId", action: async (res) => {
           return null;
         } }),

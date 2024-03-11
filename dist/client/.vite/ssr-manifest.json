@@ -875,6 +875,18 @@
     "/assets/index2-Bzhroi7_.png",
     "/assets/spinner-BFdlZ5un.png"
   ],
+  "node_modules/@mui/material/Checkbox/Checkbox.js": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
+  "node_modules/@mui/material/Checkbox/checkboxClasses.js": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
   "node_modules/@mui/material/Chip/Chip.js": [
     "/assets/indexBG-NBNfN8ro.png",
     "/assets/index1-CG-8WEnc.png",
@@ -1044,6 +1056,18 @@
     "/assets/spinner-BFdlZ5un.png"
   ],
   "node_modules/@mui/material/FormControl/useFormControl.js": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
+  "node_modules/@mui/material/FormControlLabel/FormControlLabel.js": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
+  "node_modules/@mui/material/FormControlLabel/formControlLabelClasses.js": [
     "/assets/indexBG-NBNfN8ro.png",
     "/assets/index1-CG-8WEnc.png",
     "/assets/index2-Bzhroi7_.png",
@@ -1391,6 +1415,12 @@
     "/assets/index2-Bzhroi7_.png",
     "/assets/spinner-BFdlZ5un.png"
   ],
+  "node_modules/@mui/material/Slide/Slide.js": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
   "node_modules/@mui/material/Slider/Slider.js": [
     "/assets/indexBG-NBNfN8ro.png",
     "/assets/index1-CG-8WEnc.png",
@@ -1619,6 +1649,12 @@
     "/assets/index2-Bzhroi7_.png",
     "/assets/spinner-BFdlZ5un.png"
   ],
+  "node_modules/@mui/material/internal/SwitchBase.js": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
   "node_modules/@mui/material/internal/animate.js": [
     "/assets/indexBG-NBNfN8ro.png",
     "/assets/index1-CG-8WEnc.png",
@@ -1643,6 +1679,18 @@
     "/assets/index2-Bzhroi7_.png",
     "/assets/spinner-BFdlZ5un.png"
   ],
+  "node_modules/@mui/material/internal/svg-icons/CheckBox.js": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
+  "node_modules/@mui/material/internal/svg-icons/CheckBoxOutlineBlank.js": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
   "node_modules/@mui/material/internal/svg-icons/Close.js": [
     "/assets/indexBG-NBNfN8ro.png",
     "/assets/index1-CG-8WEnc.png",
@@ -1650,6 +1698,12 @@
     "/assets/spinner-BFdlZ5un.png"
   ],
   "node_modules/@mui/material/internal/svg-icons/ErrorOutline.js": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
+  "node_modules/@mui/material/internal/svg-icons/IndeterminateCheckBox.js": [
     "/assets/indexBG-NBNfN8ro.png",
     "/assets/index1-CG-8WEnc.png",
     "/assets/index2-Bzhroi7_.png",
@@ -1686,6 +1740,12 @@
     "/assets/spinner-BFdlZ5un.png"
   ],
   "node_modules/@mui/material/internal/svg-icons/SuccessOutlined.js": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
+  "node_modules/@mui/material/internal/switchBaseClasses.js": [
     "/assets/indexBG-NBNfN8ro.png",
     "/assets/index1-CG-8WEnc.png",
     "/assets/index2-Bzhroi7_.png",
@@ -4151,6 +4211,12 @@
     "/assets/index2-Bzhroi7_.png",
     "/assets/spinner-BFdlZ5un.png"
   ],
+  "src/pages/Profile/Profile.tsx": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
   "src/pages/Scrapers/FB_Secret.tsx": [
     "/assets/indexBG-NBNfN8ro.png",
     "/assets/index1-CG-8WEnc.png",
@@ -4224,6 +4290,12 @@
     "/assets/spinner-BFdlZ5un.png"
   ],
   "src/utils/hooks.ts": [
+    "/assets/indexBG-NBNfN8ro.png",
+    "/assets/index1-CG-8WEnc.png",
+    "/assets/index2-Bzhroi7_.png",
+    "/assets/spinner-BFdlZ5un.png"
+  ],
+  "src/utils/mock_data.ts": [
     "/assets/indexBG-NBNfN8ro.png",
     "/assets/index1-CG-8WEnc.png",
     "/assets/index2-Bzhroi7_.png",
