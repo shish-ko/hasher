@@ -65,7 +65,11 @@ interface IFutureSecretWithUser extends IFutureSecret {
 
 interface IUserSecrets {
   availableSecrets: ISecretWithUser[],
-  futureSecrets: IFutureSecretWithUser[]
+  futureSecrets: IFutureSecretWithUser[],
+  subscribedTo?: {
+    availableSecrets: ISecretWithUser[],
+    futureSecrets: IFutureSecretWithUser[],
+  }
 }
 
 interface ISecretProps {
