@@ -61,7 +61,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets: { availableSecret
             </AccordionDetails>
           </Accordion>
           :
-          <Accordion>
+          <Accordion disabled>
             <AccordionSummary>
               <Typography variant="h3" color="white" mb={0}>There is no available secrets</Typography>
             </AccordionSummary>
@@ -86,7 +86,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets: { availableSecret
           </Accordion>
       }
       {
-        subscribedTo?.availableSecrets.length &&
+        !!subscribedTo?.availableSecrets.length &&
         <Accordion sx={{ backgroundColor: 'background.default' }}>
           <AccordionSummary expandIcon={<ArrowDownwardIcon htmlColor="white" fontSize="large" />}>
             <Typography variant="h3" color="white" mb={0}>Subscribed available secrets:</Typography>
@@ -99,7 +99,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets: { availableSecret
         </Accordion>
       }
       {
-        subscribedTo?.futureSecrets.length &&
+        !!subscribedTo?.futureSecrets.length &&
         <Accordion sx={{ backgroundColor: 'background.default' }}>
           <AccordionSummary expandIcon={<ArrowDownwardIcon htmlColor="white" fontSize="large" />}>
             <Typography variant="h3" color="white" mb={0}>Subscribed future secrets:</Typography>

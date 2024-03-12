@@ -152,7 +152,13 @@ class SecretAvailabilityHandler {
           store?.dispatch(setPopupMessage({ type: 'info', message: 'Secret is available now' }));
         }, timeout);
         this.userSecretsTimeouts.push(timeoutID);
-        // TODO add subscription timeouts
+      });
+      data.subscribedTo?.futureSecrets.forEach((secret) => {
+        const timeout = new Date(secret.availableAt).getTime() - Date.now();
+        const timeoutID = setTimeout(() => {
+          store?.dispatch(setPopupMessage({ type: 'info', message: 'Secret is available now' }));
+        }, timeout);
+        this.subscribedSecretsTimeouts.push(timeoutID);
       });
     }
   }
