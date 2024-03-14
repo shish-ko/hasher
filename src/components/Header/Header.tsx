@@ -1,15 +1,15 @@
 import { Auth } from "./Auth";
-import { Link, List, ListItem, Stack, Typography, useTheme } from "@mui/material";
-import logo from '../../assets/Logo.png';
+import { Link, List, ListItem, Stack, SvgIcon, Typography, useTheme } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import AppLogo from '~assets/app_logo.svg?react';
 
 export const Header: React.FC = () => {
   const theme = useTheme();
 
   return (
     <Stack component={'header'} direction={'row'} padding={theme.spacing(4, 5)} height={'64px'} borderBottom={'1px solid rgba(0,0,0, 0.07)'} bgcolor='white'>
-      <Stack direction='row' alignItems='center' spacing={5}>
-        <img src={logo} alt="app logo" className="header__logo" />
+      <Stack direction='row' alignItems='center' spacing={5} component={RouterLink} to='/'>
+        <SvgIcon component={AppLogo} inheritViewBox fontSize="large"/>
         <Typography variant="h1">SecretService</Typography>
       </Stack>
       <List disablePadding sx={{ display: "flex", gap: theme.spacing(5), justifyContent: "flex-end", flex: '1 0 0' }}>

@@ -1,6 +1,6 @@
 const isProdMode = process.env.NODE_ENV === 'production';
 const SERVER_URL = isProdMode ? 'https://secret-server-srv.onrender.com/' : 'http://localhost:3000/';
-const APP_URL_ORIGIN = isProdMode ? 'https://secret-server.onrender.com' : 'http://localhost:5173';
+const APP_URL_ORIGIN = isProdMode ? 'https://secret-service.onrender.com' : 'http://localhost:5173';
 const SERVER_ASSETS = SERVER_URL + 'public/';
 const SECOND = 1000;
 const LOADER_COLOR = '#00BBEC';

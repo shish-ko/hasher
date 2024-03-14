@@ -5,9 +5,9 @@ import svgr from 'vite-plugin-svgr';
 
 // https://vitejs.dev/config/
 export default defineConfig(({command}) =>  {
-  const config: UserConfig = {plugins: [react(), ts_paths(), svgr()]}
+  const config: UserConfig = {plugins: [react(), ts_paths(), svgr()]};
   if(command === 'build') {
-    config.esbuild = {drop: ['console'] };
+    // config.esbuild = {drop: ['console'] };
   }
   return config;
 });

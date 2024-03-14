@@ -21,6 +21,7 @@ export const FB_Secret =() => {
 
 export const loader: LoaderFunction = async ({params}): Promise<IFutureSecret> => {
   const { data } = await serverAPI.get<IFutureSecret>(`secret/scraper/${params.secretId}`);
+  console.log(data);
   return data;
 };
 

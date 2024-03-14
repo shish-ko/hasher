@@ -11,7 +11,7 @@ import process from 'process';
 installGlobals();
 
 const isProduction = process.env.NODE_ENV === 'production';
-const APP_URL_ORIGIN = isProduction ? 'https://secret-server.onrender.com/' : 'http://localhost:5173/';
+const APP_URL_ORIGIN = isProduction ? 'https://secret-service.onrender.com/' : 'http://localhost:5173/';
 
 const port = process.env.PORT || 5173;
 const base = process.env.BASE || '/';
@@ -42,7 +42,7 @@ async function startServer() {
       console.log('Scraper detected!');
       proxy(APP_URL_ORIGIN, {
         proxyReqPathResolver(req) {
-          return req.originalUrl.replace('/secret/', '/fb_scraper/');
+          return req.originalUrl.replace('/secret/', '/fb_secret_scraper/');
         },
       })(req, res, next);
     } else {
