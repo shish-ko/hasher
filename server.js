@@ -38,7 +38,9 @@ async function startServer() {
   }
 
   app.use('/secret', (req, res, next) => {
+    console.log(req);
     if (req.headers['user-agent']?.includes('facebookexternalhit/1.1')) {
+      console.log('Scraper detected!');
       return proxy(APP_URL_ORIGIN, {
         proxyReqPathResolver(req) {
           return req.originalUrl.replace('/secret/', '/fb_scraper/secret/');
