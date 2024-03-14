@@ -3,10 +3,12 @@ import { SERVER_URL } from '../app_constants';
 import { loader, popUpSecretHandler } from '~utils/helpers';
 import { SERVER } from '~interfaces/index';
 
+const tokenlessEndpoints = ['auth/', 'secret/scraper/'];
+
 export const serverAPI = axios.create({baseURL: SERVER_URL});
 serverAPI.interceptors.request.use(async (config)=>{
   const controller = new AbortController();
-  if(config.url?.includes('auth/')){
+  if(config.url?.includes('auth/') || config.url?.includes('secret/scraper/')){
     config.withCredentials = true;
   } else {
     const token = await loader(controller);

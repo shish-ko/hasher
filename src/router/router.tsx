@@ -6,7 +6,7 @@ import { SignUp } from "pages/Auth/SignUp";
 import { ProtectedRoutes } from "~comps/ProtectedRoutes/ProtectedRoutes";
 import { User } from "pages/User/User";
 import { AuthCheckingRoutes } from "pages/Auth/AuthCheckingRoutes";
-import { FB_Secret, loader } from "pages/Scrapers/FB_Secret";
+import { FB_Secret, loader as scraperLoader } from "pages/Scrapers/FB_Secret";
 import { Secret } from "pages/Secret/Secret";
 import { Profile } from "pages/Profile/Profile";
 
@@ -19,11 +19,11 @@ export const routeObj = createRoutesFromElements(
       <Route element={<SignUp />} path="/signup" />
       <Route element={<ProtectedRoutes />} >
         <Route element={<Profile/>} path="/profile" />
-        <Route element={<User />} path="/user/:userId" action={async (res) => { console.log(res); return null; }} />
+        <Route element={<User />} path="/user/:userId" />
         <Route element={<Secret />} path="/secret/:secretId" />
       </Route>
     </Route>
-    <Route path="/fb_scraper/secret/:secretId" element={<FB_Secret />} loader={loader}/>
+    <Route path="/fb_scraper/secret/:secretId" element={<FB_Secret />} loader={scraperLoader}/>
   </Route>
 );
 

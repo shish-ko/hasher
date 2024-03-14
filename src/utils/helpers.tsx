@@ -1,4 +1,4 @@
-import { ONE_HOUR, SECOND, TEST_TOKEN, TWENTY_FIFE_MB } from "../app_constants";
+import { APP_URL_ORIGIN, ONE_HOUR, SECOND, TEST_TOKEN, TWENTY_FIFE_MB } from "../app_constants";
 import jwtDecode from "jwt-decode";
 import { ESecretType, ITokenPayload, IUserSecrets, SERVER } from "~interfaces/index";
 import { serverAPI } from "./axios";
@@ -171,3 +171,7 @@ class SecretAvailabilityHandler {
 }
 
 export const popUpSecretHandler = new SecretAvailabilityHandler();
+
+export const getSecretTypeImageURL = (type: ESecretType) => {
+  return `${APP_URL_ORIGIN}/icons/${type.toLowerCase()}.png`;
+};

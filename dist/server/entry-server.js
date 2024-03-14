@@ -11,7 +11,7 @@ import { useSelector, useDispatch, Provider } from "react-redux";
 import jwtDecode from "jwt-decode";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { createAsyncThunk, createSlice, configureStore } from "@reduxjs/toolkit";
-import { styled, Typography, createTheme, lighten, Box, Container, Stack, Link, ListItem, Avatar, ListItemText, Menu, MenuItem, ListItemIcon, useTheme, List, Snackbar, Alert, Grid, Button, darken, TextField, keyframes, Paper, InputAdornment, SvgIcon, Card, CardHeader, CardActionArea, CardMedia, CardActions, Collapse, IconButton, Dialog, DialogTitle, FormControl, FormHelperText, InputLabel, Input, Slider, CardContent, Divider, Backdrop, Skeleton, SpeedDial, SpeedDialIcon, SpeedDialAction, Tooltip, FormControlLabel, Checkbox, Slide, Grow, ThemeProvider, CssBaseline } from "@mui/material";
+import { styled, Typography, createTheme, lighten, Box, Container, Stack, Link, ListItem, Avatar, ListItemText, Menu, MenuItem, ListItemIcon, useTheme, List, Snackbar, Alert, Grid, Button, darken, TextField, keyframes, Paper, InputAdornment, SvgIcon, Card, CardHeader, CardActionArea, CardMedia, CardActions, Collapse, IconButton, Dialog, DialogTitle, FormControl, FormHelperText, InputLabel, Input, Slider, CardContent, Accordion, AccordionSummary, AccordionDetails, Divider, Backdrop, Skeleton, SpeedDial, SpeedDialIcon, SpeedDialAction, Tooltip, FormControlLabel, Checkbox, Slide, Grow, ThemeProvider, CssBaseline } from "@mui/material";
 import { grey } from "@mui/material/node/colors/index.js";
 import Countdown, { zeroPad } from "react-countdown";
 import { CacheProvider } from "@emotion/react";
@@ -30,6 +30,7 @@ import dayjs from "dayjs";
 import AddIcon from "@mui/icons-material/Add.js";
 import AudioMotionAnalyzer from "audiomotion-analyzer";
 import DownloadIcon from "@mui/icons-material/Download.js";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward.js";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown.js";
 import DownIcon from "@mui/icons-material/South.js";
 import UpIcon from "@mui/icons-material/North.js";
@@ -47,6 +48,7 @@ import Twitter$1 from "@mui/icons-material/Twitter.js";
 import Instagram$1 from "@mui/icons-material/Instagram.js";
 const isProdMode = process.env.NODE_ENV === "production";
 const SERVER_URL = isProdMode ? "https://secret-server-srv.onrender.com/" : "http://localhost:3000/";
+const APP_URL_ORIGIN = isProdMode ? "https://secret-server.onrender.com" : "http://localhost:5173";
 const SECOND = 1e3;
 const TEST_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3MDcxNjg5MDQsImV4cCI6MTczODcwNDkwNCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsImlkIjoiMyIsIm5hbWUiOiJRd2VyIn0.R-PYGtD5IWrRVr_nwjtIUyb0aEcaM6yUkIa6-H9dmRI";
 const ONE_MINUTE = 6e4;
@@ -72,9 +74,9 @@ var ESecretType = /* @__PURE__ */ ((ESecretType2) => {
 })(ESecretType || {});
 const serverAPI = axios.create({ baseURL: SERVER_URL });
 serverAPI.interceptors.request.use(async (config) => {
-  var _a;
+  var _a, _b;
   const controller = new AbortController();
-  if ((_a = config.url) == null ? void 0 : _a.includes("auth/")) {
+  if (((_a = config.url) == null ? void 0 : _a.includes("auth/")) || ((_b = config.url) == null ? void 0 : _b.includes("secret/scraper/"))) {
     config.withCredentials = true;
   } else {
     const token = await loader$1(controller);
@@ -309,6 +311,7 @@ class SecretAvailabilityHandler {
     this.userSecretsTimeouts = [], this.subscribedSecretsTimeouts = [];
   }
   async setPopUpTimers() {
+    var _a;
     const userID = store$1 == null ? void 0 : store$1.getState().user.id;
     if (userID) {
       const { data } = await serverAPI.get(SERVER.USER + userID);
@@ -320,6 +323,13 @@ class SecretAvailabilityHandler {
         }, timeout);
         this.userSecretsTimeouts.push(timeoutID);
       });
+      (_a = data.subscribedTo) == null ? void 0 : _a.futureSecrets.forEach((secret) => {
+        const timeout = new Date(secret.availableAt).getTime() - Date.now();
+        const timeoutID = setTimeout(() => {
+          store$1 == null ? void 0 : store$1.dispatch(setPopupMessage({ type: "info", message: "Secret is available now" }));
+        }, timeout);
+        this.subscribedSecretsTimeouts.push(timeoutID);
+      });
     }
   }
   removePopUpTimers() {
@@ -328,6 +338,9 @@ class SecretAvailabilityHandler {
   }
 }
 const popUpSecretHandler = new SecretAvailabilityHandler();
+const getSecretTypeImageURL = (type) => {
+  return `${APP_URL_ORIGIN}/icons/${type.toLowerCase()}.png`;
+};
 function createFetchRequest(req, res) {
   const origin = `${req.protocol}://${req.get("host")}`;
   const url = new URL(req.originalUrl || req.url, origin);
@@ -1265,7 +1278,7 @@ const AvailableSecret = ({ id, title, type, availableAt, url, createdAt, userId,
       /* @__PURE__ */ jsx(IconButton, { onClick: () => {
         FB.ui({
           method: "share",
-          href: "https://youtube.com/"
+          href: `https://secret-service.onrender.com/secret/${id}`
         }, function(response) {
         });
       }, children: /* @__PURE__ */ jsx(Facebook, {}) }),
@@ -1275,7 +1288,7 @@ const AvailableSecret = ({ id, title, type, availableAt, url, createdAt, userId,
   ] });
 };
 const SortMenuItem = styled((props) => /* @__PURE__ */ jsx(MenuItem, { ...props, disableGutters: true }))({ fontSize: "1.2rem", p: "3px 10px" });
-const SecretsList = ({ secrets: { availableSecrets, futureSecrets }, refetch }) => {
+const SecretsList = ({ secrets: { availableSecrets, futureSecrets, subscribedTo }, refetch }) => {
   const [anchor, setAnchor] = useState(null);
   const sortParams = new URLSearchParams();
   const createdASC = () => {
@@ -1295,38 +1308,48 @@ const SecretsList = ({ secrets: { availableSecrets, futureSecrets }, refetch }) 
     refetch(sortParams);
   };
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx(Box, { mb: 25, position: "relative", children: availableSecrets.length ? /* @__PURE__ */ jsxs(Fragment, { children: [
-      /* @__PURE__ */ jsx(Typography, { variant: "h3", color: "white", textAlign: "center", children: "Available secrets:" }),
-      /* @__PURE__ */ jsx(Button, { onClick: (e) => {
-        setAnchor(e.currentTarget);
-      }, endIcon: /* @__PURE__ */ jsx(KeyboardDoubleArrowDownIcon, {}), sx: { position: "absolute", right: 0, mb: 1 }, children: " Sort by" }),
-      /* @__PURE__ */ jsxs(Menu, { open: !!anchor, anchorEl: anchor, onClose: () => {
-        setAnchor(null);
-      }, transformOrigin: { vertical: "top", horizontal: "right" }, anchorOrigin: { vertical: "bottom", horizontal: "right" }, children: [
-        /* @__PURE__ */ jsxs(SortMenuItem, { onClick: createdASC, children: [
-          /* @__PURE__ */ jsx(UpIcon, { fontSize: "small" }),
-          " Created ASC"
+    availableSecrets.length ? /* @__PURE__ */ jsxs(Accordion, { sx: { backgroundColor: "background.default" }, defaultExpanded: true, children: [
+      /* @__PURE__ */ jsx(AccordionSummary, { expandIcon: /* @__PURE__ */ jsx(ArrowDownwardIcon, { htmlColor: "white", fontSize: "large" }), children: /* @__PURE__ */ jsx(Typography, { variant: "h3", color: "white", mb: 0, children: "Available secrets:" }) }),
+      /* @__PURE__ */ jsxs(AccordionDetails, { children: [
+        /* @__PURE__ */ jsx(Button, { onClick: (e) => {
+          setAnchor(e.currentTarget);
+        }, endIcon: /* @__PURE__ */ jsx(KeyboardDoubleArrowDownIcon, {}), sx: { position: "absolute", right: 0, mb: 1 }, children: "Sort by" }),
+        /* @__PURE__ */ jsxs(Menu, { open: !!anchor, anchorEl: anchor, onClose: () => {
+          setAnchor(null);
+        }, transformOrigin: { vertical: "top", horizontal: "right" }, anchorOrigin: { vertical: "bottom", horizontal: "right" }, children: [
+          /* @__PURE__ */ jsxs(SortMenuItem, { onClick: createdASC, children: [
+            /* @__PURE__ */ jsx(UpIcon, { fontSize: "small" }),
+            " Created ASC"
+          ] }),
+          /* @__PURE__ */ jsxs(SortMenuItem, { onClick: createdDESC, children: [
+            /* @__PURE__ */ jsx(DownIcon, { fontSize: "small" }),
+            " Created DESC"
+          ] }),
+          /* @__PURE__ */ jsx(Divider, {}),
+          /* @__PURE__ */ jsxs(SortMenuItem, { onClick: availableASC, children: [
+            /* @__PURE__ */ jsx(UpIcon, { fontSize: "small" }),
+            "Available ASC"
+          ] }),
+          /* @__PURE__ */ jsxs(SortMenuItem, { onClick: availableDESC, children: [
+            /* @__PURE__ */ jsx(DownIcon, { fontSize: "small" }),
+            " Available DESC"
+          ] })
         ] }),
-        /* @__PURE__ */ jsxs(SortMenuItem, { onClick: createdDESC, children: [
-          /* @__PURE__ */ jsx(DownIcon, { fontSize: "small" }),
-          " Created DESC"
-        ] }),
-        /* @__PURE__ */ jsx(Divider, {}),
-        /* @__PURE__ */ jsxs(SortMenuItem, { onClick: availableASC, children: [
-          /* @__PURE__ */ jsx(UpIcon, { fontSize: "small" }),
-          "Available ASC"
-        ] }),
-        /* @__PURE__ */ jsxs(SortMenuItem, { onClick: availableDESC, children: [
-          /* @__PURE__ */ jsx(DownIcon, { fontSize: "small" }),
-          " Available DESC"
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Stack, { direction: "row", gap: "5%", flexWrap: "wrap", rowGap: 10, mt: 20, children: availableSecrets.map((secret) => /* @__PURE__ */ createElement(AvailableSecret, { ...secret, key: secret.id })) })
-    ] }) : /* @__PURE__ */ jsx(Typography, { variant: "h3", color: "white", textAlign: "center", children: "There is no available secrets" }) }),
-    /* @__PURE__ */ jsx(Box, { children: futureSecrets.length ? /* @__PURE__ */ jsxs(Fragment, { children: [
-      /* @__PURE__ */ jsx(Typography, { variant: "h3", color: "white", textAlign: "center", children: "Future secrets:" }),
-      /* @__PURE__ */ jsx(Stack, { direction: "row", gap: "5%", flexWrap: "wrap", rowGap: 10, children: futureSecrets.map((secret) => /* @__PURE__ */ createElement(FutureSecret, { ...secret, countdownHandler: refetch, sx: { flexBasis: "30%" }, key: secret.id })) })
-    ] }) : /* @__PURE__ */ jsx(Typography, { variant: "h3", color: "white", textAlign: "center", children: "There is no future secrets" }) })
+        /* @__PURE__ */ jsx(Stack, { direction: "row", gap: "5%", flexWrap: "wrap", rowGap: 10, mt: 20, children: availableSecrets.map((secret) => /* @__PURE__ */ createElement(AvailableSecret, { ...secret, key: secret.id })) })
+      ] })
+    ] }) : /* @__PURE__ */ jsx(Accordion, { disabled: true, children: /* @__PURE__ */ jsx(AccordionSummary, { children: /* @__PURE__ */ jsx(Typography, { variant: "h3", color: "white", mb: 0, children: "There is no available secrets" }) }) }),
+    futureSecrets.length ? /* @__PURE__ */ jsxs(Accordion, { sx: { backgroundColor: "background.default" }, children: [
+      /* @__PURE__ */ jsx(AccordionSummary, { expandIcon: /* @__PURE__ */ jsx(ArrowDownwardIcon, { htmlColor: "white", fontSize: "large" }), children: /* @__PURE__ */ jsx(Typography, { variant: "h3", color: "white", mb: 0, children: "Future secrets:" }) }),
+      /* @__PURE__ */ jsx(AccordionDetails, { children: /* @__PURE__ */ jsx(Stack, { direction: "row", gap: "5%", flexWrap: "wrap", rowGap: 10, children: futureSecrets.map((secret) => /* @__PURE__ */ createElement(FutureSecret, { ...secret, countdownHandler: refetch, sx: { flexBasis: "30%" }, key: secret.id })) }) })
+    ] }) : /* @__PURE__ */ jsx(Accordion, { disabled: true, children: /* @__PURE__ */ jsx(AccordionSummary, { children: /* @__PURE__ */ jsx(Typography, { variant: "h3", color: "white", mb: 0, children: "There is no future secrets" }) }) }),
+    !!(subscribedTo == null ? void 0 : subscribedTo.availableSecrets.length) && /* @__PURE__ */ jsxs(Accordion, { sx: { backgroundColor: "background.default" }, children: [
+      /* @__PURE__ */ jsx(AccordionSummary, { expandIcon: /* @__PURE__ */ jsx(ArrowDownwardIcon, { htmlColor: "white", fontSize: "large" }), children: /* @__PURE__ */ jsx(Typography, { variant: "h3", color: "white", mb: 0, children: "Subscribed available secrets:" }) }),
+      /* @__PURE__ */ jsx(AccordionDetails, { children: /* @__PURE__ */ jsx(Stack, { direction: "row", gap: "5%", flexWrap: "wrap", rowGap: 10, mt: 20, children: subscribedTo.availableSecrets.map((secret) => /* @__PURE__ */ createElement(AvailableSecret, { ...secret, key: secret.id })) }) })
+    ] }),
+    !!(subscribedTo == null ? void 0 : subscribedTo.futureSecrets.length) && /* @__PURE__ */ jsxs(Accordion, { sx: { backgroundColor: "background.default" }, children: [
+      /* @__PURE__ */ jsx(AccordionSummary, { expandIcon: /* @__PURE__ */ jsx(ArrowDownwardIcon, { htmlColor: "white", fontSize: "large" }), children: /* @__PURE__ */ jsx(Typography, { variant: "h3", color: "white", mb: 0, children: "Subscribed future secrets:" }) }),
+      /* @__PURE__ */ jsx(AccordionDetails, { children: /* @__PURE__ */ jsx(Stack, { direction: "row", gap: "5%", flexWrap: "wrap", rowGap: 10, mt: 20, children: subscribedTo.futureSecrets.map((secret) => /* @__PURE__ */ createElement(FutureSecret, { ...secret, countdownHandler: refetch, sx: { flexBasis: "30%" }, key: secret.id })) }) })
+    ] })
   ] });
 };
 var define_import_meta_env_default$2 = { VITE_FB_APP_ID: "889879815995119", BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: true };
@@ -1402,13 +1425,14 @@ const FB_Secret = () => {
   const { secretId } = useParams();
   return /* @__PURE__ */ jsxs(Helmet, { children: [
     /* @__PURE__ */ jsx("meta", { property: "og:type", content: "website" }),
-    /* @__PURE__ */ jsx("meta", { property: "og:url", content: `localhost:5173/secret/${secretId}` }),
+    /* @__PURE__ */ jsx("meta", { property: "og:url", content: `${APP_URL_ORIGIN}/secret/${secretId}` }),
     /* @__PURE__ */ jsx("meta", { property: "og:title", content: secret.title }),
-    /* @__PURE__ */ jsx("meta", { property: "og:description", content: `Hidden ${secret.type.toLowerCase()} will be available at ${secret.availableAt}.` })
+    /* @__PURE__ */ jsx("meta", { property: "og:description", content: `Hidden ${secret.type.toLowerCase()} will be available at ${new Date(secret.availableAt).toLocaleString()}` }),
+    /* @__PURE__ */ jsx("meta", { property: "og:image", content: getSecretTypeImageURL(secret.type) })
   ] });
 };
 const loader = async ({ params }) => {
-  const { data } = await serverAPI.get(`fbscraper/secret/${params.secretId}`);
+  const { data } = await serverAPI.get(`secret/scraper/${params.secretId}`);
   return data;
 };
 const SecretSkeleton = () => {
@@ -1751,9 +1775,7 @@ const routeObj = createRoutesFromElements(
       /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(SignUp, {}), path: "/signup" }),
       /* @__PURE__ */ jsxs(Route, { element: /* @__PURE__ */ jsx(ProtectedRoutes, {}), children: [
         /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(Profile, {}), path: "/profile" }),
-        /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(User, {}), path: "/user/:userId", action: async (res) => {
-          return null;
-        } }),
+        /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(User, {}), path: "/user/:userId" }),
         /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(Secret, {}), path: "/secret/:secretId" })
       ] })
     ] }),

@@ -1,5 +1,6 @@
 const isProdMode = process.env.NODE_ENV === 'production';
 const SERVER_URL = isProdMode ? 'https://secret-server-srv.onrender.com/' : 'http://localhost:3000/';
+const APP_URL_ORIGIN = isProdMode ? 'https://secret-server.onrender.com' : 'http://localhost:5173';
 const SERVER_ASSETS = SERVER_URL + 'public/';
 const SECOND = 1000;
 const LOADER_COLOR = '#00BBEC';
@@ -10,4 +11,4 @@ const TWENTY_FIFE_MB=25000000;
 const ONE_MB=1000000;
 const INITIAL_NAME = 'Anonymous';
 
-export {ONE_MB, SERVER_URL, SECOND, LOADER_COLOR, TEST_TOKEN, SERVER_ASSETS, ONE_HOUR, TWENTY_FIFE_MB, ONE_MINUTE, INITIAL_NAME};
+export {ONE_MB, SERVER_URL, SECOND, LOADER_COLOR, TEST_TOKEN, SERVER_ASSETS, ONE_HOUR, TWENTY_FIFE_MB, ONE_MINUTE, INITIAL_NAME, APP_URL_ORIGIN};

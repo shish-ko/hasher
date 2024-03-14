@@ -56,7 +56,7 @@ export const AvailableSecret: React.FC<ISecretWithUser> = ({ id, title, type, av
             <IconButton onClick={() => {
               FB.ui({
                 method: 'share',
-                href: 'https://youtube.com/',
+                href: `https://secret-service.onrender.com/secret/${id}`,
               }, function (response) { console.log(response.error_code); });
             }}>
               <Facebook />
