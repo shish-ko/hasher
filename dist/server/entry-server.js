@@ -1779,7 +1779,7 @@ const routeObj = createRoutesFromElements(
         /* @__PURE__ */ jsx(Route, { element: /* @__PURE__ */ jsx(Secret, {}), path: "/secret/:secretId" })
       ] })
     ] }),
-    /* @__PURE__ */ jsx(Route, { path: "/fb_scraper/secret/:secretId", element: /* @__PURE__ */ jsx(FB_Secret, {}), loader })
+    /* @__PURE__ */ jsx(Route, { path: "/fb_scraper/:secretId", element: /* @__PURE__ */ jsx(FB_Secret, {}), loader })
   ] })
 );
 injectStore(store);

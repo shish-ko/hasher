@@ -23,7 +23,7 @@ export const routeObj = createRoutesFromElements(
         <Route element={<Secret />} path="/secret/:secretId" />
       </Route>
     </Route>
-    <Route path="/fb_scraper/secret/:secretId" element={<FB_Secret />} loader={scraperLoader}/>
+    <Route path="/fb_scraper/:secretId" element={<FB_Secret />} loader={scraperLoader}/>
   </Route>
 );
 
