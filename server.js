@@ -38,9 +38,10 @@ async function startServer() {
   }
 
   app.use('/secret', (req, res, next) => {
-    const scraperUserAgents = ['facebookexternalhit/1.1', 'Twitterbot'];
-    if (scraperUserAgents.includes(req.headers['user-agent'])) {
-      console.log('Scraper detected!');
+    // const scraperUserAgents = ['facebookexternalhit/1.1', 'Twitterbot'];
+    console.log(`Scraper detected: ${req.headers['user-agent']}`);
+    if (req.headers['user-agent']?.includes('facebookexternalhit/1.1') || req.headers['user-agent']?.includes('Twitterbot')) {
+      console.log(`Scraper detected: ${req.headers['user-agent']}`);
       proxy(APP_URL_ORIGIN, {
         proxyReqPathResolver(req) {
           return req.originalUrl.replace('/secret/', '/fb_secret_scraper/');
