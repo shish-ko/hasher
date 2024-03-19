@@ -15,13 +15,16 @@ export const FB_Secret =() => {
       <meta property="og:title" content={secret.title}/>
       <meta property="og:description" content={`Hidden ${secret.type.toLowerCase()} will be available at ${new Date(secret.availableAt).toLocaleString()}`}/>
       <meta property="og:image" content={getSecretTypeImageURL(secret.type)} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={secret.title} />
+      <meta name="twitter:description" content={`Created at: ${new Date(secret.createdAt).toLocaleString()}`} />
+      <meta name="twitter:image" content={getSecretTypeImageURL(secret.type)} />
     </Helmet>
   );
 };
 
 export const loader: LoaderFunction = async ({params}): Promise<IFutureSecret> => {
   const { data } = await serverAPI.get<IFutureSecret>(`secret/scraper/${params.secretId}`);
-  console.log(data);
   return data;
 };
 

@@ -7,7 +7,7 @@ import { AppAudioPlayer } from "~comps/Secrets/AudioSecret";
 import { VideoSecret } from "./VideoSecret";
 import { PhotoSecret } from "./PhotoSecret";
 import { DocSecret } from "./DocSecret";
-import { SERVER_URL } from "app_constants";
+import { APP_URL_ORIGIN, SERVER_URL } from "app_constants";
 
 
 export const AvailableSecret: React.FC<ISecretWithUser> = ({ id, title, type, availableAt, url, createdAt, userId, description, user: {userPic, name} }) => {
@@ -22,7 +22,7 @@ export const AvailableSecret: React.FC<ISecretWithUser> = ({ id, title, type, av
         titleTypographyProps={{color:'text.secondary'}}
         subheaderTypographyProps={{color: 'text.primary'}}
         subheader={`Created at: ${new Date(createdAt).toLocaleDateString()}`}
-        avatar={<Avatar component={RouterLink} to={`../user/${userId}`} src={SERVER_URL + userPic}>{name}</Avatar>} // TODO add usrName instead of QS
+        avatar={<Avatar component={RouterLink} to={`../user/${userId}`} src={SERVER_URL + userPic}>{name.slice(0, 2)}</Avatar>}
       // TODO: add action for user's secrets (change title and so on...)
       />
       <CardMedia ref={mediaRef} component='div' sx={{ position: 'relative' }}>
@@ -61,7 +61,7 @@ export const AvailableSecret: React.FC<ISecretWithUser> = ({ id, title, type, av
             }}>
               <Facebook />
             </IconButton>
-            <IconButton>
+            <IconButton href={`https://twitter.com/intent/tweet?url=${APP_URL_ORIGIN}/secret/${id}&text=${`This ${type.toLowerCase()} will become available at ${new Date(availableAt).toLocaleString()}`}`}>
               <Twitter />
             </IconButton>
             <IconButton>
