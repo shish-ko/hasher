@@ -1,10 +1,9 @@
-import { Facebook, Instagram, Share, Twitter } from "@mui/icons-material";
-import { Avatar, Box, Card, CardActionArea, CardActions, CardHeader, CardMedia, CardProps, Collapse, IconButton, Typography, styled } from "@mui/material";
+import { Avatar, Card, CardActionArea, CardActions, CardHeader, CardMedia, CardProps, Typography, styled } from "@mui/material";
 import { SERVER_URL } from "app_constants";
-import { useState } from "react";
 import Countdown from "react-countdown";
 import { Link as RouterLink } from 'react-router-dom';
 import { COLORS } from "style/colors";
+import { SecretSharingBlock } from "~comps/UI_components/ShareBlock/SecretSharingBlock";
 import { IFutureSecretWithUser } from "~interfaces/index";
 import { countdownRenderer } from "~utils/helpers";
 
@@ -16,8 +15,8 @@ const Secret_future = styled(Card)(()=>({
   justifyContent: 'space-between',
 }));
 
-export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, userId, availableAt, createdAt, title, countdownHandler, user: {userPic, name},  ...rest }) => {
-  const [isShown, setIsShown] = useState(false);
+export const FutureSecret: React.FC<IFutureSecretProps> = (secret) => {
+  const  {id, type, userId, availableAt, createdAt, title, countdownHandler, user: {userPic, name},  ...rest } = secret
   return (
     <Secret_future elevation={4} {...rest}>
       <CardHeader
@@ -38,27 +37,7 @@ export const FutureSecret: React.FC<IFutureSecretProps> = ({ id, type, userId, a
         </CardMedia>
       </CardActionArea>
       <CardActions>
-        <Collapse orientation="horizontal" in={isShown} timeout={100} collapsedSize={40} onMouseOver={() => setIsShown(true)} onMouseOut={() => setIsShown(false)}>
-          <Box height={40}>
-            <IconButton>
-              <Share />
-            </IconButton>
-            <IconButton onClick={() => {
-              FB.ui({
-                method: 'share',
-                href: 'https://youtube.com/',
-              }, function (response) { console.log(response.error_code); });
-            }}>
-              <Facebook />
-            </IconButton>
-            <IconButton>
-              <Twitter />
-            </IconButton>
-            <IconButton>
-              <Instagram />
-            </IconButton>
-          </Box>
-        </Collapse>
+        <SecretSharingBlock {...secret}/>
       </CardActions>
     </Secret_future>
   );

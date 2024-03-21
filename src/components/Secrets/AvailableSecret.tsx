@@ -1,17 +1,17 @@
-import { Avatar, Box, Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia, Collapse, IconButton, Typography } from "@mui/material";
-import { useRef, useState } from "react";
+import { Avatar, Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
+import { useRef } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ISecretWithUser } from "~interfaces/index";
-import { Facebook, Instagram, Share, Twitter } from "@mui/icons-material";
 import { AppAudioPlayer } from "~comps/Secrets/AudioSecret";
 import { VideoSecret } from "./VideoSecret";
 import { PhotoSecret } from "./PhotoSecret";
 import { DocSecret } from "./DocSecret";
-import { APP_URL_ORIGIN, SERVER_URL } from "app_constants";
+import { SERVER_URL } from "app_constants";
+import { SecretSharingBlock } from "~comps/UI_components/ShareBlock/SecretSharingBlock";
 
 
-export const AvailableSecret: React.FC<ISecretWithUser> = ({ id, title, type, availableAt, url, createdAt, userId, description, user: {userPic, name} }) => {
-  const [isShown, setIsShown] = useState(false);
+export const AvailableSecret: React.FC<ISecretWithUser> = (secret) => {
+  const { id, title, type, availableAt, url, createdAt, userId, description, user: {userPic, name} } = secret;
   const mediaRef = useRef<HTMLDivElement>(null);
   const availableAtUserTZ = new Date(availableAt).toLocaleString();
 
@@ -48,27 +48,7 @@ export const AvailableSecret: React.FC<ISecretWithUser> = ({ id, title, type, av
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Collapse orientation="horizontal" in={isShown} timeout={100} collapsedSize={40} onMouseOver={() => setIsShown(true)} onMouseOut={() => setIsShown(false)}>
-          <Box height={40}>
-            <IconButton>
-              <Share />
-            </IconButton>
-            <IconButton onClick={() => {
-              FB.ui({
-                method: 'share',
-                href: `https://secret-service.onrender.com/secret/${id}`,
-              }, function (response) { console.log(response.error_code); });
-            }}>
-              <Facebook />
-            </IconButton>
-            <IconButton href={`https://twitter.com/intent/tweet?url=${APP_URL_ORIGIN}/secret/${id}&text=${`This ${type.toLowerCase()} will become available at ${new Date(availableAt).toLocaleString()}`}`}>
-              <Twitter />
-            </IconButton>
-            <IconButton>
-              <Instagram />
-            </IconButton>
-          </Box>
-        </Collapse>
+        <SecretSharingBlock {...secret} />
       </CardActions>
     </Card>
   );

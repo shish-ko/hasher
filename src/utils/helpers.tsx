@@ -1,6 +1,6 @@
 import { APP_URL_ORIGIN, ONE_HOUR, SECOND, TEST_TOKEN, TWENTY_FIFE_MB } from "../app_constants";
 import jwtDecode from "jwt-decode";
-import { ESecretType, ITokenPayload, IUserSecrets, SERVER } from "~interfaces/index";
+import { ESecretType, IFutureSecret, ISecret, ITokenPayload, IUserSecrets, SERVER } from "~interfaces/index";
 import { serverAPI } from "./axios";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import { removeUserData, setAuthToken } from "store/userSlice";
@@ -175,3 +175,22 @@ export const popUpSecretHandler = new SecretAvailabilityHandler();
 export const getSecretTypeImageURL = (type: ESecretType) => {
   return `${APP_URL_ORIGIN}/icons/${type.toLowerCase()}.png`;
 };
+
+export function getSecretExpiredAnnotation(secret: ISecret|IFutureSecret, plusChar: string = '+' ) {
+  const availableAtDateObj = new Date(secret.availableAt);
+  let result = `This ${secret.type.toLowerCase()} will become available at ${availableAtDateObj.toLocaleString()} ${getOffsetString(availableAtDateObj, plusChar)}`;
+  if(secret.url) {
+    result = `This ${secret.type.toLowerCase()} became available at ${availableAtDateObj.toLocaleString()} ${getOffsetString(availableAtDateObj, plusChar)}`;
+  } 
+  return result;
+}
+export function getOffsetString(date: Date, plusChar: string = '+' ) {
+  const sign = (date.getTimezoneOffset() > 0) ? "-" : plusChar;
+  const offset = Math.abs(date.getTimezoneOffset());
+  const hours = pad(Math.floor(offset / 60));
+  const minutes = pad(offset % 60);
+  return `(UTC ${sign}${hours}:${minutes})`;
+}
+function pad(value: number) {
+  return value < 10 ? '0' + value : value;
+}
