@@ -15,10 +15,20 @@ export const SecretSharingBlock: React.FC<IFutureSecret | ISecret> = (secret) =>
           <Share />
         </IconButton>
         <IconButton onClick={() => {
+          FB.getLoginStatus((res)=> {
+            FB.api('https://graph.facebook.com/', 'post', {
+              id: `https://secret-service.onrender.com/secret/${secret.id}`,
+              access_token: res.authResponse.accessToken,
+              scrape: true
+          }, function(response) {
+              console.log('rescrape!',response);
+          });
+
+          });
           FB.ui({
             method: 'share',
             href: `https://secret-service.onrender.com/secret/${secret.id}`,
-          }, function (response) { console.log(response.error_code); });
+          });
         }}>
           <Facebook />
         </IconButton>
