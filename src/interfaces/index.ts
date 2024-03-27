@@ -40,6 +40,7 @@ interface ISecret {
   url: string,
   userId: number;
   description: string;
+  isRescrapedByFB: boolean;
 }
 
 interface IFutureSecret extends Omit<ISecret, 'url' | 'description'> {
@@ -84,7 +85,8 @@ export enum SERVER {
   SECRET_SUBSCRIPTION = 'secret/subs/',
   ACCOUNT_INFO = 'account/info/',
   ACCOUNT_USERPIC = 'account/userpic',
-  ACCOUNT_PASSWORD = 'account/password/'
+  ACCOUNT_PASSWORD = 'account/password/',
+  RESCRAPED = '/rescraped'
 }
 
 enum ESecretType {

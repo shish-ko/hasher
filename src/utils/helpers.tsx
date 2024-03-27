@@ -176,16 +176,16 @@ export const getSecretTypeImageURL = (type: ESecretType) => {
   return `${APP_URL_ORIGIN}/icons/${type.toLowerCase()}.png`;
 };
 
-export function getSecretExpiredAnnotation(secret: ISecret|IFutureSecret, plusChar: string = '+' ) {
+export function getSecretExpiredAnnotation(secret: ISecret|IFutureSecret) {
   const availableAtDateObj = new Date(secret.availableAt);
-  let result = `This ${secret.type.toLowerCase()} will become available at ${availableAtDateObj.toLocaleString()} ${getOffsetString(availableAtDateObj, plusChar)}`;
+  let result = `This ${secret.type.toLowerCase()} will become available at ${availableAtDateObj.toLocaleString()} ${getOffsetString(availableAtDateObj)}`;
   if(secret.url) {
-    result = `This ${secret.type.toLowerCase()} became available at ${availableAtDateObj.toLocaleString()} ${getOffsetString(availableAtDateObj, plusChar)}`;
+    result = `This ${secret.type.toLowerCase()} became available at ${availableAtDateObj.toLocaleString()} ${getOffsetString(availableAtDateObj)}`;
   } 
   return result;
 }
-export function getOffsetString(date: Date, plusChar: string = '+' ) {
-  const sign = (date.getTimezoneOffset() > 0) ? "-" : plusChar;
+export function getOffsetString(date: Date) {
+  const sign = (date.getTimezoneOffset() > 0) ? "-" : "%2b";
   const offset = Math.abs(date.getTimezoneOffset());
   const hours = pad(Math.floor(offset / 60));
   const minutes = pad(offset % 60);
