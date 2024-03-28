@@ -1,4 +1,4 @@
-import { Avatar, Card, CardActionArea, CardActions, CardHeader, CardMedia, CardProps, Typography, styled } from "@mui/material";
+import { Avatar, Card, CardActionArea, CardActions, CardHeader, CardMedia, SxProps, Typography, styled } from "@mui/material";
 import { SERVER_URL } from "app_constants";
 import Countdown from "react-countdown";
 import { Link as RouterLink } from 'react-router-dom';
@@ -7,7 +7,11 @@ import { SecretSharingBlock } from "~comps/UI_components/ShareBlock/SecretSharin
 import { IFutureSecretWithUser } from "~interfaces/index";
 import { countdownRenderer } from "~utils/helpers";
 
-type IFutureSecretProps = IFutureSecretWithUser & { countdownHandler: () => void } & CardProps
+type IFutureSecretProps =  {
+  secret: IFutureSecretWithUser;
+  countdownHandler: () => void;
+  sx: SxProps
+}
 
 const Secret_future = styled(Card)(()=>({
   display: 'flex',
@@ -15,10 +19,10 @@ const Secret_future = styled(Card)(()=>({
   justifyContent: 'space-between',
 }));
 
-export const FutureSecret: React.FC<IFutureSecretProps> = (secret) => {
-  const  {id, type, userId, availableAt, createdAt, title, countdownHandler, user: {userPic, name},  ...rest } = secret
+export const FutureSecret: React.FC<IFutureSecretProps> = ({secret, countdownHandler, sx}) => {
+  const  {id, type, userId, availableAt, createdAt, title, user: {userPic, name} } = secret;
   return (
-    <Secret_future elevation={4} {...rest}>
+    <Secret_future elevation={4} sx={sx}>
       <CardHeader
         title={title}
         subheader={`Created at: ${new Date(createdAt).toLocaleDateString()}`}

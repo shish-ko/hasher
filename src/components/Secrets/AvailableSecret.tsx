@@ -9,8 +9,11 @@ import { DocSecret } from "./DocSecret";
 import { SERVER_URL } from "app_constants";
 import { SecretSharingBlock } from "~comps/UI_components/ShareBlock/SecretSharingBlock";
 
+interface IAvailableSecretProps {
+  secret: ISecretWithUser
+}
 
-export const AvailableSecret: React.FC<ISecretWithUser> = (secret) => {
+export const AvailableSecret: React.FC<IAvailableSecretProps> = ({secret}) => {
   const { id, title, type, availableAt, url, createdAt, userId, description, user: {userPic, name} } = secret;
   const mediaRef = useRef<HTMLDivElement>(null);
   const availableAtUserTZ = new Date(availableAt).toLocaleString();

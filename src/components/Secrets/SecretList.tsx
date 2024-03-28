@@ -56,7 +56,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets: { availableSecret
                 <SortMenuItem onClick={availableDESC}><DownIcon fontSize="small" /> Available DESC</SortMenuItem>
               </Menu>
               <Stack direction='row' gap='5%' flexWrap='wrap' rowGap={10} mt={20}>
-                {availableSecrets.map((secret) => <AvailableSecret {...secret} key={secret.id} />)}
+                {availableSecrets.map((secret) => <AvailableSecret secret={secret} key={secret.id} />)}
               </Stack>
             </AccordionDetails>
           </Accordion>
@@ -75,7 +75,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets: { availableSecret
             </AccordionSummary>
             <AccordionDetails>
               <Stack direction='row' gap='5%' flexWrap='wrap' rowGap={10}>
-                {futureSecrets.map((secret) => <FutureSecret {...secret} countdownHandler={refetch} sx={{ flexBasis: '30%' }} key={secret.id} />)}
+                {futureSecrets.map((secret) => <FutureSecret secret={secret} countdownHandler={refetch} sx={{ flexBasis: '30%' }} key={secret.id} />)}
               </Stack>
             </AccordionDetails>
           </Accordion> :
@@ -93,7 +93,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets: { availableSecret
           </AccordionSummary>
           <AccordionDetails>
             <Stack direction='row' gap='5%' flexWrap='wrap' rowGap={10} mt={20}>
-              {subscribedTo.availableSecrets.map((secret) => <AvailableSecret {...secret} key={secret.id} />)}
+              {subscribedTo.availableSecrets.map((secret) => <AvailableSecret secret={secret} key={secret.id} />)}
             </Stack>
           </AccordionDetails>
         </Accordion>
@@ -106,7 +106,7 @@ export const SecretsList: React.FC<ISecretsList> = ({ secrets: { availableSecret
           </AccordionSummary>
           <AccordionDetails>
             <Stack direction='row' gap='5%' flexWrap='wrap' rowGap={10} mt={20}>
-              {subscribedTo.futureSecrets.map((secret) => <FutureSecret {...secret} countdownHandler={refetch} sx={{ flexBasis: '30%' }} key={secret.id} />)}
+              {subscribedTo.futureSecrets.map((secret) => <FutureSecret secret={secret} countdownHandler={refetch} sx={{ flexBasis: '30%' }} key={secret.id} />)}
             </Stack>
           </AccordionDetails>
         </Accordion>
