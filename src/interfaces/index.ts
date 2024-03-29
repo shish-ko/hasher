@@ -41,6 +41,8 @@ interface ISecret {
   userId: number;
   description: string;
   isRescrapedByFB: boolean;
+  isRescrapedByTwitter: boolean;
+  isRescrapedByInst: boolean;
 }
 
 interface IFutureSecret extends Omit<ISecret, 'url' | 'description'> {
