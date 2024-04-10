@@ -1,6 +1,6 @@
 import { Avatar, Divider, Grid, List, Skeleton, Stack } from "@mui/material";
 
-export const SecretSkeleton: React.FC =()=> {
+export const SecretSkeleton_L: React.FC =()=> {
   return (
     <>
     <Stack direction='row' justifyContent='space-between' alignItems='center'>
@@ -22,7 +22,6 @@ export const SecretSkeleton: React.FC =()=> {
               <Skeleton />
               <Divider variant="middle" />
             </List>
-
           </Grid>
         </Grid>
     </>

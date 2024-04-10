@@ -1,7 +1,7 @@
 import { Avatar, Divider, Grid, List, ListItem, Paper, Stack, Tooltip, Typography, styled } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
-import { SecretSkeleton } from "~comps/UI_components/Sceletons/SecretSkeleton";
+import { SecretSkeleton_L } from "~comps/UI_components/Sceletons/SecretSkeleton_L";
 import { IFutureSecret, ISecret, SERVER, TSecretWithStats } from "~interfaces/index";
 import { useServerFetch } from "~utils/hooks";
 import { get_MOCK_USER_SECRETS } from "~utils/helpers";
@@ -150,7 +150,7 @@ export const Secret = () => {
   return (
     <AppBlock>
       <Paper elevation={14} component={Stack} gap={4} p={5}>
-        <SecretSkeleton />
+        <SecretSkeleton_L />
       </Paper>
     </AppBlock>
   );

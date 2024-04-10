@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { SecretsList } from "~comps/Secrets/SecretList";
 import { AppBlock } from "~comps/UI_components/AppBlock/AppBlock";
+import { SkeletonList } from "~comps/UI_components/Sceletons/SkeletonList";
 import { IRouterParams, IUserSecrets } from "~interfaces/index";
 import { get_MOCK_USER_SECRETS } from "~utils/helpers";
 import { useAppSelector, useServerFetch } from "~utils/hooks";
@@ -28,7 +29,7 @@ export const User: React.FC = () => {
       {secrets ?
         < SecretsList secrets={secrets!} refetch={refetch} />
         :
-        <div>loading...</div>}
+        <SkeletonList />}
     </AppBlock>
   );
 };
