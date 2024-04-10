@@ -77,6 +77,7 @@ interface IUserSecrets {
 
 interface ISecretProps {
   url: string;
+  large?: boolean;
 }
 
 type ISecretComponentProps = ISecret & { countdownHandler: () => void; }

@@ -12,7 +12,6 @@ export const User: React.FC = () => {
   const hasPageBeenRendered = useRef(false);
   // eslint-disable-next-line prefer-const
   let { res: secrets, refetch } = useServerFetch<IUserSecrets>(`user/${userId}`, {redirectOnError: '/'});
-  console.log(secrets);
   if (import.meta.env.VITE_AUTH_FREE) {
     secrets = get_MOCK_USER_SECRETS();
   }

@@ -1,12 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import { ESecretType } from "~interfaces/index";
 import { AppAudioPlayer } from "./AudioSecret";
-import { VideoSecret } from "./VideoSecret";
-import { PhotoSecret_L } from "./PhotoSecret_L";
+import { PhotoSecret } from "./PhotoSecret";
 import { DocSecret } from "./DocSecret";
 import { COLORS } from "style/colors";
 import Countdown from "react-countdown";
 import { countdownRenderer } from "~utils/helpers";
+import { VideoSecret } from "./VideoSecret";
 
 interface ISecretMediaProps {
   type: ESecretType;
@@ -25,9 +25,9 @@ export const SecretMedia: React.FC<ISecretMediaProps> = ({ type, url, availableA
               case 'AUDIO':
                 return <AppAudioPlayer url={url} />;
               case 'VIDEO':
-                return <VideoSecret url={url} />;
+                return <VideoSecret url={url} large/>;
               case 'PHOTO':
-                return <PhotoSecret_L url={url} />;
+                return <PhotoSecret url={url} large/>;
               default:
                 return <DocSecret url={url} />;
             }

@@ -6,7 +6,7 @@ import { AppAudioPlayer } from "~comps/Secrets/AudioSecret";
 import { VideoSecret } from "./VideoSecret";
 import { PhotoSecret } from "./PhotoSecret";
 import { DocSecret } from "./DocSecret";
-import { SERVER_URL } from "app_constants";
+import { SECRET_S_MEDIA_HEIGHT, SERVER_URL } from "app_constants";
 import { SecretSharingBlock } from "~comps/UI_components/ShareBlock/SecretSharingBlock";
 
 interface IAvailableSecretProps {
@@ -28,7 +28,7 @@ export const AvailableSecret: React.FC<IAvailableSecretProps> = ({secret}) => {
         avatar={<Avatar component={RouterLink} to={`../user/${userId}`} src={SERVER_URL + userPic}>{name.slice(0, 2)}</Avatar>}
       // TODO: add action for user's secrets (change title and so on...)
       />
-      <CardMedia ref={mediaRef} component='div' sx={{ position: 'relative' }}>
+      <CardMedia ref={mediaRef} component='div' sx={{ position: 'relative', height: `${SECRET_S_MEDIA_HEIGHT}px`, overflow: 'hidden' }}>
         {
           (function () {
             switch (type) {

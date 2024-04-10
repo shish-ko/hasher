@@ -1,7 +1,7 @@
 import { Pause, PlayArrow,  VolumeUp } from "@mui/icons-material";
 import { Box, Collapse, IconButton, Slider, Stack } from "@mui/material";
 import AudioMotionAnalyzer from "audiomotion-analyzer";
-import { SERVER_URL } from "app_constants";
+import { SECRET_S_MEDIA_HEIGHT, SERVER_URL } from "app_constants";
 import { useEffect, useRef, useState } from "react";
 
 interface IAppAudioPlayerProps {
@@ -39,7 +39,7 @@ export const AppAudioPlayer: React.FC<IAppAudioPlayerProps> = ({ url }) => {
         renderRef.current,
         {
           source: audioNode,
-          height: 200,
+          height: SECRET_S_MEDIA_HEIGHT,
           mode: 3,
           barSpace: .6,
           lumiBars: true,
