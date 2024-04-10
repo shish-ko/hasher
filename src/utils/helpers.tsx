@@ -194,3 +194,11 @@ export function getOffsetString(date: Date) {
 function pad(value: number) {
   return value < 10 ? '0' + value : value;
 }
+
+export const fileTypeChecker = (file: File): ESecretType => {
+  const mainType = file.type;
+  if (['audio'].includes(mainType)) return ESecretType.AUDIO;
+  if (['video'].includes(mainType)) return ESecretType.VIDEO;
+  if (['image'].includes(mainType)) return ESecretType.PHOTO;
+  return ESecretType.DOC;
+};
