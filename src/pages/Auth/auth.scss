@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../../style/constants";
+
 @mixin auth-round ($bg-color) {
   border-radius: 40px;
   padding: 15px 40px;
@@ -14,7 +17,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 100px;
-  color: $text;
+  color: constants.$text;
   text-align: center;
   align-items: flex-start;
 }
@@ -25,7 +28,7 @@
   &__title {
     font-weight: 700;
     font-size: 2.4rem;
-    color: $text_dark;
+    color: constants.$text_dark;
     padding-bottom: 5.4rem;
   }
 
@@ -41,18 +44,18 @@
     margin-top: 40px;
 
     &:hover{
-      background-color: lighten($color: green, $amount: 2);
+      background-color: color.adjust($color: green, $lightness: 2%);
     }
     &:active {
-      background-color: darken($color: green, $amount: 2);
+      background-color: color.adjust($color: green, $lightness: -2%);
     }
     &:disabled {
-      background-color: $bg_grey;
+      background-color: constants.$bg_grey;
     }
   }
 
   &__error {
-    color: $form_error;
+    color: constants.$form_error;
     font-weight: 300;
   }
 
@@ -62,7 +65,7 @@
     .auth-form__input {
       display: block;
       width: 100%;
-      @include auth-round($bg_grey);
+      @include auth-round(constants.$bg_grey);
       padding-left: 60px;
       &::placeholder {
         font-weight: 300;
@@ -72,7 +75,7 @@
         outline: none;
         animation: input_spread .2s linear;
         &::placeholder {
-          color: $bg_grey;
+          color: constants.$bg_grey;
         }
         & + img {
           transform: translate(-5px, -50%); 
@@ -92,11 +95,11 @@
   }
 
   &__recover {
-    color: $text_light;
+    color: constants.$text_light;
     margin-top: 1rem;
     font-weight: 300;
     &_dark {
-      color: $text;
+      color: constants.$text;
     }
   }
   

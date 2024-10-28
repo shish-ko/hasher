@@ -1,6 +1,9 @@
+@use "sass:color";
+@use "constants";
+
 .text-link {
   &:hover {
-    color: darken($color: $text, $amount: 3);
+    color: color.adjust($color: constants.$text, $lightness: -30%);
     text-decoration: underline;
   }
 }

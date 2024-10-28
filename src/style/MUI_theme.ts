@@ -16,8 +16,8 @@ export const appTheme = createTheme({
       main: '#1b5a5e'
     },
     shareBlock: {
-      main: 'none',
-      dark: 'none'
+      main: 'orange', // check color location
+      dark: 'orange'
     }
   },
   typography: {
