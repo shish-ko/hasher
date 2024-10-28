@@ -1,6 +1,7 @@
 import { createTheme, lighten } from '@mui/material';
 import { COLORS } from './colors';
 import type {} from '@mui/x-date-pickers/themeAugmentation';
+import { red } from '@mui/material/colors';
 
 
 export const appTheme = createTheme({
@@ -16,8 +17,8 @@ export const appTheme = createTheme({
       main: '#1b5a5e'
     },
     shareBlock: {
-      main: 'orange', // check color location
-      dark: 'orange'
+      main: red[900], // check color location
+      dark: red[900]
     }
   },
   typography: {
