@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "ts-node --esm ./server ",
+    "dev": "ts-node --esm ./server.js ",
     "dev:no-token": "cross-env VITE_AUTH_FREE=true ts-node --esm ./server",
     "build": "npm run build:client && npm run build:server && node build_error_fixer.js",
     "build:client": "vite build --ssrManifest --outDir dist/client",
@@ -44,7 +44,8 @@
     "react-router-dom": "^6.16.0",
     "react-spinners": "^0.13.8",
     "redux-dynamic-modules-core": "^5.2.3",
-    "sirv": "^2.0.4"
+    "sirv": "^2.0.4",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/express-http-proxy": "^1.6.6",
