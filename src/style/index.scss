@@ -1,11 +1,11 @@
-@import './constants.scss';
-@import './mixins.scss';
-@import '../pages/Auth/auth.scss';
-@import './links.scss';
-@import '../components/UI_components/PopUp/popUp.scss';
-@import '../components/SecretForm/secretForm.scss';
-@import '../components/Subscription/subscription.scss';
-@import '../components/Secrets/secrets.scss';
+@use 'constants.scss';
+@use 'mixins.scss';
+@use '../pages/Auth/auth.scss';
+@use 'links.scss';
+@use '../components/UI_components/PopUp/popUp.scss';
+@use '../components/SecretForm/secretForm.scss';
+@use '../components/Subscription/subscription.scss';
+@use '../components/Secrets/secrets.scss';
 
 *{
   box-sizing: border-box;
